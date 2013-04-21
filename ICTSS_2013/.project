@@ -14,4 +14,11 @@
 	<natures>
 		<nature>net.sourceforge.texlipse.builder.TexlipseNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>dwait.bib</name>
+			<type>1</type>
+			<location>C:/Users/oportillo/git/ICTSS_2013/ICTSS_2013/dwait.bib</location>
+		</link>
+	</linkedResources>
 </projectDescription>
