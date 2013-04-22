@@ -27,7 +27,7 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Pending to define title:\\.. Pending to define title}
+\title{Pending to define title}
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Pending to define title}
@@ -116,76 +116,34 @@ the entire development cycle.
 
 \section{Introduction}
 
-When doing performance testing, the detection of performance related issues and the identification of their root causes are challenging and time consuming tasks, especially in highly distributed environments.
+Quality is a core element of the whole software development process.
 
-WAIT (idle-time analysis) has proven successful in simplifying the detection of performance related issues and their root causes in Java environments.
+According to Capers Jones, the “quality numbers man”, in the US the average
+software costs per function point (FP) are close to 1,000 US\$ in development and other 1,000 US\$ for maintenance. With
+software where quality is above the average, costs are 700 US\$/FP for
+development and 500 US\$/FP for maintenance (high quality saves 40\% of the
+cost).
 
-The main strengths of WAIT makes it an attractive candidate to the performance testing domain, as it would have minimal impact in the testing results:
-- WAIT uses a very light-weight approach which does not require any instrumentation/changes to the monitored environment. 
-- It also has very low overhead.
+Investment in quality is the correct strategy to follow. 
 
-Despite its strengths, WAIT has certain scalability limitations that prevent its effective usage in the performance testing domain:
-- Manual data collection and uploading per monitored process.
-- Lack of synchronization with load testing tools. 
-- Lack of capability to perform periodic data refresh during the test execution to have incremental results.
-Even though the above limitations might be manageable in small testing environments or test runs, they prevent WAIT to be effectively use in bigger testing environments (precisely the scenario where its performance analysis capabilities would be more valuable).
-The identified adoption barriers are the result of recurrent discussions with our industrial partner, which practically make WAIT non-scalable, in its current form, in highly distributed environments.
+Software performance (considered here as
+concerned with capacity and timeliness) is a pervasive
+quality difficult to understand, because it is affected by
+every aspect of the design, code, and execution
+environment. By conventional wisdom performance is
+a serious problem in a significant fraction of projects.
+It causes delays, cost overruns, failures on deployment,
+and even abandonment of projects, but such failures
+are seldom documented. A recent survey of
+information technology executives [15] found that half
+of them had encountered performance problems with at
+least 20\% of the applications they deployed.
 
-Other ideas:
-Problem to solve: Hard to detect and identify the root cause of performance
-related issues in a multi-node environment. Hard to use WAIT in these circumstances.
-
-Benefits: Less Time (setup, monitor, analysis, go/no-go decision) -> Less
-Learning curve / Less Error-Prone, Share knowledge / experience (remain), 
-“Real-time”, Keep as light-weight as possible (minimum add-ons + low overhead)
-
-Qualifiers: Testing Domain, Distributed env, Using Available info
-
----
-
-•	In more detail/ additionally supported by the needs of our industrial partner:
-o	Manual data collection.
-o	Uploading too.
-o	Benchmark / Overhead.
-o	Aggregated results.
-o	Real time / Incremental.
-•	Important to rephrase it as estimated tester time benefit? (at least a high level estimate … do not forget the time dimension!)
-
-[PENDING: To review/copy papers: RTCE, Memory, GC Lite, WAIT, Observations of
-Java App]
+[15] Compuware, Applied Performance Management Survey, Oct. 2006.
 
 
-Summary of potential phrases:
-•	This paper proposes …
-•	Highlights of methodology.
-•	“The results of this work have provided evidence regarding the feasibility of the proposed approach” + summary of key results.
-•	“The main contributions of this paper are:”
-o	Approach + implementation to automate the data gathering and execution of WAIT in sync with a performance test loader. “Generic” enough so that it can be “easily” enough to adapt it to other performance analysis tools and/or performance test loaders.
-o	Keeping the main strengths of WAIT: low overhead + avoiding intrusion (under the scope of the paper).
-o	Any qualitative insights? (i.e. javacore cost of the class loader section)
 
-Main contributions:
 
-1. Approach/Architecture + implementation to automate the data gathering and execution of WAIT in sync with a performance test loader (or make WAIT scalable / usable in a performance testing domain).
-2. “Generic” enough solution so that it can be adaptable to other performance analysis tools and/or performance test loaders.
-3. Keeping the main strengths of WAIT: low overhead + avoiding intrusion (under the scope of the paper).
-4. Any qualitative insights? (i.e. javacore cost of the class loader section)
-<<
-– We introduce a lightweight framework for replaying concrete test executions
-with the aim of identifying erroneous test case executions.
-
-The contribution of this paper is an
-approach to make the principle of parameterized unit testing available
-to black-box GUI testing. The approach is based on the new notion of
-parameterized GUI tests. We have implemented the approach in a new
-tool. In order to evaluate whether parameterized GUI tests have the potential
-to achieve high code coverage, we apply the tool to four open
-source GUI applications. The results are encouraging.
->>
-
-examples:
-
-<<
 Currently, there is a real need for enterprise applications to meet their 
 performance requirements such that client requests are satisfied in a timely
 manner. Delays in response time can lead to lost revenue for example in
@@ -199,6 +157,19 @@ J2EE technology, and in some cases the application source code) is required in o
 fully understand the information contained in the aforementioned logs. System and 
 performance testers may not necessarily have this technical background and identifying 
 problems or fine tuning systems can be difficult in these circumstances.
+
+Like other software engineering activities, SPE is
+constrained by tight project schedules, poorly defined
+requirements, and over-optimism about meeting them.
+Nonetheless adequate performance is essential for
+product success, making SPE a foundation discipline in
+software practice.
+
+Performance testing
+Hard to detect and identify the root cause of performance related issues in a
+multi-node environment: When doing performance testing, the detection of
+performance related issues and the identification of their root causes are challenging and time consuming tasks, especially in highly distributed environments,
+usually requiring a lot of different tools plus highly related to expertise.
 
 A common issue with current performance tools is that the
 produced output requires a user with expert knowledge in order to understand and analyze 
@@ -217,33 +188,7 @@ that there is a real need to develop tools that can produce information which is
 consumable by both domain and non-domain experts, allowing for a wider number of testers 
 to carry out complex system analysis.
 
-Our proposed solution is to develop an expert tool that can
-
-be used by a wider pool of testers where traditionally this work was done only
-by a small number of experts. Our approach was to develop a tool that can produce information consumable by both domain experts and non experts. This approach provides a high level view for non experts allowing them to identify issues and a more detailed fine grained view for experts allowing for detailed root cause analysis of the issues. We followed a two step approach for developing suc
-
-We have validated the tool through a case study that was carried out across 6
-different test teams in IBM, showing how such a tool allowed for a larger number of testers to carry out garbage collection analysis and ultimately identify and raise a large number of bugs as part of the garbage collection analysis.
-
-The paper is structured as follows. In the next section we explain the approach
-for creating an expert tool. Section 3 details the motivation for creating a garbage 
-collection analysis tool and how the approach was realised through the implementation of 
-GcLite. In this section we also give design and implementation details. In section 4 we 
-discuss how we have validated our approach through a case study carried out within IBM 
-across 6 different test teams and in section 5 we give our conclusion.
->>
-
-<<Miao:
-
-To ensure the research work is helpful for solving real-life problems for software
-industries, we have carried out regular frequent meetings with IBM System Verification 
-Test (SVT) team managers and discussed how our current research work can improve their testing experiences by avoiding many manual tasks. We assessed the quality of our solution based on their feedback in relation to high system throughput, memory efficiency, and accuracy. Furthermore, we are also occasionally involved in IBM cross team collaborations to share our knowledge and discuss how our research algorithms can be used to solve different problems faced by other teams. In order to improve industrial testing experiences, we have made the decision to design and implement a lightweight solution with specific rules for functional and system testing teams to ease their troubleshooting tasks.
-
->>
-
-<<
-Limitation in testing process / Reduce Costs/Time
-System Complexity
+Problem: Limitation in testing process / Reduce Costs/Time + System Complexity
 
 - According to Myers [1], software testing is a process, or a series of processes,
 designed to make sure that computer code does what it was designed to do and that it
@@ -253,12 +198,156 @@ methodology. Software testing automation is one of the main approaches that
 have been applied to decrease testing costs and time while test automation
 requires automated test execution and results verification [2].
 [[
-1. Myers, G.J.: The Art of Software Testing. Ed. John Wiley & Sons, Inc., Hoboken, New
-Jersey. (2004)
+1. Myers, G.J.: The Art of Software Testing. Ed. John Wiley \& Sons, Inc.,
+Hoboken, New Jersey. (2004)
 2. Shahamiri, S.R.: Kadir, W.M.N.W.; Mohd-Hashim, S.Z.: A Comparative Study on
 Automated Software Test Oracle Methods. In: ICSEA '09. Fourth International Conference,
 pp. 140 – 145, (2009).
 ]]
+
+
+
+
+
+
+A determining factor for performance is that resources have a limited capacity,
+so they can potentially halt/delay the execution of competing users by denying
+permission to proceed. Quantifying such effects is an important task of SPE.
+
+Lessons from the current work. There are many weaknesses in current performance
+processes. They require heavy effort, which limits what can be attempted.
+Measurements lack standards; those that record the application and execution context (e.g. the
+class of user) require source-code access and instrumentation and interfere with
+system operation.
+There is a semantic gap between performance concerns and functional concerns,
+which prevents many developers from addressing performance at all. For the
+same reason many developers do not trust or understand performance models, even
+if such models are available. Performance modeling is effective but it
+is often costly; models are approximate, they leave out detail that may be
+important, and are difficult to validate.
+
+The survey of information technology executives [15], which found that half of
+them had had performance problems with at least 20\% of the applications they
+deployed, commented that many problems seem to come from lack of coverage in
+performance testing, and from depending on customers to do performance testing in the field.
+
+Significant process issues are unresolved. Detail in measurement and modeling
+must be managed and adapted. Excessive detail is expensive and creates
+information overload, while insufficient detail may miss the key factor in a
+problem. Information has to be thrown away. Models and measurements are
+discarded even though they possibly hold information of long-term value.
+
+Source: Future Performance Engineering
+
+Today, the state of industrial performance measurement and testing techniques is
+captured in a series of articles by Scott Barber [8][9] including the problems
+of planning, execution, instrumentation and interpretation.
+
+[8] S. Barber, “Creating Effective Load Models for Performance Testing with
+Incomplete Empirical Data”, in Proc. 6th IEEE Int. Workshop on Web Site Evolution, 2004,
+pp. 51-59.
+[9] S. Barber, “Beyond performance testing”, parts 1-14, IBM DeveloperWorks,
+Rational Technical Library, 2004, www-128.ibm.com/developerworks/rational/library/4169.html
+
+The tools used by performance analysts range from load generators, for supplying
+the workload to a system under test, to monitors, for gathering data as the
+system executes.
+
+Performance engineering is gaining attention, as companies discover to their
+detriment that the performance of their applications is often below
+expectations. In the past, these problems were not found until very late in the
+development of a product as performance validation, if any, was one of the last
+activities done before releasing the software. With agile processes, the problem
+is unchanged if not worse [11]. Thus early warning of performance problems is
+still the challenge for SPE.
+
+[11] S. Barber, “Tester PI: Performance Investigator”,Better Software, March 2006, pp 20 – 25.
+
+Developers and testers use instrumentation tools to help them find problems with
+systems. However, users depend on experience to use the results, and this
+experience needs to be codified and incorporated into tools. Better methods and
+tools for interpreting the results and diagnosing performance problems are a
+future goal.
+
+Technical developments -> Visualization and diagnostics
+
+Understanding the source of performance limitations is a search process, which
+depends on patterns and relationships in performance data, often revealed by
+visualizations. Promising areas for the future include better visualizations,
+deep catalogues of performancerelated patterns of behaviour and structure, and
+algorithms for automated search and diagnosis.
+Present visualization approaches use generic data exploration views such as
+Kiviat graphs (e.g. in Paradyn [47]), traffic intensity patterns overlaid on
+physical structure maps [47], CPU loading overlaid on scenarios, and breakdowns
+of delay [66]. Innovative views are possible. For example, in [60] all kinds of
+resources (not just the CPU) are monitored, with tools to group resources and
+focus the view. The challenge for the future is to visualize the causal interaction of
+behaviour and resources, rather than to focus on just one or the other.
+[[
+[47] Merson, P. and Hissam, S. “Predictability by construction” Posters of
+OOPSLA 2005, pp 134-135, San Diego, ACM Press, Oct. 2005.
+[60] J.A. Rolia, L. Cherkasova, R. Friedrich, “Performance Engineering for EA
+Systems in Next Generation Data Centres”, Proc. 6th Int. Workshop on Software and
+Performance, Buenos Aires, Feb. 2007.
+[66] C.U. Smith, L. G. Williams, Performance Solutions, Addison-Wesley, 2002
+]]
+
+Technical developments -> Bottleneck identification
+
+a search for a saturated resource which limits the system, is a frequent
+operation. In [21], Franks et al describe a search strategy over a model, guided by its structure and
+results, and detects under-provisioned resource pools and over-long holding
+times. It combines properties of resources and behaviour, for a “nested” use of
+resources. It scales to high complexity, is capable of partial automation, and
+could be adapted to interpret measured data. A multistep performance enhancement
+study using these principles is described in [83].
+Another search strategy purely over data ([9], part 7) focuses on reproducing
+and simplifying the conditions in which the problem is observed. The actual diagnosis
+of the cause (e.g. a memory leak) depends on designer expertise.
+A bottleneck search strategy combining the data and the model could detect more
+kinds of problems (e.g. both memory leaks and resource problems) and could
+provide automated search assistance.
+Patterns (or anti-patterns) related to bottlenecks have been described by Smith
+and Williams [66] and others (e.g., excessive dynamic allocation, “one-lane bridge”).
+For the future, more patterns and more kinds of patterns (on measurements, on
+scenarios or traces) will be important. Patterns that combine design, model and
+measurement will be more powerful than those based on a single source.
+[[
+[9] S. Barber, “Beyond performance testing”, parts 1-14, IBM DeveloperWorks,
+Rational Technical Library, 2004, www-128.ibm.com/developerworks/rational/library/4169.html
+
+[21] G. Franks, D.C. Petriu, M. Woodside, J. Xu, P. Tregunno, “Layered
+Bottlenecks and Their Mitigation”, Proc 3rd Int. Conf. on Quantitative Evaluation of Systems,
+Riverside, CA, Sept. 2006.
+
+[83] J. Xu, M. Woodside, and D.C. Petriu, “Performance Analysis of a Software
+Design using the UML Profile for Schedulability, Performance and Time”, in Proc. 13th Int.
+Conf. Modeling Techniques and Tools for Computer Performance Evaluation, Urbana,
+USA, Sept. 2003 ]]
+
+Scalability analysis and improvement is largely a matter of identifying
+bottlenecks that emerge as scale is increased, and evolving the architecture. Future
+scalability tools will employ advanced bottleneck analysis but will depend more
+heavily on models, since they deal with potential systems.
+
+Technical developments -> More efficient testing
+
+Efficient testing covers the operational profile and the resources of interest
+with minimum effort needed to give sufficient accuracy. Accuracy is an issue
+because statistical results may require long runs, and it can be affected by
+other factors in the test design such as the load intensity and the patterns of request classes
+used. For example, systems under heavy load show high variance in their
+measurements, which contributes to inaccurate statistical results. It may be more fruitful
+to identify the heavily-used resources at moderate loads and (for purposes apart
+from stress testing) use the results to extrapolate to heavy loads using a
+performance model.
+
+More effort is also required in performance testing tools. The lack of standards
+for tool interoperation increases the effort to gather and interpret data, and
+reduces data-availability for new platforms. Lightweight and automated
+instrumentation are old goals that will continue to demand attention. Load
+drivers are at present well-developed in commercial tools, but more open tool
+development could speed progress.
 
 - (automation) Although the approach is usable by the company’s current employees, it was
 considered complex to apply and error prone. Doing each step by hand requires
@@ -266,6 +355,169 @@ too much attention and if any single mistake is committed the whole process is
 compromised. Thus, the automation of the approach was considered key to its
 adoption.
 
+...Further automation of data collection and better methods for deducing
+causality look promising. More powerful and general
+approaches to problem diagnosis are necessary and
+possible....
+
+
+
+
+
+WAIT (idle-time analysis) has proven successful in simplifying the detection of performance related issues and their root causes in Java environments.
+
+The main strengths of WAIT makes it an attractive candidate to the performance testing domain, as it would have minimal impact in the testing results:
+- WAIT uses a very light-weight approach which does not require any instrumentation/changes to the monitored environment. 
+- It also has very low overhead.
+
+Hard to use WAIT in these circumstances: Despite its strengths, WAIT has certain
+scalability limitations that prevent its effective usage in the performance testing domain:
+- Manual data collection and uploading per monitored process.
+- Lack of synchronization with load testing tools. 
+- Lack of capability to perform periodic data refresh during the test execution to have incremental results.
+Even though the above limitations might be manageable in small testing environments or test runs, they prevent WAIT to be effectively use in bigger testing environments (precisely the scenario where its performance analysis capabilities would be more valuable).
+The identified adoption barriers are the result of recurrent discussions with our industrial partner, which practically make WAIT non-scalable, in its current form, in highly distributed environments.
+
+Benefits: Less Time (setup, monitor, analysis, go/no-go decision) -> Less
+Learning curve / Less Error-Prone, Share knowledge / experience (remain), “Real-time”, Keep as light-weight as possible (minimum add-ons + low overhead)
+Qualifiers: Testing Domain, Distributed env, Using Available info
+
+
+
+
+
+In more detail/ additionally supported by the needs of our industrial partner:
+o	Manual data collection.
+o	Uploading too.
+o	Benchmark / Overhead.
+o	Aggregated results.
+o	Real time / Incremental.
+•	Important to rephrase it as estimated tester time benefit? (at least a high level estimate … do not forget the time dimension!)
+
+To ensure the research work is helpful for solving real-life problems for software
+industries, we have carried out regular frequent meetings with IBM System Verification 
+Test (SVT) team managers and discussed how our current research work can improve their testing experiences by avoiding many manual tasks. We assessed the quality of our solution based on their feedback in relation to high system throughput, memory efficiency, and accuracy. Furthermore, we are also occasionally involved in IBM cross team collaborations to share our knowledge and discuss how our research algorithms can be used to solve different problems faced by other teams. In order to improve industrial testing experiences, we have made the decision to design and implement a lightweight solution with specific rules for functional and system testing teams to ease their troubleshooting tasks.
+
+To ensure the research work is helpful for solving real-life problems for software
+industries, we have carried out regular frequent meetings with IBM System Verification 
+Test (SVT) team managers and discussed how our current research work can improve their testing 
+experiences by avoiding many manual tasks. We assessed the quality of our solution based on their 
+feedback in relation to high system throughput, memory efficiency, and accuracy. Furthermore, we 
+are also occasionally involved in IBM cross team collaborations to share our knowledge and 
+discuss how our research algorithms can be used to solve different problems faced by other teams. 
+In order to improve industrial testing experiences, we have made the decision to design and 
+implement a lightweight solution with specific rules for functional and system testing teams 
+to ease their troubleshooting tasks.
+
+
+
+
+•	This paper proposes … 
+We introduce a lightweight framework for replaying concrete test executions with
+the aim of identifying erroneous test case executions.
+Our proposed solution is to develop an expert tool that can be used by a wider
+pool of testers where traditionally this work was done only by a small number of experts. Our approach was to develop a tool that can 
+produce information consumable by both domain experts and non experts. This approach provides a high level view for non experts allowing them to 
+identify issues and a more detailed fine grained view for experts allowing for
+detailed root cause analysis of the issues. We followed a two step approach for developing such
+
+•	Highlights of methodology.
+This work was achieved through a 3-phase experiment: The first two phases
+focused on defining the preferable execution parameters for the proposed algorithm and the 
+selected Java benchmarks, while the third phase focused on the validation of the algorithm. 
+
+•	“The results of this work have provided evidence regarding the feasibility of the proposed approach” + summary of key results.
+We have validated the tool through a case study that was carried out across 6
+different test teams in IBM, showing how such a tool allowed for a larger number of testers to carry out garbage collection analysis and ultimately identify and raise a large number of bugs as part of the garbage collection analysis.
+
+•	“The main contributions of this paper are:”
+1. Approach/Architecture + implementation to automate the data gathering and execution of WAIT in sync with a performance test loader (or make WAIT scalable / usable in a performance testing domain).
+2. “Generic” enough solution so that it can be adaptable to other performance analysis tools and/or performance test loaders.
+3. Keeping the main strengths of WAIT: low overhead + avoiding intrusion (under the scope of the paper).
+4. Any qualitative insights? (i.e. javacore cost of the class loader section)
+
+The contribution of this paper is an approach to make the principle of
+parameterized unit testing available to black-box GUI testing. The approach is based on the new notion of
+parameterized GUI tests. We have implemented the approach in a new tool. In
+order to evaluate whether parameterized GUI tests have the potential to achieve high code coverage, we apply the tool to four open
+source GUI applications. The results are encouraging.
+
+
+
+
+
+The paper is structured as follows. In the next section we explain the approach
+for creating an expert tool. Section 3 details the motivation for creating a garbage 
+collection analysis tool and how the approach was realised through the implementation of 
+GcLite. In this section we also give design and implementation details. In section 4 we 
+discuss how we have validated our approach through a case study carried out within IBM 
+across 6 different test teams and in section 5 we give our conclusion.
+
+The rest of this paper is organized as follows: Section
+II discusses the background. Section III shows the related work. Section IV describes the 
+proposed approach. Section V describes the experimental setup, while Section VI explores 
+the experimental results. Finally Section VII presents the conclusions and future work.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Background
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Background}
+
+•	Performance Testing Process
+
+He uses different tools:
+- Heap dumps: WAIT?
+- Thread dumps: WAIT (locks, contentions) … around every 5 - 10 mins / ISA (performance analysis kit based on Eclipse).
+- Overall development expertise (i.e. architecture, layers, frameworks, tools).
+- Code profiling: tprof to profile in real time (recording every 1-2 mins to know the CPU usage per transactions); jprofiling (single transaction costs, such as CPU usage).
+- Database: Tunning of SQL queries (or expert systems that encapsulate the identification of the most common issues).
+- GC: gclite (expert system) or jmap.
+
+Key message/conclusion: The identification of the root causes of performance issues, relies very heavy on the expert knowledge of the user + requires a lot of different tools. There is no possible to indicate an average time per issue identification, but overall is very challenging/time-consuming.
+
+
+•	WAIT and/or javacores? (check my bookmarks)
+
+WAIT:  Key Attributes
+WAIT is a tool for performance triage
+Gives high-level, whole-system, summary of performance inhibitors
+
+WAIT is zero install
+Leverages built-in data collectors
+Reports results in a browser 					           
+WAIT is non-disruptive
+No special flags, no restart
+Use in any customer or development location
+WAIT is low-overhead
+Uses only infrequent samples of an already-running application
+
+WAIT is simple to use
+Novices to experts:  Start at high level and drill down
+WAIT uses centralized knowledge base
+Allows rules and knowledge base to grow over time,
+and be fixed quickly when found to be inadequate.
+
+[Collection->Upload->Report]
+
+- Distributed Environments? - Evaluate Cloud Distributed environment as possible focus/background info?
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Related Work
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Related Work}
+
+Automated Performance Testing (support tools).
+•	Performance Analysis Tools/Techniques (from WAIT papers).
+•	WAIT
+
+<<
 (Intro) Related Techniques: In the software development process, performance testing is 
 commonly conducted to determine an application's performance as experienced by the user.
 In this context, the focus is generally not on a single application session but
@@ -307,270 +559,6 @@ and Networking in China (CHINACOM). (2011) 875 \{880
 http://aws.amazon.com/ec2/ (2012)
 ]]
 
-Software performance (considered here as
-concerned with capacity and timeliness) is a pervasive
-quality difficult to understand, because it is affected by
-every aspect of the design, code, and execution
-environment. By conventional wisdom performance is
-a serious problem in a significant fraction of projects.
-It causes delays, cost overruns, failures on deployment,
-and even abandonment of projects, but such failures
-are seldom documented. A recent survey of
-information technology executives [15] found that half
-of them had encountered performance problems with at
-least 20% of the applications they deployed.
-
-[15] Compuware, Applied Performance Management Survey, Oct. 2006.
-
-Like other software engineering activities, SPE is
-constrained by tight project schedules, poorly defined
-requirements, and over-optimism about meeting them.
-Nonetheless adequate performance is essential for
-product success, making SPE a foundation discipline in
-software practice.
-
-A determining factor for performance is that
-resources have a limited capacity, so they can
-potentially halt/delay the execution of competing users
-by denying permission to proceed. Quantifying such
-effects is an important task of SPE.
-
-Lessons from the current work. There are many
-weaknesses in current performance processes. They
-require heavy effort, which limits what can be
-attempted. Measurements lack standards; those that
-record the application and execution context (e.g. the
-class of user) require source-code access and
-instrumentation and interfere with system operation.
-There is a semantic gap between performance concerns
-and functional concerns, which prevents many
-developers from addressing performance at all. For the
-same reason many developers do not trust or
-understand performance models, even if such models
-are available. Performance modeling is effective but it
-is often costly; models are approximate, they leave out
-detail that may be important, and are difficult to
-validate.
-
-The survey of information technology executives
-[15], which found that half of them had had
-performance problems with at least 20% of the
-applications they deployed, commented that many
-problems seem to come from lack of coverage in
-performance testing, and from depending on customers
-to do performance testing in the field.
-
-Significant process issues are unresolved. Detail in
-measurement and modeling must be managed and
-adapted. Excessive detail is expensive and creates
-information overload, while insufficient detail may
-miss the key factor in a problem. Information has to be
-thrown away. Models and measurements are discarded
-even though they possibly hold information of longterm
-value.
-
-Source: Future Performance Engineering
-
-Today, the state of industrial
-performance measurement and testing techniques is
-captured in a series of articles by Scott Barber [8][9]
-including the problems of planning, execution,
-instrumentation and interpretation.
-
-[8] S. Barber, “Creating Effective Load Models for
-Performance Testing with Incomplete Empirical Data”, in
-Proc. 6th IEEE Int. Workshop on Web Site Evolution, 2004,
-pp. 51-59.
-[9] S. Barber, “Beyond performance testing”, parts 1-14,
-IBM DeveloperWorks, Rational Technical Library, 2004,
-www-128.ibm.com/developerworks/rational/library/4169.html
-
-The tools used by performance analysts range from
-load generators, for supplying the workload to a
-system under test, to monitors, for gathering data as the
-system executes.
-
-Performance engineering is gaining attention, as
-companies discover to their detriment that the
-performance of their applications is often below
-expectations. In the past, these problems were not
-found until very late in the development of a product as
-performance validation, if any, was one of the last
-activities done before releasing the software. With
-agile processes, the problem is unchanged if not worse
-[11]. Thus early warning of performance problems is
-still the challenge for SPE.
-
-[11] S. Barber, “Tester PI: Performance Investigator”,
-Better Software, March 2006, pp 20 – 25.
-
-Developers and testers use instrumentation tools to
-help them find problems with systems. However, users
-depend on experience to use the results, and this
-experience needs to be codified and incorporated into
-tools. Better methods and tools for interpreting the
-results and diagnosing performance problems are a
-future goal.
-
-Technical developments -> Visualization and diagnostics
-
-Understanding the source of performance limitations
-is a search process, which depends on patterns and
-relationships in performance data, often revealed by
-visualizations. Promising areas for the future include
-better visualizations, deep catalogues of performancerelated
-patterns of behaviour and structure, and
-algorithms for automated search and diagnosis.
-Present visualization approaches use generic dataexploration
-views such as Kiviat graphs (e.g. in
-Paradyn [47]), traffic intensity patterns overlaid on
-physical structure maps [47], CPU loading overlaid on
-scenarios, and breakdowns of delay [66]. Innovative
-views are possible. For example, in [60] all kinds of
-resources (not just the CPU) are monitored, with tools
-to group resources and focus the view. The challenge
-for the future is to visualize the causal interaction of
-behaviour and resources, rather than to focus on just
-one or the other.
-
-[[
-[47] Merson, P. and Hissam, S. “Predictability by
-construction” Posters of OOPSLA 2005, pp 134-135, San
-Diego, ACM Press, Oct. 2005.
-[60] J.A. Rolia, L. Cherkasova, R. Friedrich, “Performance
-Engineering for EA Systems in Next Generation Data
-Centres”, Proc. 6th Int. Workshop on Software and
-Performance, Buenos Aires, Feb. 2007.
-[66] C.U. Smith, L. G. Williams, Performance Solutions,
-Addison-Wesley, 2002
-]]
-
-
-Technical developments -> Bottleneck identification
-
-a search for a saturated
-resource which limits the system, is a frequent
-operation. In [21], Franks et al describe a search
-strategy over a model, guided by its structure and
-results, and detects under-provisioned resource pools
-and over-long holding times. It combines properties of
-resources and behaviour, for a “nested” use of
-resources. It scales to high complexity, is capable of
-partial automation, and could be adapted to interpret
-measured data. A multistep performance enhancement
-study using these principles is described in [83].
-Another search strategy purely over data ([9], part 7)
-focuses on reproducing and simplifying the conditions
-in which the problem is observed. The actual diagnosis
-of the cause (e.g. a memory leak) depends on designer
-expertise.
-A bottleneck search strategy combining the data and
-the model could detect more kinds of problems (e.g.
-both memory leaks and resource problems) and could
-provide automated search assistance.
-Patterns (or anti-patterns) related to bottlenecks have
-been described by Smith and Williams [66] and others
-(e.g., excessive dynamic allocation, “one-lane bridge”).
-For the future, more patterns and more kinds of
-patterns (on measurements, on scenarios or traces) will
-be important. Patterns that combine design, model and
-measurement will be more powerful than those based
-on a single source.
-
-[[
-[9] S. Barber, “Beyond performance testing”, parts 1-14,
-IBM DeveloperWorks, Rational Technical Library, 2004,
-www-128.ibm.com/developerworks/rational/library/4169.html
-
-[21] G. Franks, D.C. Petriu, M. Woodside, J. Xu, P.
-Tregunno, “Layered Bottlenecks and Their Mitigation”, Proc
-3rd Int. Conf. on Quantitative Evaluation of Systems,
-Riverside, CA, Sept. 2006.
-
-[83] J. Xu, M. Woodside, and D.C. Petriu, “Performance
-Analysis of a Software Design using the UML Profile for
-Schedulability, Performance and Time”, in Proc. 13th Int.
-Conf. Modeling Techniques and Tools for Computer
-Performance Evaluation, Urbana, USA, Sept. 2003
-]]
-
-Scalability analysis and improvement is largely a
-matter of identifying bottlenecks that emerge as scale
-is increased, and evolving the architecture. Future
-scalability tools will employ advanced bottleneck
-analysis but will depend more heavily on models, since
-they deal with potential systems.
-
-Technical developments -> More efficient testing
-
-Efficient testing covers the operational profile and
-the resources of interest with minimum effort needed
-to give sufficient accuracy. Accuracy is an issue
-because statistical results may require long runs, and it
-can be affected by other factors in the test design such
-as the load intensity and the patterns of request classes
-used. For example, systems under heavy load show
-high variance in their measurements, which contributes
-to inaccurate statistical results. It may be more fruitful
-to identify the heavily-used resources at moderate
-loads and (for purposes apart from stress testing) use
-the results to extrapolate to heavy loads using a
-performance model.
-
-More effort is also required in performance testing
-tools. The lack of standards for tool interoperation
-increases the effort to gather and interpret data, and
-reduces data-availability for new platforms.
-Lightweight and automated instrumentation are old
-goals that will continue to demand attention. Load
-drivers are at present well-developed in commercial
-tools, but more open tool development could speed
-progress.
-
-
-...Further automation
-of data collection and better methods for deducing
-causality look promising. More powerful and general
-approaches to problem diagnosis are necessary and
-possible....
->>
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Background
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Background}
-
-•	Performance Testing Process
-
-He uses different tools:
-- Heap dumps: WAIT?
-- Thread dumps: WAIT (locks, contentions) … around every 5 - 10 mins / ISA (performance analysis kit based on Eclipse).
-- Overall development expertise (i.e. architecture, layers, frameworks, tools).
-- Code profiling: tprof to profile in real time (recording every 1-2 mins to know the CPU usage per transactions); jprofiling (single transaction costs, such as CPU usage).
-- Database: Tunning of SQL queries (or expert systems that encapsulate the identification of the most common issues).
-- GC: gclite (expert system) or jmap.
-
-Key message/conclusion: The identification of the root causes of performance issues, relies very heavy on the expert knowledge of the user + requires a lot of different tools. There is no possible to indicate an average time per issue identification, but overall is very challenging/time-consuming.
-
-
-•	WAIT and/or javacores? (check my bookmarks)
-
-- Distributed Environments? - Evaluate Cloud Distributed environment as possible focus/background info?
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Related Work
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Related Work}
-
-Automated Performance Testing (support tools).
-•	Performance Analysis Tools/Techniques (from WAIT papers).
-•	WAIT
-
-<<
 Related Work: The idea of replaying a test execution in a simulator is, of course, not new. The
 overall approach is frequently referred to as the capture and replay paradigm,
 and has long been studied in different contexts such as testing of concurrent
@@ -641,6 +629,40 @@ They refer to “end to end” testing … the most common issue are deadlocks.
 PROBLEM DEFINITION: WAIT Challenges in Performance Testing environment 
 XXX (Rephrase Industrial partner case)
 
+Problem Statement: Performance of commercial enterprise application is off by a
+lot e.g. order of magnitude
+
+Where is the problem?
+	Database? 	File System?
+	Network?	App Server?
+	Deadlock?	Insufficient load?
+	Livelock?	Memory leak?
+	Garbage Collection?
+
+Who should identify and fix the problems?
+	Developers
+	Testers
+	Field Operators
+
+Current focus is not distributed environments, but mainly individual Java processes:
+Problem with consumability in distributed environments:
+Time-consuming/complex data gathering (one data source per monitored process).
+Time-consuming/Complex report analysis (one report per monitored process).
+Plus required synchronization with the performance testing execution.
+
+SME expertise required to interpret the reports:
+Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
+
+
+Adoption Barriers: 
+
+Data collection scripts should be kicked off and stopped manually.
+Uploading results to central server is not fully automated.
+Aggregating results from large distributed systems (e.g. 100+ servers) is not supported today.
+No real time information available to assess health of a workload run.
+Benchmark is needed to know the requirements/trade-offs of using the tool.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
@@ -656,7 +678,6 @@ approach depicted in Figure 7 consists of the following consecutive steps: (1)
 Event Flow Construction; (2) Symbolic Widget Injection; (3) Symbolic Event
 Injection; (4) Event Handler Elevation; (5) Generation of Parameterized GUI
 Tests, (6) Symbolic Execution, and (7) Replayer. + [Figure]
-
 
 In this section we present our approach for creating an expert tool in the
 field of performance testing. From a high level view as part of the approach for 
@@ -695,6 +716,8 @@ collection behavior. It is a Java application with an extensible design. Figure 
 enhances the design of current GC tools
 [12][13][14].
 
+[PENDING: DIAGRAM TO SHOW THE APPROACH]
+
 1.	PROTOTYPE (CURRENT) IMPLEMENTATION
 •	Describe RPT – WAIT + WebAgent; explaining the reason behind each main technical decision.
 
@@ -730,32 +753,16 @@ given in Fig.3.
 >>
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Experimental Setup
+% Experimental Setup / Experiments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Validation}
 
-<<
-Experiments: In this section we evaluate our approach. We compare how our approach performs,
-(a) when the computation of input data is replaced by the use of random
-values, and (b) when the Event Flow Graph is not considered for event sequence
-generation. We first present the setup of the experiments. Then we discuss the
-results of the experiments.
->>
+This section describes the evaluation of the proposed approach. First the
+methodology, metrics and the main threats to validity are
+presented. Then, the results of the experiments are presented.
 
-2.	ENVIRONMENT? (VS. MERGING IT TO METHODOLOGY)
-Plan A:
-- Ideally, IBM Lotus Connections environment (multiple nodes, multiple PIDs).
-- Main issue: Pending to know when will be ready (guesstimate is end of month)
-Plan B / Backup plan: 
-- Apache Web Server (load balancing) + 4 Tomcat (2 per node), using JPetStore
-web app.
-- Main issue: Overhead of installing + especially creating the RPT scripts!
-(learning curve) In both scenarios:
-- There will be a WAIT server + RPT node.
-- There is available a single-node IBM Portal environment.
-
-[PENDING: To summarize environment]
+\subsection{Methodology}
 
 <<
 Experimental Setup: Application Set. During the experimentation, three real world applications
@@ -769,6 +776,13 @@ were used:
 <<
 We define the following two research questions: Q1 ... Q2 ...
 Results of the Experiments: Figure 12 shows the results of the experiments. We answer Q1 with Yes ...
+>>
+
+<<
+In this section we evaluate our approach. We compare how our approach performs,
+(a) when the computation of input data is replaced by the use of random
+values, and (b) when the Event Flow Graph is not considered for event sequence
+generation.
 >>
 
 Phase 1:
@@ -808,6 +822,9 @@ o	Combinations:
 For each identified combination, there will be 3 runs (~6 days of total execution). WebAppServer restarted before every run.
 NOTE: These configurations will be based on expert judgment of the SVT team (reflect “common” practice in the industry?)
 It might also help to show that the reliability of the solution (I might take a look to other “fancy” NFR-related words)
+
+[PENDING: To create figure showing the environment - single PID, then
+multi-PID-]
 
 Phase 3: 
 Use case … detection benefits of 1 report vs. many! … For the sake of progress, probably the last piece of the experiment!
@@ -882,6 +899,70 @@ the test execution finished.
 - Performance Testing: Response Time, Throughput
 - Node Resource Usage: RAM, CPU
 
+Z. THREADS TO VALIDITY:
+
+•	Big variance in 24-hour runs … it seems to different behaviours: Week and
+Weekend! (more runs). Environmental issues
+
+<<
+- Of course, the results observed cannot be generalised to other applications
+different from the two case studies considered here. The presented case studies
+are just meant to illustrate the differences that may arise. Wider experiments
+need to be executed to get more general conclusions.
+
+Threats to Validity: The main threat to the validity of these results is the fact that only 
+three test subjects were used during the experimentation. Despite these subjects being
+real world applications being diverse in both the size of the application (lines of
+code) and size of the test suite, the limited number of subjects implies that not
+all types of system’s are tested. This means that a system with characteristics
+that are completly different might present different results.
+Another threat is that the number of injected bugs is not enough to lead to
+accurate results, as these bugs might simply be “lucky bugs” that intercept a
+collar variable.
+Naturally, there are also threats that are based on the implementation of the
+invariants, the instrumentation or the pattern detector algorithms themselves.
+The reduce these threats, additional testing was made prior to the experimentation
+to guarantee the quality of the experimental results in this regard.
+
+Threats to Validity: Beyond the selection bias due to the limited availability of open source 
+C\# applications, we report one threat to external validity: We evaluated four
+C\# open source applications which incorporate the Windows Forms toolkit for
+building the GUI. Alternative programming languages and GUI toolkits, e.g., Java Swing,
+follow different paradigms of building graphical user interfaces. For example, it
+might be not possible to obtain event handlers during the construction of the
+EFG. Thus, the construction of the EFG, the generation of parameterized GUI
+tests, and the symbolic execution must be adapted to the corresponding environment.
+In principle, there is no reason to believe that our approach is not
+applicable to other environments.
+
+>>
+
+Statistic references:
+Enable Add-on in Excel: http://click4biology.info/c4b/1/2007.htm
+%Example in excel, pair t-test:
+% http://www.stattutorials.com/EXCEL/EXCEL_TTEST2.html T-Distribution calculations in excel: https://courses.washington.edu/dphs568/course/excel-t.htm
+Finding t critical value in excel: http://math.stackexchange.com/questions/10992/finding-critical-value-using-t-distribution-in-excel
+how to use t-test in excel (example 2): http://blog.excelmasterseries.com/2010/08/how-to-use-t-test-in-excel-to-find-out.html
+Other T-test reference: http://www.ruf.rice.edu/~bioslabs/tools/stats/ttest.html
+Excel t-test function: http://www.excelfunctions.net/Excel-Ttest-Function.html
+T-test Excel Help: http://office.microsoft.com/en-001/excel-help/ttest-HP005209325.aspx
+Good example to learn T-test: http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/
+---
+%T-Test description: http://en.wikipedia.org/wiki/Student%27s_t-test
+%Null Hypothesis description: http://en.wikipedia.org/wiki/Null_hypothesis
+%Student T-Distribution description:
+% http://en.wikipedia.org/wiki/Student%27s_t-distribution
+
+Experimental Environment
+
+We installed the benchmark in the system environment depicted in Figure 6. The
+benchmark application is deployed in an Oracle WebLogic Server (WLS) 10.3.3 cluster of up to eight 
+physical nodes. Each WLS instance runs on a 2-core Intel CPU with OpenSuse 11.1. As a database 
+server (DBS), we used Oracle Database 11g, running on a Dell PowerEdge R904 with four 6-core AMD 
+CPUs, 128 GB of main memory, and 8x146 GB SAS disk drives. The benchmark driver master, multiple 
+driver agents, the supplier emulator and the DNS load balancer were running on separate 
+virtualized blade servers. The machines are connected by a 1 GBit LAN, the DBS is connected with 
+4 x 1 GBit ports.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 5: Experimental Results
@@ -929,59 +1010,6 @@ the experiments themselves. After that the experimental results are discussed.
 
 >>
 
-Z. THREADS TO VALIDITY:
-
-•	Big variance in 24-hour runs … it seems to different behaviours: Week and
-Weekend! (more runs). Environmental issues
-
-<<
-- Of course, the results observed cannot be generalised to other applications
-different from the two case studies considered here. The presented case studies
-are just meant to illustrate the differences that may arise. Wider experiments
-need to be executed to get more general conclusions.
-
-Threats to Validity: The main threat to the validity of these results is the fact that only 
-three test subjects were used during the experimentation. Despite these subjects being
-real world applications being diverse in both the size of the application (lines of
-code) and size of the test suite, the limited number of subjects implies that not
-all types of system’s are tested. This means that a system with characteristics
-that are completly different might present different results.
-Another threat is that the number of injected bugs is not enough to lead to
-accurate results, as these bugs might simply be “lucky bugs” that intercept a
-collar variable.
-Naturally, there are also threats that are based on the implementation of the
-invariants, the instrumentation or the pattern detector algorithms themselves.
-The reduce these threats, additional testing was made prior to the experimentation
-to guarantee the quality of the experimental results in this regard.
-
-Threats to Validity: Beyond the selection bias due to the limited availability of open source 
-C# applications, we report one threat to external validity: We evaluated four C# open
-source applications which incorporate the Windows Forms toolkit for building
-the GUI. Alternative programming languages and GUI toolkits, e.g., Java Swing,
-follow different paradigms of building graphical user interfaces. For example, it
-might be not possible to obtain event handlers during the construction of the
-EFG. Thus, the construction of the EFG, the generation of parameterized GUI
-tests, and the symbolic execution must be adapted to the corresponding environment.
-In principle, there is no reason to believe that our approach is not
-applicable to other environments.
-
->>
-
-Statistic references:
-Enable Add-on in Excel: http://click4biology.info/c4b/1/2007.htm
-%Example in excel, pair t-test:
-% http://www.stattutorials.com/EXCEL/EXCEL_TTEST2.html T-Distribution calculations in excel: https://courses.washington.edu/dphs568/course/excel-t.htm
-Finding t critical value in excel: http://math.stackexchange.com/questions/10992/finding-critical-value-using-t-distribution-in-excel
-how to use t-test in excel (example 2): http://blog.excelmasterseries.com/2010/08/how-to-use-t-test-in-excel-to-find-out.html
-Other T-test reference: http://www.ruf.rice.edu/~bioslabs/tools/stats/ttest.html
-Excel t-test function: http://www.excelfunctions.net/Excel-Ttest-Function.html
-T-test Excel Help: http://office.microsoft.com/en-001/excel-help/ttest-HP005209325.aspx
-Good example to learn T-test: http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/
----
-%T-Test description: http://en.wikipedia.org/wiki/Student%27s_t-test
-%Null Hypothesis description: http://en.wikipedia.org/wiki/Null_hypothesis
-%Student T-Distribution description:
-% http://en.wikipedia.org/wiki/Student%27s_t-distribution
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1101,3 +1129,11 @@ PENDING TO:
 - Get from IBM presentations info from the adoption barriers (problem statement)
 + architecture!(proposed approach)
 + Merge the ideas from the file KeyIdeas_FuturePerformanceEngineering.txt DONE
+
+http://blog.optimyth.com/2011/12/should-you-care-about-software-quality-in-these-times-of-economic-crisis
+
+[Applied Software Measurement: Global Analysis of Productivity and Quality - Capers Jones. McGraw-Hill, 2008]
+ Jones, Capers. "Applied Software Measurement: Global Analysis of Productivity
+ and Quality." (2008)
+
+ 
