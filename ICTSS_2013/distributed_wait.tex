@@ -444,7 +444,7 @@ collection, upload, backup and cleanup steps.
 
 \begin{figure}[!h]
 \centering
-\includegraphics{architecture_dwait}
+\includegraphics[totalheight=.3\textheight,width=0.9\textwidth]{architecture_dwait}
 \caption{High-level Architecture of the solution}
 \label{fig_Arch}
 \end{figure}
@@ -470,19 +470,41 @@ implemented as a Eclipse Plugin for the Rational Performance Tester (RPT)
 while the \emph{WAIT Control Agent} was implemented as a Java Web Application,
 composed of a single servlet and a few utility classes. Internally, the
 application reuses the data gathering scripts that are currently available for
-WAIT \footnote{https://wait.ibm.com/#page=dataCollectors}. In both cases,
+WAIT \footnote{https://wait.ibm.com/\#page=dataCollectors}. In both cases,
 one of the main reason to chose that technology (Eclipse Plugin and Web
 Application) was that they are simple to install, as one of the main drivers of
 this work is to reduce the testing effort.
 
 Once installed, WAIT can now be configured as any other resource in RPT. This
-scenario is shown in \figurename ~\ref{xxx}. Similarly, once the performance
-test has started, WAIT can now be monitored as any other resource in the \emph{Resource View}.
-This is shown in the \figurename ~\ref{xxx}. Finally, the WAIT report (which is initially 
-created once the first upload is received and then updated after every data
+scenario is shown in \figurename ~\ref{fig_config}. Similarly, once the performance
+test has started, WAIT can now be monitored as any other resource in the
+\emph{Performance Report} of RPT under the \emph{Resource View}. This is shown
+in the \figurename ~\ref{fig_mon}. Finally, the WAIT report (which is initially created 
+once the first upload is received and then updated after every data
 upload) is also accessible within RPT, so that the tester does not need to
 leave RPT during the whole duration of the performance test. This is shown
-in \figurename ~\ref{xxx}.
+in \figurename ~\ref{fig_report}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[totalheight=.3\textheight,width=0.8\textwidth]{WAIT-config}
+\caption{WAIT configuration through RPT GUI}
+\label{fig_config}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[totalheight=.3\textheight,width=0.8\textwidth]{WAIT-monitoring}
+\caption{Monitoring of WAIT Node Agents through RPT}
+\label{fig_mon}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[totalheight=.4\textheight,width=1.0\textwidth]{WAIT-report}
+\caption{WAIT Report available within RPT views}
+\label{fig_report}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -492,8 +514,8 @@ in \figurename ~\ref{xxx}.
 \section{Validation}
 
 This section describes the evaluation of the proposed approach. First the
-methodology, metrics and the main threats to validity are
-presented. Then, the results of the experiments are presented.
+methodology, metrics and the main threats to validity are presented. Then, the
+results of the experiments are discussed.
 
 \subsection{Methodology}
 
@@ -642,20 +664,16 @@ A determining factor for performance is that resources have a limited capacity,
 so they can potentially halt/delay the execution of competing users by denying
 permission to proceed. Quantifying such effects is an important task of SPE.
 
-•	Performance Testing Process
+In this paper, software performance is understood as the sum of all the
+activities involved in the evaluation of how the system can be expected to
+perform in the field. Moreover, it is considered from a user's perspective.
+It is typically assessed in terms of throughput, stimulus response time, or some
+combination of the two.
 
-In this paper, when we speak of software performance
-testing, we will mean all of the activities involved in the
-evaluation of how the system can be expected to perform in
-the field. This is considered from a user's perspective and is
-typically assessed in terms of throughput, stimulus response
-time, or some combination of the two.
 
 Z. THREADS TO VALIDITY:
-
 •	Big variance in 24-hour runs … it seems to different behaviours: Week and
 Weekend! (more runs). Environmental issues
-
 <<
 - Of course, the results observed cannot be generalised to other applications
 different from the two case studies considered here. The presented case studies
@@ -686,8 +704,6 @@ EFG. Thus, the construction of the EFG, the generation of parameterized GUI
 tests, and the symbolic execution must be adapted to the corresponding environment.
 In principle, there is no reason to believe that our approach is not
 applicable to other environments.
-
->>
 
 Statistic references:
 Enable Add-on in Excel: http://click4biology.info/c4b/1/2007.htm
@@ -773,8 +789,6 @@ Empirical Results: In this section the experimental setup is presented, along wi
 the experiments themselves. After that the experimental results are discussed.
 
 >>
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
