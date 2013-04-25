@@ -22,6 +22,7 @@
 \setcounter{tocdepth}{3}
 \usepackage{graphicx}
 \usepackage{epstopdf}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 
 \usepackage{url}
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
@@ -83,13 +84,6 @@ Yorktown Heights, New York, USA\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-[[PENDING: The abstract should summarize the contents of the paper and
-should contain at least 70 and at most 150 words. It should be written using the
-\emph{abstract} environment]].
-\keywords{[[PENDING: performance testing, automation, performance analysis,
-system monitoring]]}
-\end{abstract}
-
 Performance testing in highly distributed environments is a very challenging
 task. Specifically, the identification of performance issues and
 the diagnosis of their root causes are time-consuming and complex tasks which
@@ -108,6 +102,9 @@ analysis of performance issues, work that involved a case-study with two
 real-life applications. The current results have proven the feasibility of the
 proposed approach by achieving a good decrement in the time invested to do performance
 analysis with only a low level of overhead.
+\keywords{Performance testing, automation, performance analysis, idle-time
+analysis}
+\end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,50 +298,43 @@ the rules and knowledge base can continue growing and evolving over time.
 
 \section{Problem Definition}
 
-PROBLEM DEFINITION: WAIT Challenges in Performance Testing environment 
-XXX (Rephrase Industrial partner case)
+While doing performance testing in highly distributed environments, the
+identification of performance problems and the diagnosis of their root causes are very complex and time-consuming
+activities, which tend to rely on the expertise of the involved engineers.
 
-Problem Statement: Performance of commercial enterprise application is off by a
-lot e.g. order of magnitude
+Due to its strengths, WAIT is a promising candidate that can help to improve the
+above scenario by reducing the expert knowledge and time required to do good
+performance analysis. However, WAIT currently has some usability limitations
+that prevent its effective usage in the performance testing domain. More
+specifically, the effort required to do manual data collection to feed WAIT is
+practically lineal with respect of the number of nodes that need to be monitored
+and the frequency with which the data needs to be refreshed. For example,
+assuming an scenario of a relatively small distributed environment composed
+of 10 application nodes during a 24-hour test run and with a desired refresh
+frequency of 60 minutes, it would mean that the tester would need to coordinate 
+24 data collection and upload cycles per node (for a total of 240
+cycles in this example), making sure to do them as far as possible in order to
+minimize the time gaps between the end of a data collection cycle and the
+start of the next one. Additionally, the tester should also synchronize this
+process with the performance testing duration. In order to get the most value
+out of WAIT, the tester should also review the reports he would get after every 
+upload in order to see if any major issue has been detected. As it can be easily inferred from
+the above scenario, the current costs of using WAIT under the above conditions
+overcome the possible benefits of using it, especially after adding the high
+possibility of a human error which might compromise the obtained results.
 
-Where is the problem?
-	Database? 	File System?
-	Network?	App Server?
-	Deadlock?	Insufficient load?
-	Livelock?	Memory leak?
-	Garbage Collection?
+The objective of this paper is to address the usability limitations of WAIT to
+be used effectively in the performance testing domain. In order to do it, the
+following research questions have been formulated:
+\\Q1. How can the usage of WAIT be automated to minimize the effort
+required to use it in sync with the performance testing?
+\\Q2. How can the overhead be kept low during the whole performance test
+execution to avoid compromising the results? 
+\\Q3. What benefits in productivity can a tester achieve if the previous
+questions are answered?
 
-Who should identify and fix the problems?
-	Developers
-	Testers
-	Field Operators
-
-Current focus is not distributed environments, but mainly individual Java processes:
-Problem with consumability in distributed environments:
-Time-consuming/complex data gathering (one data source per monitored process).
-Time-consuming/Complex report analysis (one report per monitored process).
-Plus required synchronization with the performance testing execution.
-
-SME expertise required to interpret the reports:
-Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
-
-
-Adoption Barriers: 
-
-Data collection scripts should be kicked off and stopped manually.
-Uploading results to central server is not fully automated.
-Aggregating results from large distributed systems (e.g. 100+ servers) is not supported today.
-No real time information available to assess health of a workload run.
-Benchmark is needed to know the requirements/trade-offs of using the tool.
-
-In more detail/ additionally supported by the needs of our industrial partner:
-o	Manual data collection.
-o	Uploading too.
-o	Benchmark / Overhead.
-o	Aggregated results.
-o	Real time / Incremental.
-•	Important to rephrase it as estimated tester time benefit? (at least a high level estimate … do not forget the time dimension!)
-
+The following sections show in details how they have been answered by our
+approach and validated through a series of experiments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
@@ -352,87 +342,148 @@ o	Real time / Incremental.
 
 \section{Proposed Approach and Implementation}
 
-<<
-Approach and Implementation: In this section we present details of our approach and its 
-implementation. As outlined in Section 1, there exist a bunch of issues in order to make the 
-approach of parameterized GUI tests applicable to real world applications. Our
-approach depicted in Figure 7 consists of the following consecutive steps: (1)
-Event Flow Construction; (2) Symbolic Widget Injection; (3) Symbolic Event
-Injection; (4) Event Handler Elevation; (5) Generation of Parameterized GUI
-Tests, (6) Symbolic Execution, and (7) Replayer. + [Figure]
+This section presents the details of the proposed approach, its architecture
+and the prototype that has been developed to validate it.
 
-In this section we present our approach for creating an expert tool in the
-field of performance testing. From a high level view as part of the approach for 
-creating such a tool we need to (1) document expert knowledge (usually in the form 
-of rules describing known issues) and then (2) apply the expert knowledge to flush out 
-or identify issues that exist in the real system. Identifying issues in a real system 
-using documented expert knowledge follows a four step approach previously outlined in 
-the literature [9][10]. Next we describe how we applied this approach in the context of 
-garbage collection analysis. The four main steps are (a) to monitor the system, (b) 
-analyze the data collected, (c) detect issues within the analyzed data and (d) present 
-any issues or potential issues identified to the end user.
+Our approach is depicted in the Algorithm~\ref{Proposed_Approach} and requires
+a few inputs: First of all, the list of nodes (either IP addresses or names that
+can be resolved by a Domain Name System) that will be monitored (which
+will usually be all the nodes that composed the system that will be tested); a
+\emph{Sampling Interval} to control how often the samples will be collected
+from the data sources; a \emph{Time Threshold} which indicates what is the
+maximum time that could pass without refreshing the results; a \emph{Hard Disk
+Threshold} which indicates what is the maximum space that can be used in each
+node to store collected data; and finally a \emph{Backup} flag that indicates if
+(and where) the collected data should be backed up before any clean process could start.
 
-Our approach relies on a lightweight error detection mechanism based on the idea 
-of replaying test executions against the model. We further show how the
-error detection capabilities can be integrated into a convincing argument
-for tool qualification, going through the necessary verification activities
-step-by-step. We highlight the key steps for the RT-Tester Model-Based
-Test Generator, which is used in test campaigns in the automotive, railway
-and avionic domains. The approach avoids having to qualify several
-complex components present in model-based testing tools, such as code
-generators for test procedures and constraint solving algorithms for test
-data elaboration.
->>
+After having this information the process starts by getting a new \emph{RunId},
+value that will uniquely identify the test run and its results. This value is
+then propagated to all the nodes. On each node, the \emph{Hard Disk Usage} is
+initialized as well as the \emph{Next Time Threshold}. Then each nodes starts
+executing the following iterative steps until the performance test finishes:
+First a new set of data samples is collected (composed of machine and process
+utilization plus a Javacore from every JVM running in the node). Once the data 
+has been collected, it is assessed if any of the two thresholds has been reached 
+(either the \emph{Hard Disk Usage} has exceeded the \emph{Hard Disk
+Threshold} or the \emph{Next Time Threshold} has been reached). If any of this
+conditions has occurred, a new upload process occurs where all the collected
+data is transmitted to the central repository of WAIT (marking it with the
+\emph{RunId} so that all uploads are related to the same performance test).
+Moreover, if a \emph{Backup} was indicated the data is also copied to the
+backup destination before it is deleted. Then a reference to the updated results
+report is obtained and the \emph{Next Time Threshold} is calculated. Finally,
+the logic awaits the configured \emph{Sampling Interval} and then a new iteration starts.
 
-1.	SCOPE LIMITS
-o	Performance Testing, 
-o	Web Applications
+Once the performance test finishes, a final upload round (and backup if
+configured) is done to upload any remnant collected data. When completed this
+data is also cleared and the \textbf{final performance results report} is
+obtained.
 
-4.	ARCHITECTURE OVERVIEW/DESIGN
-XXXOverview (similar visualization that I have presented before – but more polished-).
-5.	ARCHITECTURE DETAILS …
-XXX Explaining how the opportunity areas are addressed.
+\begin{algorithm}
+\caption{Proposed Approach}
+\label{Proposed_Approach}
+\DontPrintSemicolon
+\KwIn{ A finite set $A=\{a_1, a_2, \ldots, a_n\}$ of application nodes, 
+Sampling Interval \emph{Sint}, Time Threshold \emph{tThres}, Hard Disk Threshold
+\emph{hdThres}, Backup Flag \emph{bFlag}. 
+If \emph{bFlag} = true, Backup path \emph{bPath}.}
+\KwOut{Consolidated Performance Analysis Results for all Nodes}
+\tcp*[h]{Initialization}\;
+$rundId \gets $new RunId\;
+share $rundId$ \hspace{2 mm} with all nodes\;
+\For{$i \gets 1$ \textbf{to} $n$} {	
+	$hdUsage \gets 0$\;
+	$nextTimeThreshold \gets $current time from the Operating System + $tThres$\;
+			
+    \tcp*[h]{Main Process}\;
+	\While{performance testing is executing}{
+		\tcp*[h]{Data gathering}\;
+		Collect new set of samples (process and machine utilization as well
+	    as a new javacore per JVM process in the node)\;
+		\tcp*[h]{Refresh performance results}\;
+		$currentTime \gets $current time from the Operating System\;
+		$hdCurrentUsage \gets $calculate Hard Disk space of collected data\;
+		\If{$currentTime$ $>$ $nextTimeThreshold$ or $hdCurrentUsage$ $>$ $hdThres$} {
+			update locally collected data indicating it as part of test $rundId$\;
+			\If{$bFlag$ $=$ true} {
+				copy locally collected data to $bPath$ indicating it as part of test
+				$rundId$\;
+			}
+			deleted locally collected data\;
+			retrieve updated performance results\;
+			$nextTimeThreshold \gets $current time from the Operating System +
+			$tThres$\; }
+	    Wait $Sint$ before performing next iteration of the process\;
+	}
+	
+	\tcp*[h]{Closure}\;
+	update remnant locally collected data indicating it as part of test $rundId$\;
+	\If{$bFlag$ $=$ true} {
+		copy remnant locally collected data to $bPath$ indicating it as part of test
+		$rundId$\; }
+		deleted remnant locally collected data\;
+  }
+  Retrieve final performance results\;
 
-The GcLite tool is an expert tool for analyzing garbage
-collection behavior. It is a Java application with an extensible design. Figure 1 shows a high level view of GcLite’s design and how it
-enhances the design of current GC tools
-[12][13][14].
+\end{algorithm}
 
-[PENDING: DIAGRAM TO SHOW THE APPROACH]
+It should be also noted that even though the above approach has been defined to
+address the usability needs of the WAIT tool, its structure is flexible
+enough to be easily adjusted to support other tools or automation scenarios with
+similar characteristics.
 
-1.	PROTOTYPE (CURRENT) IMPLEMENTATION
-•	Describe RPT – WAIT + WebAgent; explaining the reason behind each main technical decision.
+In order to achieve a lightweight automation, the previously described approach
+was complemented with the architecture presented in the \figurename
+~\ref{fig_Arch}. It is composed of two main components. The \emph{WAIT Control
+Agent} will be placed in the machine where the Load Testing tool is
+installed.This component is responsible to interact with the Load Testing tool to know
+when to start and stop the overall process. It is also responsible of getting 
+the runId and propagate it to all the nodes. Moreover, there will be a \emph{WAIT Node Agent} 
+in each application node. This other component will be responsible of the
+collection, upload, backup and cleanup steps.
 
-<<
-The Run-Time Correlation Engine [4] (RTCE) has been developed in conjunction
-with our industrial partner IBM, and serves us as a platform base for the symptom 
-matching implementation presented in this paper. RTCE has been deployed by several test 
-teams across the world for monitoring enterprise applications. RTCE can signifi- cantly 
-save administrators’ time spent on system analysis [20]. For example, one particular 
-testing team reports one full log analysis in 1 hour which is estimated to take up to 23 
-working hours without automated support of RTCE.
->>
+\begin{figure}[!h]
+\centering
+\includegraphics{architecture_dwait}
+\caption{High-level Architecture of the solution}
+\label{fig_Arch}
+\end{figure}
 
-ANY LIMITATIONS?
-RPT, but architecture generic enough (i.e. Web Agent)
+It is important to highlight two assumptions that were considered when defining
+the above design. As the scope of this work is the performance testing domain,
+it is assumed that a Load Testing tool will always be present in the
+testing environment. From the time been, the scope of this work is also focused
+on Web Applications (a traditional Java business niche which is also type of 
+applications that our industrial partner tests). For this reason, it is also
+assumed at this stage that there will always be a Web Application Server in each
+one of the application nodes. This assumption has the extra benefit that the
+\emph{WAIT Node Agent} is a Web Application. As it uses plain HTTP protocol
+to interact with the \emph{WAIT Control Agent}, a single version of \emph{WAIT
+Node Agent} could interact with multiples types of \emph{WAIT Control Agent}
+(as it is possibly necessary to have one per type of Load Testing Tool) or even
+used independently.
 
-<<
-- (automation) A prototype tool is designed and developed based on the concepts presented here.
-ANTLR parser generator is used to create syntax grammar for complete CICS based
-COBOL language specifications. Similarly other parsers are also developed using
-Java. Using the prototype tool developed, case studies have been conducted on an
-industrial application. The application is legacy library management system running
-in one of our client‟s library. The number of test cases generated for each of the three
-modules is listed in Fig 3.a. A sample test scenarios generated is shown in Fig 3.b.
+Based on the concepts presented here, a prototype has been developed in
+conjunction with our industrial partner IBM. The \emph{WAIT Control Agent} was
+implemented as a Eclipse Plugin for the Rational Performance Tester (RPT)
+\footnote{http://www-03.ibm.com/software/products/us/en/performance},
+while the \emph{WAIT Control Agent} was implemented as a Java Web Application,
+composed of a single servlet and a few utility classes. Internally, the
+application reuses the data gathering scripts that are currently available for
+WAIT \footnote{https://wait.ibm.com/#page=dataCollectors}. In both cases,
+one of the main reason to chose that technology (Eclipse Plugin and Web
+Application) was that they are simple to install, as one of the main drivers of
+this work is to reduce the testing effort.
 
-- (automation) Figure 2 shows the architecture of the tool we have implemented as a plug-in for
-Eclipse [8], on top of EMF [11] and the UML2 plug-in. The functionality of this tool
-includes . . .
+Once installed, WAIT can now be configured as any other resource in RPT. This
+scenario is shown in \figurename ~\ref{xxx}. Similarly, once the performance
+test has started, WAIT can now be monitored as any other resource in the \emph{Resource View}.
+This is shown in the \figurename ~\ref{xxx}. Finally, the WAIT report (which is initially 
+created once the first upload is received and then updated after every data
+upload) is also accessible within RPT, so that the tester does not need to
+leave RPT during the whole duration of the performance test. This is shown
+in \figurename ~\ref{xxx}.
 
-Prototype: To realize trace verification, we have developed a passive testing tool [2], which
-aims to automate the process of trace verification. A description of this tool is
-given in Fig.3.
->>
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experimental Setup / Experiments
@@ -507,6 +558,12 @@ It might also help to show that the reliability of the solution (I might take a 
 
 [PENDING: To create figure showing the environment - single PID, then
 multi-PID-]
+
+To understand the costs of using WAIT in a distributed environment for long periods of time.
+ It will allow defining an initial benchmark of WAIT overheads:
+ Impact in throughput of monitored system.
+ WAIT usage resource requirements (i.e. HD).
+ It can also help to identify additional opportunity areas.
 
 Phase 3: 
 Use case … detection benefits of 1 report vs. many! … For the sake of progress, probably the last piece of the experiment!
@@ -685,7 +742,16 @@ Injecting 4 bugs, then run it using the same config than Phase 2 (2 in both node
 Benefits: Less Time (setup, monitor, analysis, go/no-go decision) -> Less
 Learning curve / Less Error-Prone, Share knowledge / experience (remain), “Real-time”, Keep as light-weight as possible (minimum add-ons + low overhead)
 
-<<
+Time-consuming/complex data gathering (one data source per monitored process).
+Time-consuming/Complex report analysis (one report per monitored process).
+Plus required synchronization with the performance testing execution.
+SME expertise required to interpret the reports:
+Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
+
+Important to rephrase it as estimated tester time benefit? (at least a high
+level estimate … do not forget the time dimension!)
+
+ <<
 - (automation) This section presents a case study adapted from [8] and initially discussed 
 in [3]. The SUT is a burglar alarm system whose goal is to monitor sensors to detect
 the presence of intruders in a building. Consider a test case, presented in [3],
@@ -716,75 +782,40 @@ the experiments themselves. After that the experimental results are discussed.
 
 \section{Conclusions and Future Work}
 
-<<
-Testing and tuning enterprise applications can be
-challenging due to their complexity. It requires use of a list of testing tools from expert users that have high technical skills. 
->>
-
-The objective of this work was to address the limitations that prevent the
-usage of WAIT in the performance testing domain, so that WAIT can be
-effective used, hence reducing the expertise and overall effort required to do
-good performance analysis and to identify the root causes of the issues.
+The identification of performance problems and the diagnosis of their root
+causes are very complex and time-consuming activities in highly distributed
+environments, which also tend to rely on the expertise of the involved
+engineers. The objective of this work was to address the limitations that
+prevent the usage of WAIT in the performance testing domain, so that WAIT can be
+effective used to reduce the expertise and overall effort required to do
+good performance analysis and to identify the root causes of those issues.
 To achieve this goal the paper presented a novel automation approach and its
 validation, composed of the implementation of a prototype and a study
-case with two real-life applications. The results have proved that the approach 
-addresses effectively the adoption barriers for WAIT in a distributed performance testing
-environment. The solution has proven been light-weight, generating a low
-overhead ([PENDING]). Moreover, from a usability perspective the invested time
-to detect performance issues was considerably reduced ([PENDING]).
+case with two real-life applications. The results are encouraging as they have
+proved that the approach addresses effectively the adoption barriers for WAIT in 
+a distributed performance testing environment: The solution has proven being
+light-weight, generating a low overhead ([PENDING]). Moreover, from a tester
+usability perspective, there are also tangible time savings in terms of the
+effort required to detect performance issues.
 
 Future work will concentrate on assessing the practicability of the
 approach and its benefits in a major scale through broader study cases with our
-industrial partner. It will also be evaluated how best to exploit the additional
-functional information that can now be obtained from a tested environment
+industrial partner IBM. It will also be evaluated how best to exploit the
+additional functional information that can now be obtained from a tested environment
 (i.e. test workload, response time, throughput and transactions) in order to
 improve the qualitative and quantitative capabilities of the idle-time
-analysis methodology to identify more performance problems.
-
-
-<<
-The approach has been tested in a real industry environment and the results are encouraging for the tool and for the approach that we followed. 
-The test case showed that the use of an expert tool that uses the 4 step approach can have several benefits to the user like time savings, opening 
-precise bugs and supporting them with contextual information and educating less
-experienced testers.
-
-- (automation) This paper presents an ongoing work that addresses a solution to automation of
-test case execution for RTES at the software and system integration level. The solution
-provides an API to define PCOs such as the observation of values returned by functions, 
-received messages, and timing associated with system responses.
-A case study is also presented to show the applicability of the work. Though it
-still needs to be extensively validated, the solution addresses the issues on test
-execution raised in the introduction. It can deal with different development and
-execution platforms once the SUT is instrumented to run on its target platform
-and logs are generated to be evaluated at any environment. Moreover, the log
-generation mechanism allows testing applications with hardware limitations.
-
-Conclusion and Future Work: In this paper we have proposed a novel approach to the generation of 
-GUI tests, implemented in a new tool called Gazoo. Gazoo selects event sequences
-from the EFG of an application and generates a set of Parameterized GUI tests.
-Then, Gazoo applies Pex in order to instantiate parameterized GUI tests. Finally,
-Gazoo replays instantiated GUI tests on the application. In the terminology of
-the black-box/white-box dichotomy, Gazoo starts with a black-box approach
-(using the EFG in order to select executable test sequences), then moves on to a
-white-box approach (in order to generate parameterized GUI tests and instantiate
-them using Pex), and finally goes back to the black-box approach (using
-a replayer in order to execute the (instantiated) GUI tests on the application).
-As shown in the paper, we needed to overcome a number of non-trivial technical
-hurdles in order to establish the appropriate interface between the black-box
-approach and the white-box approach.
-The scope of this paper was to show that our approach can achieve high
-code coverage. Usually one expects that high code coverage translates to high
-bug detection rate. For future work, we need to evaluate that this holds true
-in our setting. This evaluation requires its own series of experiments where one
-applies statistical methods to fault-seeded versions of AUTs, following, e.g., [11,
-18].
->>
+analysis methodology (over which WAIT is based on) to identify more
+types of performance problems.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Acknowledgments}
+
+We would like to thanks Amar [PENDING], from SVT IBM Dublin, as his expertise
+and experience in performance testing helped us through the scope definition and validation of this work.
+
 This work was supported, in part, by Science Foundation Ireland grant 10/CE/I1855 to Lero - the Irish Software Engineering Research Centre (www.lero.ie).
 
 \bibliographystyle{splncs}
@@ -809,9 +840,6 @@ PENDING TO:
 + architecture!(proposed approach)
 http://blog.optimyth.com/2011/12/should-you-care-about-software-quality-in-these-times-of-economic-crisis
 
-
-Command reference:
-http://www.oodesign.com/command-pattern.html
 
  ----------------------
  
