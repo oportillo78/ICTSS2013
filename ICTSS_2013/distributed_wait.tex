@@ -513,8 +513,8 @@ in \figurename ~\ref{fig_report}.
 
 \section{Experimental Evaluation}
 
-In this section the experimental setup is presented, along with the workflow of
-the experiments themselves. After that the experimental results are discussed.
+In this section the experimental setup is presented along with the experiments themselves. 
+After each experiment, its results are also discussed.
 
 In total, 3 experiments were performed. The first two experiments pursed to
 answer the research question 2 (How can the overhead be kept low during the whole 
@@ -552,134 +552,138 @@ machines are connected by a 10 GBit LAN.These environment set-ups are shown in \
 
 \subsection{Experiment \#1}
 
-In this section we evaluate our approach. We compare how our approach performs,
-(a) when the computation of input data is replaced by the use of random
-values, and (b) when the Event Flow Graph is not considered for event sequence
-generation.
+Its objective was to validate that the proposed approach had a low overhead in
+a single-node environment. This test involved the assessment of four metrics:
+The throughput and response time (typical metrics used in performance testing) as well as CPU
+and memory utilization (to assess how much additional resources the automation
+requires). All metrics were collected through RPT (throughput and
+directly, as RPT calculates them, while the resources' utilization was obtained
+from the Windows Performance Monitor \footnote{http://technet.microsoft.com/en-us/library/cc768048.aspx} 
+of each application node).
 
-We define the following two research questions: Q1 ... Q2 ...
-Results of the Experiments: Figure 12 shows the results of the experiments. We answer Q1 with Yes ...
+Two real-world applications were selected for this case study. The first
+application was iBatis PetStore 4.0
+\footnote{http://sourceforge.net/projects/ibatisjpetstore/} which is an 
+upgraded version of the Sun's original J2EE Pet Store, popular e-commerce shopping 
+cart application used to teach J2EE. This application was run over an Apache
+Tomcat 6.0.35 Web Application Server. The other application was IBM WebSphere
+Portal Server 8.0.1
+\footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
+application which offers enterprise portal capabilities. This application was
+run over an IBM WebSphere Application Server 8.0.0.5
 
-Apache Tomcat 6.0.35
-IBM WebSPhere Application Server 8.0.0.5
+For each applications, 3 WAIT combinations were tested: First the
+application was executed without WAIT to get a baseline of how the
+application performs by itself; then a manual WAIT execution (data collection
+scripts directly executed) was introduced to measure how much overhead WAIT adds
+by itself to the application; Finally, the automated approach was introduced to
+measure how much overhead it adds. For each of the two combinations that have
+WAIT present, two \emph{Sampling Interval} were considered: The first
+value wss 30 seconds and is the minimum suggested to avoid throughput slowdown
+above 2\%). The second value was 480 seconds and was suggested by one expert in
+our industrial partner.
 
-•Windows Performance Metrics: http://technet.microsoft.com/en-us/library/cc768048.aspx
-•RPT: http://publib.boulder.ibm.com/infocenter/rpthelp/v8r2m1/index.jsp
+All the other parameters involved in the setting up of the performance test were
+suggested (as per their expert judgment) by our industrial partner as valid in a 
+realistic test environment: A workload of 2,000 concurrent users; a duration of
+1 hour; a \emph{Hard Disk Threshold} of 100MB; a \emph{Time Threshold} of 10
+minutes. Finally, for each of the 10 identified combinations (5 per
+application), 3 runs were performed. Each run was performed in an unloaded
+single-node environment, where the corresponding Web Application Server was restarted 
+before every run.
 
-Application Set: During the experimentation, three real world applications
-were used:
-•iBatis PetStore: http://sourceforge.net/projects/ibatisjpetstore/
-•IBM WebSphere Portal Server 8.0.1:
-http://www-03.ibm.com/software/products/us/en/portalserver
-
-To understand the costs of using WAIT in a distributed environment for long periods of time.
- It will allow defining an initial benchmark of WAIT overheads:
- Impact in throughput of monitored system.
- WAIT usage resource requirements (i.e. HD).
- It can also help to identify additional opportunity areas.
-
-This section presents a case study adapted from XXX and initially discussed 
-in XXX. The JPetStore is a XXXX. This section summarizes a case study
-whose purpose is to illustrate through a practical example the application of the principles described in Section 3.
-It is worthy mentioning that performance testing attributes/factors have been
-included as constants, in order to be realistic they were suggested (as per
-their expert judgment) by our industrial partner as valid in a realistic test
-environment. The selection of the best values for these attributes is outside
-of the scope of this paper.
-
-Phase 1:
-o	Objective: Validate WAIT Overhead vs. WAIT-RPT one.
-o	Combinations (3):
-	WAIT Presence (3): 
-	Test without WAIT, 
-	Test with WAIT (manual test), 
-	Test with WAIT-RPT
-	Web-Applications (1): 
-	Portal (single node)
-	Test configurations*:
-	Workloads (1): To be defined (It should be big!) - 2,000
-	Duration: 1 hour
-	WAIT-RPT configuration:
-	HD Threshold: Disabled (so that only the time threshold controls the process).
-	Time Threshold: 10 minutes (Constant, so that 6 intervals occur).
-	Sampling frequency: 8 minutes.* ----> 30 secs?
-* For each identified combination, there will be 3 runs (~9 hours of total execution). WebAppServer restarted before every run.
-NOTE: These configurations will be based on expert judgment of the SVT team (reflect “common” practice in the industry?)
-
-
-[[PENDING: To append results from excel file, they should include some tables
-+ maybe a graphic of some type]]
-
-1.	[PHASE 1]
-o	Compare response time \& throughput with and without WAIT/WAIT-RPT.
-o	Compare resource consumption per node with and without WAIT/WAIT-RPT.
-+ Testing/Process metrics.
-
-In this paper, software performance is understood as the sum of all the
-activities involved in the evaluation of how the system can be expected to
-perform in the field. Moreover, it is considered from a user's perspective.
-It is typically assessed in terms of throughput, stimulus response time, or some
-combination of the two.
-
-KEY METRICS: 
-- Quantitative: Overhead costs: (possible min, max, avg)
-- Performance Testing: Response Time, Throughput
-- Node Resource Usage: RAM, CPU
-
-Sanity checks: Not lost zip files, hard disk threshold respected.
+[[PENDING: 
+\figurename XXXX shows the results of the experiments. 
+Compare response time \& throughput with and without WAIT/WAIT-RPT.
+Compare resource consumption per node with and without WAIT/WAIT-RPT.
+Based on the above results we answer Q1 with Yes ...
+Sanity checks: Not lost zip files, hard disk threshold respected?
+To append results from excel file, they should include some tables
++ maybe a graphic of some type
++ Time in install/overall usage (easily estimated based in the high number of
+test runs).
+]]
 
 
 \subsection{Experiment \#2}
 
-Relialibility.
+Here the objective was to validate that the proposed approach keep experiencing
+a low overhead even in a multi-node environment and in a longer run. This test
+involved the same four metrics described in experiment \#1: Response time, throughput, CPU and memory utilization.
 
-Phase 2: 
-o	Objective: Validate Architecture (qualitative, quantitative)
-o	Combinations:
-	WAIT Presence (2):
-	Test run without WAIT,
-	Test run with WAIT-RPT Integration
-	Web Applications (1):
-	Either Lotus Connection or JPetStore.
-	Test configurations*:
-	Workloads (1): To be defined (Tentatively 1, which should be big!) ~2,000 per node (~4,000 assuming 2 nodes)
-	Duration: 24 hour (SVT uses 1 hr, 24 hour, 5 days, discarding 1 hr due to relevance and 5 days to do time constraints).
-	WAIT-RPT configuration*:
-	HD Threshold: 100 MB (pending to confirm).
-	Time Threshold: 10 minutes (pending to confirm).
-	Sampling frequency: 8 minutes.
+To compensate the increment in the duration of the tests, for this experiment 
+only one application was selected: iBatis PetStore 4.0. Additionally, only 2 WAIT 
+combinations were tested: First the application was executed alone to have a
+baseline of how it performs by itself; then the automated WAIT approach was introduced 
+to measure its overhead, using the \emph{Sampling Interval} of 480 seconds, as
+suggested by the performance testing team of our industrial partner.
 
-For each identified combination, there will be 3 runs (~6 days of total execution). WebAppServer restarted before every run.
-NOTE: These configurations will be based on expert judgment of the SVT team (reflect “common” practice in the industry?)
-It might also help to show that the reliability of the solution (I might take a look to other “fancy” NFR-related words)
+All the other parameters involved in the setting up of the performance test were
+identical to the first experiment with two exemptions: The workload was
+doubled to compensate for the additional application node and the
+selected duration was 24 hours. Finally, each run was performed in an unloaded
+multi-node environment, where all components were restarted before every
+run.
 
-[[PENDING: To append results from excel file, they should include some tables
-+ maybe a graphic of some type]]
+[[PENDING: 
+\figurename XXXX shows the results of the experiments.
+Based on the above results we answer Q1 with Yes ...
 
-2.	[PHASE 2]
-o	Compare response time \& throughput with and without WAIT-RPT.
-o	Compare resource consumption per node with and without WAIT-RPT.
-o	Validate that there was not “information lost” between the collection and uploading.
+Compare response time \& throughput with and without WAIT-RPT.
+Compare resource consumption per node with and without WAIT-RPT.
+Validate that there was not “information lost” between the collection and
+uploading?
 
-KEY METRICS: 
-- Quantitative: Overhead costs: (possible min, max, avg)
-- Performance Testing: Response Time, Throughput
-- Node Resource Usage: RAM, CPU
+Relialibility. It might also help to show that the reliability of the solution
+(I might take a look to other “fancy” NFR-related words)
+
+To append results from excel file, they should include some tables
++ maybe a graphic of some type
++ Time in install/overall usage: Similarly to experiment 1 (easily estimated
+based in the high number of test runs).
+]]
+
 
 \subsection{Experiment \#3}
 
-Use case … detection benefits of 1 report vs. many! … For the sake of progress, probably the last piece of the experiment!
-Injecting defects, showing how they are better/more easily identified. PetStore.
-Two dimensions:
-- Time: Early detection or trends (stress early detection).
-o	Nodes: Environmental issues.
+The objective of this final experiment was to assess the benefits the approach
+brings to a performance tester.
 
-Benefits of WAIT:
-- Injecting bugs in JPetStore (Ideas from WAIT + SVT team).
-- Benefit of single WAIT report, possible two dimensions:
-- Time: Early detection (avoid wasting resources if serious issues identified).
-- Nodes: Environmental issues (very likely cause of having an issue in some nodes and other not).
-- Meeting to know the fixing side of the performance testing/analysis to get better insights about which use case would be preferrable.
+For this experiment the automated approach to use WAIT was used to monitor a
+modified version of iBatis PetStore 4.0 application which source code was
+modified to inject some performance issues to assess if WAIT was able to
+identified them and estimate the corresponding time savings. Specifically, 3
+common performance issues were injected:
+
+lockContentionBug -AAAA
+heavyFileReadingBug -BBBB
+databaseBug -CCCC
+
+All the other parameters involved in the setting up of the performance test were
+identical to the second experiment with a single exemption: The test duration
+was 1-hour.
+
+[[
+PENDING:
+
+- Results: Example of detected bugs!, simple and easy. All three bugs were
+detected indicating their nature plus pinpointing which classes/methods within
+the code were responsible.
+
+lockContentionBug
+heavyFileReadingBug
+databaseBug
++ screen shoots!
+Reduction Time: Early detection or trends (stress early detection).
+Time: Early detection (avoid wasting resources if serious issues identified).
+Average time of fixing an issue hard to know but even with a conservative
+estimate . . . not bad.
+
++ Logically estimated the benefits: Single report.
+]]
+
+
+
 - TEST METRICS: TESTER PRODUCTIVITY? (single case, but give an idea of the benefit)
 http://www.softwaretestinggenius.com/articalDetails?qry=967
 
@@ -749,8 +753,6 @@ Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers
 Important to rephrase it as estimated tester time benefit? (at least a high
 level estimate … do not forget the time dimension!)
 
-
-
 \subsection{Threads to Validity}
 
 Like any empirical work, there are a number of threats to the validity of these
@@ -777,6 +779,7 @@ one application with characteristics that are completely different might
 generate different results. Wider experiments need to be executed to get more
 general conclusions. However, in principle, there is no reason to believe that
 the approach is not applicable to other environments.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
@@ -820,8 +823,8 @@ and experience in performance testing helped us through the scope definition and
 
 This work was supported, in part, by Science Foundation Ireland grant 10/CE/I1855 to Lero - the Irish Software Engineering Research Centre (www.lero.ie).
 
+% Between 12 - 24 \ldots 18 sounds like a good number!
 \bibliographystyle{splncs}
-
 \bibliography{dwait_manual,dwait}
 
 %\section*{Appendix: Springer-Author Discount}
@@ -1034,4 +1037,13 @@ Key message/conclusion: The identification of the root causes of performance iss
 
  
  ----------------------------
+  
+  PENDING:
+  - Complete the related work section.
+  - Finalize the Pair T-Test analysis.
+  - Try to merge the results of the WAIT report and tell some history
+  (Environmental issues possible in Stand-By if the real report does not work).
+  - Re-read the paper to see if it makes sense (i.e. the verbiage of the
+  reserch questions should change to make a better fit with the experiments
+  and their results).
   
