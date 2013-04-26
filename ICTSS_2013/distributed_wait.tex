@@ -37,11 +37,11 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{An automation approach to apply idle-time analysis efficiently in a
+\title{An automated approach to apply idle-time analysis efficiently in a
 performance testing scenario}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Pending to define title}
+\titlerunning{PENDING 1}
 
 % the name(s) of the author(s) follow(s) next
 %
@@ -53,7 +53,7 @@ performance testing scenario}
 Perry\inst{1} \and\\
 John Murphy\inst{1} \and Nick Mitchell\inst{2}\and Peter F. Sweeney\inst{2}}
 
-\authorrunning{Pending to define title}
+\authorrunning{PENDING 2}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 \urldef{\mailucdconnect}\path|andres.portillo-dominguez@ucdconnect.ie,|
@@ -511,34 +511,81 @@ in \figurename ~\ref{fig_report}.
 % Experimental Setup / Experiments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Validation}
+\section{Experimental Evaluation}
 
-This section describes the evaluation of the proposed approach. First the
-methodology, metrics and the main threats to validity are presented. Then, the
-results of the experiments are discussed.
+In this section the experimental setup is presented, along with the workflow of
+the experiments themselves. After that the experimental results are discussed.
 
-\subsection{Methodology}
+In total, 3 experiments were performed. The first two experiments pursed to
+answer the research question 2 (How can the overhead be kept low during the whole 
+performance test execution to avoid compromising the results?), while the third experiment
+pursued to answer the research question 3 (What benefits in productivity can a tester 
+achieve if the previous questions are answered?). Finally, the combined outcome
+of the three experiments pursued to answer the research question 1 (How can the usage 
+of WAIT be automated to minimize the effort required to use it in sync with the performance testing?).
 
-<<
-Experimental Setup: Application Set. During the experimentation, three real world applications
-were used:
-- A
-- B
->>
+During the evaluation phase 4 different types of nodes were required. An RPT
+node, responsible of running the performance test, was a machine running Windows
+XP with an Intel Xeon processor at 2.67 Ghz with 3GB of RAM using RPT 8.2.1.3.
+A WAIT Server node, where the collected data was uploaded and the results
+report was generated, was a machine running Red Hat Enterprise Linux Server 5.9,
+with an Intel Xeon processor at 2.66 GHz with 2GB of RAM using Apache Web Server 2.2.3.
+One or more application nodes, each one running a 64-bit Windows Server 2008,
+with an Intel Xeon E7-8860 (4 cores) at 2.26 GHz with 4GB of RAM and Java 1.6.0
+IBM J9 VM (build 2.6). Finally, a Load Balancing node (required in the presence
+of multiple application nodes) had the same characteristics of the WAIT Server node using
+mod\_jk with a round robin strategy for load balancing purposes.
 
-4.	METHODOLOGY
+The above nodes were arranged in 2 environment setups: For the first
+experiment, a single application node configuration was used. This environment was composed of one RPT node, 
+one application node and one WAIT Server node. For the second and
+third experiments, the environment was composed of one RPT node, one load
+balance node, two application nodes and one WAIT Server node. Furthermore all
+machines are connected by a 10 GBit LAN.These environment set-ups are shown in \figurename ~\ref{fig_env}.
 
-<<
-We define the following two research questions: Q1 ... Q2 ...
-Results of the Experiments: Figure 12 shows the results of the experiments. We answer Q1 with Yes ...
->>
+\begin{figure}[!h]
+\centering
+\includegraphics[totalheight=.25\textheight,width=0.8\textwidth]{Environments}
+\caption{Environment Set-ups used in the Experiments}
+\label{fig_env}
+\end{figure}
 
-<<
+\subsection{Experiment \#1}
+
 In this section we evaluate our approach. We compare how our approach performs,
 (a) when the computation of input data is replaced by the use of random
 values, and (b) when the Event Flow Graph is not considered for event sequence
 generation.
->>
+
+We define the following two research questions: Q1 ... Q2 ...
+Results of the Experiments: Figure 12 shows the results of the experiments. We answer Q1 with Yes ...
+
+Apache Tomcat 6.0.35
+IBM WebSPhere Application Server 8.0.0.5
+
+•Windows Performance Metrics: http://technet.microsoft.com/en-us/library/cc768048.aspx
+•RPT: http://publib.boulder.ibm.com/infocenter/rpthelp/v8r2m1/index.jsp
+
+Application Set: During the experimentation, three real world applications
+were used:
+•iBatis PetStore: http://sourceforge.net/projects/ibatisjpetstore/
+•IBM WebSphere Portal Server 8.0.1:
+http://www-03.ibm.com/software/products/us/en/portalserver
+
+To understand the costs of using WAIT in a distributed environment for long periods of time.
+ It will allow defining an initial benchmark of WAIT overheads:
+ Impact in throughput of monitored system.
+ WAIT usage resource requirements (i.e. HD).
+ It can also help to identify additional opportunity areas.
+
+This section presents a case study adapted from XXX and initially discussed 
+in XXX. The JPetStore is a XXXX. This section summarizes a case study
+whose purpose is to illustrate through a practical example the application of the principles described in Section 3.
+It is worthy mentioning that performance testing attributes/factors have been
+included as constants, in order to be realistic they were suggested (as per
+their expert judgment) by our industrial partner as valid in a realistic test
+environment. The selection of the best values for these attributes is outside
+of the scope of this paper.
 
 Phase 1:
 o	Objective: Validate WAIT Overhead vs. WAIT-RPT one.
@@ -558,6 +605,34 @@ o	Combinations (3):
 	Sampling frequency: 8 minutes.* ----> 30 secs?
 * For each identified combination, there will be 3 runs (~9 hours of total execution). WebAppServer restarted before every run.
 NOTE: These configurations will be based on expert judgment of the SVT team (reflect “common” practice in the industry?)
+
+
+[[PENDING: To append results from excel file, they should include some tables
++ maybe a graphic of some type]]
+
+1.	[PHASE 1]
+o	Compare response time \& throughput with and without WAIT/WAIT-RPT.
+o	Compare resource consumption per node with and without WAIT/WAIT-RPT.
++ Testing/Process metrics.
+
+In this paper, software performance is understood as the sum of all the
+activities involved in the evaluation of how the system can be expected to
+perform in the field. Moreover, it is considered from a user's perspective.
+It is typically assessed in terms of throughput, stimulus response time, or some
+combination of the two.
+
+KEY METRICS: 
+- Quantitative: Overhead costs: (possible min, max, avg)
+- Performance Testing: Response Time, Throughput
+- Node Resource Usage: RAM, CPU
+
+Sanity checks: Not lost zip files, hard disk threshold respected.
+
+
+\subsection{Experiment \#2}
+
+Relialibility.
+
 Phase 2: 
 o	Objective: Validate Architecture (qualitative, quantitative)
 o	Combinations:
@@ -578,16 +653,21 @@ For each identified combination, there will be 3 runs (~6 days of total executio
 NOTE: These configurations will be based on expert judgment of the SVT team (reflect “common” practice in the industry?)
 It might also help to show that the reliability of the solution (I might take a look to other “fancy” NFR-related words)
 
-[PENDING: To create figure showing the environment - single PID, then
-multi-PID-]
+[[PENDING: To append results from excel file, they should include some tables
++ maybe a graphic of some type]]
 
-To understand the costs of using WAIT in a distributed environment for long periods of time.
- It will allow defining an initial benchmark of WAIT overheads:
- Impact in throughput of monitored system.
- WAIT usage resource requirements (i.e. HD).
- It can also help to identify additional opportunity areas.
+2.	[PHASE 2]
+o	Compare response time \& throughput with and without WAIT-RPT.
+o	Compare resource consumption per node with and without WAIT-RPT.
+o	Validate that there was not “information lost” between the collection and uploading.
 
-Phase 3: 
+KEY METRICS: 
+- Quantitative: Overhead costs: (possible min, max, avg)
+- Performance Testing: Response Time, Throughput
+- Node Resource Usage: RAM, CPU
+
+\subsection{Experiment \#3}
+
 Use case … detection benefits of 1 report vs. many! … For the sake of progress, probably the last piece of the experiment!
 Injecting defects, showing how they are better/more easily identified. PetStore.
 Two dimensions:
@@ -643,115 +723,17 @@ some cases was quite high. This was also enhanced by the tool’s ease of use an
 output’s ease to navigate. Moreover, the amount and variety of bugs that were identified 
 shows that GcLite can analyze and discover issues within a GC log by using the 
 recommendationEngine. 
->>
 
-3.	KEY METRICS
-- Qualitative vs. Quantitative results!
-- Qualitative: Possible verbiage about how the detected adoption barriers are
-addressed.
+KEY METRICS: 
+Qualitative: Possible verbiage about how the detected adoption
+barriers are addressed.
 - Previously you would have ended with:
 - X reports, assuming you monitored X nodes and generated all the reports after
 the test execution finished.
 - X*Y reports, assuming you monitored X nodes and generated the reports every
 1/Y time.
 - Now, in both cases you would have ended with a single report.
-- Sanity checks: Not lost zip files, hard disk threshold respected.
-- Quantitative: Overhead costs: (possible min, max, avg)
-- Performance Testing: Response Time, Throughput
-- Node Resource Usage: RAM, CPU
 
-A determining factor for performance is that resources have a limited capacity,
-so they can potentially halt/delay the execution of competing users by denying
-permission to proceed. Quantifying such effects is an important task of SPE.
-
-In this paper, software performance is understood as the sum of all the
-activities involved in the evaluation of how the system can be expected to
-perform in the field. Moreover, it is considered from a user's perspective.
-It is typically assessed in terms of throughput, stimulus response time, or some
-combination of the two.
-
-
-Z. THREADS TO VALIDITY:
-•	Big variance in 24-hour runs … it seems to different behaviours: Week and
-Weekend! (more runs). Environmental issues
-<<
-- Of course, the results observed cannot be generalised to other applications
-different from the two case studies considered here. The presented case studies
-are just meant to illustrate the differences that may arise. Wider experiments
-need to be executed to get more general conclusions.
-
-Threats to Validity: The main threat to the validity of these results is the fact that only 
-three test subjects were used during the experimentation. Despite these subjects being
-real world applications being diverse in both the size of the application (lines of
-code) and size of the test suite, the limited number of subjects implies that not
-all types of system’s are tested. This means that a system with characteristics
-that are completly different might present different results.
-Another threat is that the number of injected bugs is not enough to lead to
-accurate results, as these bugs might simply be “lucky bugs” that intercept a
-collar variable.
-Naturally, there are also threats that are based on the implementation of the
-invariants, the instrumentation or the pattern detector algorithms themselves.
-The reduce these threats, additional testing was made prior to the experimentation
-to guarantee the quality of the experimental results in this regard.
-
-Threats to Validity: Beyond the selection bias due to the limited availability of open source 
-C\# applications, we report one threat to external validity: We evaluated four
-C\# open source applications which incorporate the Windows Forms toolkit for
-building the GUI. Alternative programming languages and GUI toolkits, e.g., Java Swing,
-follow different paradigms of building graphical user interfaces. For example, it
-might be not possible to obtain event handlers during the construction of the
-EFG. Thus, the construction of the EFG, the generation of parameterized GUI
-tests, and the symbolic execution must be adapted to the corresponding environment.
-In principle, there is no reason to believe that our approach is not
-applicable to other environments.
-
-Statistic references:
-Enable Add-on in Excel: http://click4biology.info/c4b/1/2007.htm
-%Example in excel, pair t-test:
-% http://www.stattutorials.com/EXCEL/EXCEL_TTEST2.html T-Distribution calculations in excel: https://courses.washington.edu/dphs568/course/excel-t.htm
-Finding t critical value in excel: http://math.stackexchange.com/questions/10992/finding-critical-value-using-t-distribution-in-excel
-how to use t-test in excel (example 2): http://blog.excelmasterseries.com/2010/08/how-to-use-t-test-in-excel-to-find-out.html
-Other T-test reference: http://www.ruf.rice.edu/~bioslabs/tools/stats/ttest.html
-Excel t-test function: http://www.excelfunctions.net/Excel-Ttest-Function.html
-T-test Excel Help: http://office.microsoft.com/en-001/excel-help/ttest-HP005209325.aspx
-Good example to learn T-test: http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/
----
-%T-Test description: http://en.wikipedia.org/wiki/Student%27s_t-test
-%Null Hypothesis description: http://en.wikipedia.org/wiki/Null_hypothesis
-%Student T-Distribution description:
-% http://en.wikipedia.org/wiki/Student%27s_t-distribution
-
-Experimental Environment
-
-We installed the benchmark in the system environment depicted in Figure 6. The
-benchmark application is deployed in an Oracle WebLogic Server (WLS) 10.3.3 cluster of up to eight 
-physical nodes. Each WLS instance runs on a 2-core Intel CPU with OpenSuse 11.1. As a database 
-server (DBS), we used Oracle Database 11g, running on a Dell PowerEdge R904 with four 6-core AMD 
-CPUs, 128 GB of main memory, and 8x146 GB SAS disk drives. The benchmark driver master, multiple 
-driver agents, the supplier emulator and the DNS load balancer were running on separate 
-virtualized blade servers. The machines are connected by a 1 GBit LAN, the DBS is connected with 
-4 x 1 GBit ports.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Section 5: Experimental Results
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Experimental Results}
-
-
-%[[PENDING: To append results\! (draft_paper_NEW and excel file) should include
-%some tables, maybe a graphic or some type]]
-
-1.	[PHASE 1]
-o	Compare response time \& throughput with and without WAIT/WAIT-RPT.
-o	Compare resource consumption per node with and without WAIT/WAIT-RPT.
-+ Testing/Process metrics.
-2.	[PHASE 2]
-o	Compare response time \& throughput with and without WAIT-RPT.
-o	Compare resource consumption per node with and without WAIT-RPT.
-o	Validate that there was not “information lost” between the collection and uploading.
-
-3.[PHASE 3]
 X,Y to an actual number (use case) … more qualitative, but showing how it is best 1 than many!
 Injecting 4 bugs, then run it using the same config than Phase 2 (2 in both nodes, 2 only on a specific one). Then two iterations will be run: 1st to catch up as many issues as possible. The 2nd one to see results after fixing issues (possible an intermediate run might be needed, as some issues might mask other ones) After each run, the detected bugs will be “fixed”.
 
@@ -767,28 +749,34 @@ Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers
 Important to rephrase it as estimated tester time benefit? (at least a high
 level estimate … do not forget the time dimension!)
 
- <<
-- (automation) This section presents a case study adapted from [8] and initially discussed 
-in [3]. The SUT is a burglar alarm system whose goal is to monitor sensors to detect
-the presence of intruders in a building. Consider a test case, presented in [3],
-that covers the occurrence of an interruption (transfer to the backup power)
-followed by the detection of an intruder finishing with a call to the police. The
-objective of the case study presented in this paper is to show how to use the
-developed API in test case automation (from step 2 to step 4 in Fig. 1). For this,
-a version of the burglar alarm system was developed to run on the FreeRTOS
-environment based on industrial PC (x86) port.
 
-- This section summarizes a simplistic case study whose purpose is to illustrate
-through a practical example the application of the principles described in Section 3. It
-is worthy mentioning that rates have been included as constants declared using
-reference values which are not shown. The actual values for these constants should be
-changed as more detailed reliability data is available and has no influence on the
-scope of this paper.
 
-Empirical Results: In this section the experimental setup is presented, along with the workflow of
-the experiments themselves. After that the experimental results are discussed.
+\subsection{Threads to Validity}
 
->>
+Like any empirical work, there are a number of threats to the validity of these
+experiments. The first one is the potential environmental noise could affect in
+the testing environments considering that the environments are not isolated. To
+mitigate the potential effect the noise might have in the obtained results, multiple runs 
+were executed for each identified combination. Additionally, in order to know if
+the differences between the obtained results were statistically significant (specially in cases 
+were the differences were minimal, for example between the runs of the
+applications alone against those runs using WAIT with a very low sample rate), the statistic Paired t-Test
+\footnote{http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/}
+was performed to determine if the null hypothesis (the changes in the
+environment, practically the addition of WAIT in different forms, have no
+impact in the environment) was rejected or not with 95\% of certainty.
+
+Another thread is the selection of the performance testing parameters (i.e.
+workload and duration of the test). This was addressed with the expert judgement 
+of the SVT, which couched on the selection of those parameters that are
+commonly used in the industry. Finally, the validity of these results are
+threatened by the selection of the tested applications. Despite the fact that
+they are real world applications and different in terms of functionality, their
+limited number implies that not all types of applications have been tested and
+one application with characteristics that are completely different might
+generate different results. Wider experiments need to be executed to get more
+general conclusions. However, in principle, there is no reason to believe that
+the approach is not applicable to other environments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
@@ -827,7 +815,7 @@ types of performance problems.
 
 \section*{Acknowledgments}
 
-We would like to thanks Amar [PENDING], from SVT IBM Dublin, as his expertise
+We would like to thanks Amarendra Darisa, from SVT IBM Dublin, as his expertise
 and experience in performance testing helped us through the scope definition and validation of this work.
 
 This work was supported, in part, by Science Foundation Ireland grant 10/CE/I1855 to Lero - the Irish Software Engineering Research Centre (www.lero.ie).
@@ -835,14 +823,12 @@ This work was supported, in part, by Science Foundation Ireland grant 10/CE/I185
 \bibliographystyle{splncs}
 
 \bibliography{dwait_manual,dwait}
+
 %\section*{Appendix: Springer-Author Discount}
 
 \end{document}
 
-Possible footnotes:
-•Windows Performance Metrics: http://technet.microsoft.com/en-us/library/cc768048.aspx
-•RPT: http://publib.boulder.ibm.com/infocenter/rpthelp/v8r2m1/index.jsp
-•iBatis PetStore: http://sourceforge.net/projects/ibatisjpetstore/
+
 • Links about common performance issues:
 1. https://onyx.koli.ch/get/6448/3+-+Common+Web+Application+Errors.pdf
 2. http://www.crn.com/slide-shows/cloud/231000374/10-most-common-causes-of-web-mobile-app-performance-issues.htm?pgno=1
@@ -850,12 +836,10 @@ Possible footnotes:
 4. http://gettingreal.37signals.com/toc.php
 5. http://jonathanhui.com/top-j2ee-application-performance-problems
 
-PENDING TO:
-+ architecture!(proposed approach)
-http://blog.optimyth.com/2011/12/should-you-care-about-software-quality-in-these-times-of-economic-crisis
 
 
  ----------------------
+
  
  Related Work - First Draft / Ideas
 
