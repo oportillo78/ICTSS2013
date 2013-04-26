@@ -37,11 +37,11 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{An automated approach to apply idle-time analysis efficiently in a
-performance testing scenario}
+\title{Towards an automated approach to apply the idle-time analysis
+efficiently in a performance testing scenario}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{PENDING 1}
+\titlerunning{PENDING}
 
 % the name(s) of the author(s) follow(s) next
 %
@@ -53,7 +53,7 @@ performance testing scenario}
 Perry\inst{1} \and\\
 John Murphy\inst{1} \and Nick Mitchell\inst{2}\and Peter F. Sweeney\inst{2}}
 
-\authorrunning{PENDING 2}
+\authorrunning{PENDING}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 \urldef{\mailucdconnect}\path|andres.portillo-dominguez@ucdconnect.ie,|
@@ -110,7 +110,6 @@ analysis}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \section{Introduction}
 
@@ -333,8 +332,8 @@ execution to avoid compromising the results?
 \\Q3. What benefits in productivity can a tester achieve if the previous
 questions are answered?
 
-The following sections show in details how they have been answered by our
-approach and validated through a series of experiments.
+The following sections show in details how these questions have been answered by
+our approach as well as their validation through a series of experiments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
@@ -566,20 +565,21 @@ application was iBatis PetStore 4.0
 \footnote{http://sourceforge.net/projects/ibatisjpetstore/} which is an 
 upgraded version of the Sun's original J2EE Pet Store, popular e-commerce shopping 
 cart application used to teach J2EE. This application was run over an Apache
-Tomcat 6.0.35 Web Application Server. The other application was IBM WebSphere
-Portal Server 8.0.1
+Tomcat 6.0.35 Application Server \footnote{http://tomcat.apache.org/}. The
+other application was IBM WebSphere Portal Server 8.0.1
 \footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
 application which offers enterprise portal capabilities. This application was
-run over an IBM WebSphere Application Server 8.0.0.5
+run over an IBM WebSphere Application Server 8.0.0.5.
+\footnote{http://www-01.ibm.com/software/webservers/appserv/was/}
 
 For each applications, 3 WAIT combinations were tested: First the
 application was executed without WAIT to get a baseline of how the
 application performs by itself; then a manual WAIT execution (data collection
-scripts directly executed) was introduced to measure how much overhead WAIT adds
-by itself to the application; Finally, the automated approach was introduced to
+scripts directly executed with no upload) was introduced to measure how much
+overhead WAIT adds by itself to the application; Finally, the automated approach was introduced to
 measure how much overhead it adds. For each of the two combinations that have
 WAIT present, two \emph{Sampling Interval} were considered: The first
-value wss 30 seconds and is the minimum suggested to avoid throughput slowdown
+value was 30 seconds and is the minimum suggested to avoid throughput slowdown
 above 2\%). The second value was 480 seconds and was suggested by one expert in
 our industrial partner.
 
@@ -603,6 +603,22 @@ To append results from excel file, they should include some tables
 + Time in install/overall usage (easily estimated based in the high number of
 test runs).
 ]]
+
+\begin{table}[!h]
+\caption{Selected GC Strategies}
+\label{Selected_GCS}
+\centering
+\begin{tabular}{l|l|l}
+\hline
+\bfseries GC Strategy & \bfseries OldGen & \bfseries YoungGen\\
+\hline
+Serial & Mark Sweep Compact & Copy\\
+Parallel & PS Mark Sweep & PS Scavenge\\
+Concurrent & Concurrent Mark Sweep & Par New\\
+\hline
+\end{tabular}
+\end{table}
+
 
 
 \subsection{Experiment \#2}
@@ -634,7 +650,7 @@ Compare resource consumption per node with and without WAIT-RPT.
 Validate that there was not “information lost” between the collection and
 uploading?
 
-Relialibility. It might also help to show that the reliability of the solution
+reliability! It might also help to show that the reliability of the solution
 (I might take a look to other “fancy” NFR-related words)
 
 To append results from excel file, they should include some tables
@@ -643,25 +659,49 @@ To append results from excel file, they should include some tables
 based in the high number of test runs).
 ]]
 
+\begin{table}[!h]
+\caption{Selected GC Strategies}
+\label{Selected_GCS}
+\centering
+\begin{tabular}{l|l|l}
+\hline
+\bfseries GC Strategy & \bfseries OldGen & \bfseries YoungGen\\
+\hline
+Serial & Mark Sweep Compact & Copy\\
+Parallel & PS Mark Sweep & PS Scavenge\\
+Concurrent & Concurrent Mark Sweep & Par New\\
+\hline
+\end{tabular}
+\end{table}
+
 
 \subsection{Experiment \#3}
 
 The objective of this final experiment was to assess the benefits the approach
-brings to a performance tester.
+brings to a performance tester. For this experiment the automated approach to
+use WAIT was used to monitor a modified version of iBatis PetStore 4.0 application 
+which source code was modified to inject some performance issues to assess how 
+WAIT was able to identify them and estimate the corresponding time savings.
+Moreover, all other parameters involved in the setting up of the performance test 
+were identical to the second experiment with exception of the test duration
+which was 1-hour.
 
-For this experiment the automated approach to use WAIT was used to monitor a
-modified version of iBatis PetStore 4.0 application which source code was
-modified to inject some performance issues to assess if WAIT was able to
-identified them and estimate the corresponding time savings. Specifically, 3
-common performance issues were injected:
 
+Specifically, 3 common performance issues were injected:
 lockContentionBug -AAAA
 heavyFileReadingBug -BBBB
 databaseBug -CCCC
 
-All the other parameters involved in the setting up of the performance test were
-identical to the second experiment with a single exemption: The test duration
-was 1-hour.
+Figure 12 depicts aWAIT report on a 48-core system. TheWaiting Threads timeline shows a sudden and sustained surge of Blocked on Monitor; i.e. threads seeking a lock and not receiving it, and thus being blocked from making progress. Looking at the Cate- gory breakdown suggests that lock contention comes from miscel- laneous APACHE OPENJPA Code. The thread stacks from this cat- egory identify the location of the lock contention as line 364 of getMetaDataLocking(). Sometimes locking issues go beyond contention to the point of
+deadlock or livelock. When WAIT detects a cycle in the monitor graph, their Wait State is Blocked on Deadlock. This situation ap- pears in Figure 13. Looking at the thread stacks at the lower right of the report suggests that the threads are waiting for a lock in the log- ging infrastructure method SystemOutStream.processEvent() line 277. Armed with this information, a programmer could look at the code and try to determine the reason for the deadlock.
+
+Figure 16 presents an example of a database bottleneck. Unlike Fig- ure 11 where the database became completely unresponsive, in this case the database is simply struggling to keep up with the appli- cation server’s requests. Over time the server’s utilization varies between approximately 10% and 85%, and these dips in utilization correlate roughly with the spikes in the number of threads inWait- ing state Delayed by Remote Request and Category Getting Data from Database, thus pointing to the likely source of the delay. Clicking on the orange bar for Getting Data from Database
+reveals the thread stacks that a developer can analyze to determine key parts of the application delayed by the database, and try to reduce the load generated against the database. Alternatively, the database could be optimized or deployed on faster hardware.
+
+Figure 17 shows aWAIT report where filesystem activity is limiting performance. The top two pie charts and timelines show that there is enough Java code activity to keep the CPUs well-utilized. How- ever, the Waiting activity show a significant number of threads in Wait State Delayed by Disk I/O, and CategoryFilesystem Metadata Operations, suggesting room for improvement with faster disks, or by restructuring the code to perform fewer disk operations. Reducing these delays would clearly improve latency, since
+each transaction would spend less time waiting on Disk I/O, but such improvement
+would have other benefits as well. Even though the four CPUs on this machine are currently well utilized, this application will likely scale poorly on larger machines. As the number of processors increases, the frequent disk access delays will eventually become a scaling bottleneck. WAIT can help identify these scaling limiters early in the development process.
+
 
 [[
 PENDING:
@@ -679,58 +719,10 @@ Time: Early detection (avoid wasting resources if serious issues identified).
 Average time of fixing an issue hard to know but even with a conservative
 estimate . . . not bad.
 
+Cost to locate defect = Cost of testing / the number of defects located
+Increasing the TESTER PRODUCTIVITY
+
 + Logically estimated the benefits: Single report.
-]]
-
-
-
-- TEST METRICS: TESTER PRODUCTIVITY? (single case, but give an idea of the benefit)
-http://www.softwaretestinggenius.com/articalDetails?qry=967
-
-<<
-The teams used performance and load testing tools like
-LoadRunner [16] and IBM Rational Performance Tester [15]. They executed reliability runs 
-(the ability of a system or component to perform its required functions under stated 
-conditions for a specified period of time [24], usually 5 or 7 days) and performance runs 
-(short period runs in order to measure something specific, like the response rate [25]).
- As The main aim of both performance and reliability testing
-was to ensure that the applications had good performance (transaction and page response rates) even under heavy load, made reasonable usage of memory and didn’t have any memory leaks [31]. The performance of a software system has been described as an indicator of how well the system meets its requirements for timeliness [32]. Smith and Williams [32] describe timeliness as being measured in either response time or throughput, where response time is defined as the time required to respond to a request and throughput is defined as the number of requests that can be processed in some specific time interval. For
-
-15: IBM. Rational Performance Tester. http://www-01.ibm.com/software/awdtools/tester/performance/ 
-24: Wikipedia. Reliability engineering.
-%http://en.wikipedia.org/wiki/Reliability_%28engineering%29
-25: B.Subraya. Integrated Approach to Web Performance Testing: A Practitioner's Guide. IRM Press 2006
-
-By the above case study we tried to see if our approach in
-the creation of an expert tool in the field of garbage collection was successful. The measures of success were the ability to
-identify bugs and problems that affect the applications as well as additional
-test coverage by identifying new types of issues (e.g. finalizers, system.gc, etc). Moreover, the tool should allow a wider range of testers to perform the expert analysis, offering at the same time significant time savings for the expert users. 
-
-The results from using the tool were very encouraging as
-many bugs were identified as well as the time saved by using GcLite in some cases was 
-quite high. In the table 2, we can see a summary of our case study. We can notice that 
-the time saved per application is around 1.6 hours. GcLite’s automated collection and 
-analysis of the GC logs, the ease of use, the layout of the output and the use of 
-recommendations are responsible for the time savings. We also notice that an average of 
-6.5 defects was identified using the tool.
-
-Another important advantage of using the GcLite tool was
-the ability to open precise bugs. Testers used the contextual information from the tool 
-in order to investigate deeper the issues and provide detailed description in the SPRs 
-that they were opening. Furthermore, less experienced testers used this information in 
-order to gain a deeper understanding of several re-occurring issues.
-
-In conclusion, the test case showed that the use of an expert
-tool that uses the 4 step approach can have several advantages. The time saving from 
-using GcLite automated collection of GC logs and analysis instead of another tool in 
-some cases was quite high. This was also enhanced by the tool’s ease of use and the 
-output’s ease to navigate. Moreover, the amount and variety of bugs that were identified 
-shows that GcLite can analyze and discover issues within a GC log by using the 
-recommendationEngine. 
-
-KEY METRICS: 
-Qualitative: Possible verbiage about how the detected adoption
-barriers are addressed.
 - Previously you would have ended with:
 - X reports, assuming you monitored X nodes and generated all the reports after
 the test execution finished.
@@ -739,19 +731,41 @@ the test execution finished.
 - Now, in both cases you would have ended with a single report.
 
 X,Y to an actual number (use case) … more qualitative, but showing how it is best 1 than many!
-Injecting 4 bugs, then run it using the same config than Phase 2 (2 in both nodes, 2 only on a specific one). Then two iterations will be run: 1st to catch up as many issues as possible. The 2nd one to see results after fixing issues (possible an intermediate run might be needed, as some issues might mask other ones) After each run, the detected bugs will be “fixed”.
+
+To conserve space, only the relevant portions of the UI
+for each performance issue are presented.
+
+The measures of success were the ability to identify performance problems that
+affect the applications. Moreover, the tool should allow a wider range of
+testers to perform the expert analysis, offering at the same time significant time savings for the expert users.
+
+The results from using the tool were very encouraging the bugs were identified
+as well as the time saved was quite high. The time saved per application is
+around 1.6 hours: Split the time savings per type!
+
+Another important detected advantage was the ability to open precise bugs.
+Testers used the contextual information from the tool to investigate deeper the
+issues and provide detailed description in the bug that they would open.
+Furthermore, less experienced testers could also use this information to gain a
+deeper understanding of these type of problems.
+
+Two iterations were run: The first was done to catch up as many issues as
+possible. The 2nd one shows the results report after fixing issues (possible an
+intermediate run might be needed, as some issues might mask other ones) After each run, the detected bugs will be “fixed”.
+
+In conclusion, the test case showed that the use of the automated approach
+could have several advantages: The time saving from its usage is high.
 
 Benefits: Less Time (setup, monitor, analysis, go/no-go decision) -> Less
 Learning curve / Less Error-Prone, Share knowledge / experience (remain), “Real-time”, Keep as light-weight as possible (minimum add-ons + low overhead)
-
 Time-consuming/complex data gathering (one data source per monitored process).
 Time-consuming/Complex report analysis (one report per monitored process).
 Plus required synchronization with the performance testing execution.
-SME expertise required to interpret the reports:
-Problem with consumability in parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
-
+SME expertise required to interpret the reports: Problem with consumability in
+parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
 Important to rephrase it as estimated tester time benefit? (at least a high
 level estimate … do not forget the time dimension!)
+]]
 
 \subsection{Threads to Validity}
 
