@@ -282,6 +282,8 @@ deep analysis and sophisticated understanding of the Java main frameworks and
 libraries. This centralization schema offer the additional benefit that
 the rules and knowledge base can continue growing and evolving over time.
 
+[PENDING: WAIT Screenshoot]
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Related Work
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -602,23 +604,79 @@ To append results from excel file, they should include some tables
 + maybe a graphic of some type
 + Time in install/overall usage (easily estimated based in the high number of
 test runs).
+
+1. WAIT overhead is less than 1\% in response time and throughput for 480s
+sampling (higher  in 30s case).
+2. If compared to manual WAIT with upload , WAIT-RPT performs better (I had originally  expected the opposite 
+hoping to assess the upload cost independently). Other than the human interaction, the only additional  difference  
+was the usage of a browser to do the uploads.
+3. If compared to manual WAIT without upload,  the impact of WAIT-RPT is
+approximately 50ms (2\%), in response time (including  upload  time) and 1-2\%
+in throughput.
+
+1. WAIT overhead is around 2\% in response time and throughput for 480s sampling
+(higher  in 30s case).
+2. The 480 combinations have similar impacts in response time and throughput (compared against PetStore). 
+3. The 30 combinations have similar trends, but bigger impacts (compared against PetStore). The main difference is 
+the behavior of the applications, which are reflected in the size of their javacores (pending to explore/compare 
+their contents –classes vs. workload-related info-):
+	- For PetStores, a javacore is ~1MB; while for Portal is ~5MB.
+	- In the 480s case, PetStore uploads (before zipping) ~2MB, while  Portal ~10MB.
+	- In the 30s case, PetStore uploads ~20MB, while Portal ~100MB.
+
+
 ]]
 
 \begin{table}[!h]
-\caption{Selected GC Strategies}
-\label{Selected_GCS}
+\caption{Metrics for PetStore - single node}
+\label{PetStore1}
 \centering
-\begin{tabular}{l|l|l}
+\begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
 \hline
-\bfseries GC Strategy & \bfseries OldGen & \bfseries YoungGen\\
+\bfseries WAIT Modality & \bfseries Avg Response Time (ms)& \bfseries Max
+Response Time (ms)& \bfseries Avg Throughput (hps)& \bfseries Avg CPU Usage
+(\%) & \bfseries Avg Memory Usage (MB)\\
 \hline
-Serial & Mark Sweep Compact & Copy\\
-Parallel & PS Mark Sweep & PS Scavenge\\
-Concurrent & Concurrent Mark Sweep & Par New\\
+None (\emph{Baseline}) 	& 1889.6	& 44704.0	& 158.8 	& 36.9 		& 1429\\
+Manual, 480s 			& 0.0\% 	& 0.0\%		& 0.0\%		& 1.1\% 	& 3.0\%\\
+Automated, 480s 		& 0.0\%		& 0.0\%		& 0.0\% 	& 2.0\% 	& 3.7\%\\
+Manual, 30s 			& 1.6\%		& 0.4\%		& -4.0\% 	& 1.47\% 	& 4.1\%\\
+Automated, 30s 			& 4.4\%		& 0.5\%		& -3.1\% 	& 2.53\% 	& 4.4\%\\
 \hline
 \end{tabular}
 \end{table}
 
+PetStore:
+480 no impact in response time. In resources, around 1-1.5\% in manual mode,
+while around 2-2.5\% in automated mode. Memory increase 3-4\% in manual, around
+0.5\%. 
+Javacore: Average 1MB, average generation time 1 sec, max
+2sec.
++ t-test results!!!
+
+\begin{table}[!h]
+\caption{Metrics for Portal - single node}
+\label{Portal1}
+\centering
+\begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
+\hline
+\bfseries WAIT Modality & \bfseries Avg Response Time (ms)& \bfseries Max
+Response Time (ms)& \bfseries Avg Throughput (hps)& \bfseries Avg CPU Usage
+(\%) & \bfseries Avg Memory Usage (MB)\\
+\hline
+None (\emph{Baseline}) 	& 4704.75	& 40435.50	& 98.05 	& 76.73 	& 3171.20\\
+Manual, 480s 			& 0.7\% 	& 0.6\%		& -0.1\%	& 1.13\% 	& 0.9\%\\
+Automated, 480s 		& 3.4\%		& 1.0\%		& -2.8\% 	& 0.63\% 	& 4.1\%\\
+Manual, 30s 			& 14.9\%	& 5.4\%		& -0.6\% 	& 2.97\% 	& 5.3\%\\
+Automated, 30s 			& 16.8\%	& 9.1\%		& -5.6\% 	& 2.23\% 	& 6.0\%\\
+\hline
+\end{tabular}
+\end{table}
+
+Portal:
+480: still good, but higher . . . main impact caused by javacore!
+Javacore: Average 5MB, average generation time 1sec, max 3 sec
++ t-test results!!!
 
 
 \subsection{Experiment \#2}
@@ -660,19 +718,28 @@ based in the high number of test runs).
 ]]
 
 \begin{table}[!h]
-\caption{Selected GC Strategies}
-\label{Selected_GCS}
+\caption{Metrics for PetStore - multi node}
+\label{Portal1}
 \centering
-\begin{tabular}{l|l|l}
+\begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
 \hline
-\bfseries GC Strategy & \bfseries OldGen & \bfseries YoungGen\\
+\bfseries WAIT Modality & \bfseries Avg Response Time (ms)& \bfseries Max
+Response Time (ms)& \bfseries Avg Throughput (hps)& \bfseries Avg CPU Usage
+(\%) & \bfseries Avg Memory Usage (MB)\\
 \hline
-Serial & Mark Sweep Compact & Copy\\
-Parallel & PS Mark Sweep & PS Scavenge\\
-Concurrent & Concurrent Mark Sweep & Par New\\
+None (\emph{Baseline}) 	& 2669.62	& 47346.10	& 157.68 	& 45.27 	& 1831.10\\
+Automated, 480s 		& 0.5\%		& 0.2\%		& -1.4\% 	& 0.85\% 	& 2.3\%\\
 \hline
 \end{tabular}
 \end{table}
+
+T-test analysis: p<0.5 significant
+Valid in:
+- PetStore 1: Avg. Response Time: Both 30; Max. Response Time: None; Avg.
+Throughput: Automated WAIT 30.
+- PetStore 2: Also no significant
+- Portal 1: Avg. Response Time: Auto-WAIT 480, Both 30; Max. Response Time: None; Avg.
+Throughput: Automated WAIT 30.
 
 
 \subsection{Experiment \#3}
@@ -701,7 +768,6 @@ reveals the thread stacks that a developer can analyze to determine key parts of
 Figure 17 shows aWAIT report where filesystem activity is limiting performance. The top two pie charts and timelines show that there is enough Java code activity to keep the CPUs well-utilized. How- ever, the Waiting activity show a significant number of threads in Wait State Delayed by Disk I/O, and CategoryFilesystem Metadata Operations, suggesting room for improvement with faster disks, or by restructuring the code to perform fewer disk operations. Reducing these delays would clearly improve latency, since
 each transaction would spend less time waiting on Disk I/O, but such improvement
 would have other benefits as well. Even though the four CPUs on this machine are currently well utilized, this application will likely scale poorly on larger machines. As the number of processors increases, the frequent disk access delays will eventually become a scaling bottleneck. WAIT can help identify these scaling limiters early in the development process.
-
 
 [[
 PENDING:
@@ -765,6 +831,11 @@ SME expertise required to interpret the reports: Problem with consumability in
 parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
 Important to rephrase it as estimated tester time benefit? (at least a high
 level estimate … do not forget the time dimension!)
+
+- All bugs/little bugs first: Lock contention + others ...
+- Remove lock contention, then bugsNoLocks: remove of rest ...
+- Then "clean" report.
+
 ]]
 
 \subsection{Threads to Validity}
@@ -845,13 +916,6 @@ This work was supported, in part, by Science Foundation Ireland grant 10/CE/I185
 
 \end{document}
 
-
-• Links about common performance issues:
-1. https://onyx.koli.ch/get/6448/3+-+Common+Web+Application+Errors.pdf
-2. http://www.crn.com/slide-shows/cloud/231000374/10-most-common-causes-of-web-mobile-app-performance-issues.htm?pgno=1
-3. www.tracelytics.com/blog/two-most-common-performance-mistakes/
-4. http://gettingreal.37signals.com/toc.php
-5. http://jonathanhui.com/top-j2ee-application-performance-problems
 
 
 
@@ -1053,11 +1117,13 @@ Key message/conclusion: The identification of the root causes of performance iss
  ----------------------------
   
   PENDING:
-  - Complete the related work section.
-  - Finalize the Pair T-Test analysis.
+  - Complete the results and related work sections!
+  - Finalize the Pair T-Test analysis. - DONE
   - Try to merge the results of the WAIT report and tell some history
-  (Environmental issues possible in Stand-By if the real report does not work).
+  (Environmental issues possible in Stand-By if the real report does not work). 
+  - DONE
   - Re-read the paper to see if it makes sense (i.e. the verbiage of the
   reserch questions should change to make a better fit with the experiments
   and their results).
+
   
