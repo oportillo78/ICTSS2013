@@ -327,9 +327,9 @@ possibility of a human error which might compromise the obtained results.
 The objective of this paper is to address the usability limitations of WAIT to
 be used effectively in the performance testing domain. In order to do it, the
 following research questions have been formulated:
-\\Q1. How can the usage of WAIT be automated to minimize the effort
-required to use it in sync with the performance testing?
-\\Q2. How can the overhead be kept low during the whole performance test
+\\Q1. Can the usage of WAIT be automated to minimize the effort
+required to use it in sync with a performance test?
+\\Q2. Can the overhead be kept low during the whole performance test
 execution to avoid compromising the results? 
 \\Q3. What benefits in productivity can a tester achieve if the previous
 questions are answered?
@@ -374,6 +374,8 @@ Moreover, if a \emph{Backup} was indicated the data is also copied to the
 backup destination before it is deleted. Then a reference to the updated results
 report is obtained and the \emph{Next Time Threshold} is calculated. Finally,
 the logic awaits the configured \emph{Sampling Interval} and then a new iteration starts.
+
+[PENDING: Describe how a javacore works \ldots probably from WAIT's paper]
 
 Once the performance test finishes, a final upload round (and backup if
 configured) is done to upload any remnant collected data. When completed this
@@ -553,82 +555,50 @@ machines are connected by a 10 GBit LAN.These environment set-ups are shown in \
 
 \subsection{Experiment \#1}
 
-Its objective was to validate that the proposed approach had a low overhead in
-a single-node environment. This test involved the assessment of four metrics:
-The throughput and response time (typical metrics used in performance testing) as well as CPU
-and memory utilization (to assess how much additional resources the automation
-requires). All metrics were collected through RPT (throughput and
-directly, as RPT calculates them, while the resources' utilization was obtained
-from the Windows Performance Monitor \footnote{http://technet.microsoft.com/en-us/library/cc768048.aspx} 
-of each application node).
+Its objective was to validate that the proposed approach had a low overhead.
+It involved the assessment of four metrics: The throughput and response time
+(typical metrics used in performance testing) as well as CPU and memory utilization (to assess how much additional resources the automation
+requires). All metrics were collected through RPT: RPT directly
+calculates throughput and response time, while the resources' utilization was
+obtained from the Windows Performance Monitor \footnote{http://technet.microsoft.com/en-us/library/cc768048.aspx} of each application node.
 
 Two real-world applications were selected for this case study. The first
 application was iBatis PetStore 4.0
 \footnote{http://sourceforge.net/projects/ibatisjpetstore/} which is an 
-upgraded version of the Sun's original J2EE Pet Store, popular e-commerce shopping 
-cart application used to teach J2EE. This application was run over an Apache
+upgraded version of the Sun's original J2EE Pet Store, a popular e-commerce
+shopping cart application used to teach J2EE. This application was run over an Apache
 Tomcat 6.0.35 Application Server \footnote{http://tomcat.apache.org/}. The
 other application was IBM WebSphere Portal Server 8.0.1
 \footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
 application which offers enterprise portal capabilities. This application was
 run over an IBM WebSphere Application Server 8.0.0.5.
-\footnote{http://www-01.ibm.com/software/webservers/appserv/was/}
+\footnote{http://www-01.ibm.com/software/webservers/appserv/was/}.
 
-For each applications, 3 WAIT combinations were tested: First the
-application was executed without WAIT to get a baseline of how the
-application performs by itself; then a manual WAIT execution (data collection
+This experiment involved two different tests. First, the behaviour of
+the approach was tested in a single-node environment to assess how much
+overhead it brings under these conditions. For each application, 3 combinations
+of WAIT were tried: First the application was executed without WAIT to get a
+baseline of how the application performs by itself; then a manual WAIT execution (data collection
 scripts directly executed with no upload) was introduced to measure how much
 overhead WAIT adds by itself to the application; Finally, the automated approach was introduced to
 measure how much overhead it adds. For each of the two combinations that have
 WAIT present, two \emph{Sampling Interval} were considered: The first
-value was 30 seconds and is the minimum suggested to avoid throughput slowdown
-above 2\%). The second value was 480 seconds and was suggested by one expert in
-our industrial partner.
+value was 30 seconds and was selected as a ``worst case" because it is the
+minimum value suggested in previous works \cite{Altman2010} to avoid throughput
+slowdown above 2\%). The second value was 480 seconds and was selected with the
+help of our industrial partner as a representative \emph{Sampling Interval} used in the industry.
 
-All the other parameters involved in the setting up of the performance test were
-suggested (as per their expert judgment) by our industrial partner as valid in a 
-realistic test environment: A workload of 2,000 concurrent users; a duration of
+All the other parameters involved in the setting up of the performance test
+environment were suggested (as per their expert judgment) by our industrial
+partner as valid in a realistic test environment: A workload of 2,000 concurrent users; a duration of
 1 hour; a \emph{Hard Disk Threshold} of 100MB; a \emph{Time Threshold} of 10
 minutes. Finally, for each of the 10 identified combinations (5 per
 application), 3 runs were performed. Each run was performed in an unloaded
 single-node environment, where the corresponding Web Application Server was restarted 
 before every run.
 
-[[PENDING: 
-\figurename XXXX shows the results of the experiments. 
-Compare response time \& throughput with and without WAIT/WAIT-RPT.
-Compare resource consumption per node with and without WAIT/WAIT-RPT.
-Based on the above results we answer Q1 with Yes ...
-Sanity checks: Not lost zip files, hard disk threshold respected?
-To append results from excel file, they should include some tables
-+ maybe a graphic of some type
-+ Time in install/overall usage (easily estimated based in the high number of
-test runs).
-
-1. WAIT overhead is less than 1\% in response time and throughput for 480s
-sampling (higher  in 30s case).
-2. If compared to manual WAIT with upload , WAIT-RPT performs better (I had originally  expected the opposite 
-hoping to assess the upload cost independently). Other than the human interaction, the only additional  difference  
-was the usage of a browser to do the uploads.
-3. If compared to manual WAIT without upload,  the impact of WAIT-RPT is
-approximately 50ms (2\%), in response time (including  upload  time) and 1-2\%
-in throughput.
-
-1. WAIT overhead is around 2\% in response time and throughput for 480s sampling
-(higher  in 30s case).
-2. The 480 combinations have similar impacts in response time and throughput (compared against PetStore). 
-3. The 30 combinations have similar trends, but bigger impacts (compared against PetStore). The main difference is 
-the behavior of the applications, which are reflected in the size of their javacores (pending to explore/compare 
-their contents –classes vs. workload-related info-):
-	- For PetStores, a javacore is ~1MB; while for Portal is ~5MB.
-	- In the 480s case, PetStore uploads (before zipping) ~2MB, while  Portal ~10MB.
-	- In the 30s case, PetStore uploads ~20MB, while Portal ~100MB.
-
-
-]]
-
 \begin{table}[!h]
-\caption{Metrics for PetStore - single node}
+\caption{PetStore - Results}
 \label{PetStore1}
 \centering
 \begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
@@ -642,20 +612,40 @@ Manual, 480s 			& 0.0\% 	& 0.0\%		& 0.0\%		& 1.1\% 	& 3.0\%\\
 Automated, 480s 		& 0.0\%		& 0.0\%		& 0.0\% 	& 2.0\% 	& 3.7\%\\
 Manual, 30s 			& 1.6\%		& 0.4\%		& -4.0\% 	& 1.47\% 	& 4.1\%\\
 Automated, 30s 			& 4.4\%		& 0.5\%		& -3.1\% 	& 2.53\% 	& 4.4\%\\
+%\hline
+%Automated, 480s (2 nodes)& 0.5\%	& 0.2\%		& -1.4\% 	& 0.85\% 	& 2.3\%\\
 \hline
 \end{tabular}
 \end{table}
 
-PetStore:
-480 no impact in response time. In resources, around 1-1.5\% in manual mode,
-while around 2-2.5\% in automated mode. Memory increase 3-4\% in manual, around
-0.5\%. 
-Javacore: Average 1MB, average generation time 1 sec, max
-2sec.
-+ t-test results!!!
+For the PetStore, each performance test produced above 500,000 transactions,
+with 99\% of successful transactions. The results showed that using WAIT with a
+\emph{Sample Interval} of 480 seconds had practically no impact in terms of response 
+time and throughput. Furthermore the difference in resource consumption between
+the manual and automated approaches was around 1\%. From a functional perspective, the main 
+difference between the two approaches was the presence in the automated one of
+the WebAgent and the additional process of uploading and backing up the results. As the 
+transferred data is minimal (around 200KB every 10 minutes, mostly composed by
+javacores, which are the biggest part of the collected data and with an average size of 1MB 
+and ~100KB after compression), the main cause behind the differences in resource
+consumption should be the presence of the WebAgent. When WAIT is used with a \emph{Sample Interval} 
+of 30 seconds, the impacts in response time and throughput appear. As the impact in throughput is
+similar between both approaches, this must have been caused by the javacore
+generation (step shared between both approaches). As an average, each javacore took around
+1 second to be generated (with a maximum in the worst case scenarios of 1.5
+seconds). Even though this cost was neglectable in the higher \emph{Sample
+Interval}, with 30 seconds the impact was visible. On the contrary, the difference in response times (2.8\%, approximately 53 milliseconds) was caused by the upload
+and backup processes (around 4MB of transferred data), as the cost of the
+WebAgent has already been measured in the scenario of a \emph{Sample Interval}.
+In terms of resource consumption, the differences between the manual and
+automated approach remained very similar to the scenario of a \emph{Sample
+Interval} of 480 seconds. The detailed results of these experiments are shown in the \tablename
+~\ref{PetStore1} where the first data row shows the results of running the
+application alone and the rest the different modalities of WAIT that were
+tested.
 
 \begin{table}[!h]
-\caption{Metrics for Portal - single node}
+\caption{Portal - Results}
 \label{Portal1}
 \centering
 \begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
@@ -665,61 +655,97 @@ Response Time (ms)& \bfseries Avg Throughput (hps)& \bfseries Avg CPU Usage
 (\%) & \bfseries Avg Memory Usage (MB)\\
 \hline
 None (\emph{Baseline}) 	& 4704.75	& 40435.50	& 98.05 	& 76.73 	& 3171.20\\
-Manual, 480s 			& 0.7\% 	& 0.6\%		& -0.1\%	& 1.13\% 	& 0.9\%\\
+Manual, 480s 			& 0.7\% 	& 0.6\%		& -0.1\%	& 1.13\% 	& 2.2\%\\
 Automated, 480s 		& 3.4\%		& 1.0\%		& -2.8\% 	& 0.63\% 	& 4.1\%\\
-Manual, 30s 			& 14.9\%	& 5.4\%		& -0.6\% 	& 2.97\% 	& 5.3\%\\
+Manual, 30s 			& 14.9\%	& 5.4\%		& -5.7\% 	& 2.97\% 	& 5.3\%\\
 Automated, 30s 			& 16.8\%	& 9.1\%		& -5.6\% 	& 2.23\% 	& 6.0\%\\
 \hline
 \end{tabular}
 \end{table}
 
-Portal:
-480: still good, but higher . . . main impact caused by javacore!
-Javacore: Average 5MB, average generation time 1sec, max 3 sec
-+ t-test results!!!
+For the Portal, each performance test produced above 400,000 transactions,
+with 99\% of successful transactions. Even though the results showed similar
+trends (than PetStore) in terms of achieving lower overheads using the
+\emph{Sampling Interval} of 480 seconds against the 30 seconds, few key 
+differences were identified: First, the impact in response time and
+throughput is visible since the \emph{Sampling Interval} of 480 seconds, 
+while the impacts are different between using the automated and the manual
+approaches. Besides, the differences between using the two \emph{Sampling Intervals} 
+are bigger. As the experiment conditions were the same, it was assumed that these 
+differences were related to the natural difference in functionality between the
+tested applications. This was later confirmed after analyzing the javacores
+generated by the Portal, which allowed to measure quantitatively the
+differences in behavior of Portal: Its average size was 5.5MB (5.5 times the
+average of PetStore's). Moreover its average generation time was 2s (2 times the 
+average of PetStore's), with a maximum generation time of 3s (also 2 times the
+maximum of PetStore's). The detailed results of these experiments are shown in the \tablename ~\ref{Portal1}.
 
-
-\subsection{Experiment \#2}
-
-Here the objective was to validate that the proposed approach keep experiencing
-a low overhead even in a multi-node environment and in a longer run. This test
-involved the same four metrics described in experiment \#1: Response time, throughput, CPU and memory utilization.
-
-To compensate the increment in the duration of the tests, for this experiment 
-only one application was selected: iBatis PetStore 4.0. Additionally, only 2 WAIT 
-combinations were tested: First the application was executed alone to have a
-baseline of how it performs by itself; then the automated WAIT approach was introduced 
-to measure its overhead, using the \emph{Sampling Interval} of 480 seconds, as
-suggested by the performance testing team of our industrial partner.
-
-All the other parameters involved in the setting up of the performance test were
-identical to the first experiment with two exemptions: The workload was
-doubled to compensate for the additional application node and the
-selected duration was 24 hours. Finally, each run was performed in an unloaded
-multi-node environment, where all components were restarted before every
-run.
-
-[[PENDING: 
-\figurename XXXX shows the results of the experiments.
-Based on the above results we answer Q1 with Yes ...
-
-Compare response time \& throughput with and without WAIT-RPT.
-Compare resource consumption per node with and without WAIT-RPT.
-Validate that there was not “information lost” between the collection and
-uploading?
-
-reliability! It might also help to show that the reliability of the solution
-(I might take a look to other “fancy” NFR-related words)
-
-To append results from excel file, they should include some tables
-+ maybe a graphic of some type
-+ Time in install/overall usage: Similarly to experiment 1 (easily estimated
-based in the high number of test runs).
-]]
+Due to the relatively small differences between the runs and some variations
+(presumable environmental) that were experienced during the execution of the
+experiments, it was decided to perform a Paired t-Test
+\footnote{http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/}
+to evaluate if the data sets of response time and throughput were significantly
+different from each other (using a significant level of p<0.1). The results
+showed that for the PetStore application the differences were only significant for
+those runs using the \emph{Sample Interval} of 30 seconds in the average
+response time, and only for the automated approach using the \emph{Sample
+Interval} of 30 seconds in the average throughput. In the case of Portal, the
+results were similar. This additional analysis reinforced the
+previous observation that it is preferable, in terms of overhead, the
+usage of the \emph{Sample Interval} of 480 seconds. The detailed results of
+this analysis are shown in the \tablename ~\ref{tTest1}.
 
 \begin{table}[!h]
-\caption{Metrics for PetStore - multi node}
-\label{Portal1}
+\caption{t-Test - Probability Results}
+\label{tTest1}
+\centering
+\begin{tabular}{p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}}
+\hline
+\bfseries Application \bfseries WAIT Modality & \bfseries Avg Response Time
+(ms)& \bfseries Max Response Time (ms)& \bfseries Avg Throughput (hps)&\\
+\hline
+PetStore & 	Manual, 480s 			& 0.470 & 0.143	& 0.206\\
+PetStore & 	Automated, 480s 		& 0.342	& 0.297	& 0.472\\
+PetStore & 	Manual, 30s 			& 0.089	& 0.241	& 0.154\\
+PetStore & 	Automated, 30s 			& 0.019	& 0.334	& 0.078\\
+\hline
+Portal 	& 	Manual, 480s 			& 0.140 & 0.263	& 0.496\\
+Portal 	& 	Automated, 480s 		& 0.040	& 0.189	& 0.131\\
+Portal 	& 	Manual, 30s 			& 0.001	& 0.158	& 0.167\\
+Portal 	& 	Automated, 30s 			& 0.013	& 0.105	& 0.072\\
+\hline
+\end{tabular}
+\end{table}
+
+A second test was performed with the objective of validating that the proposed
+approach was reliable and its overhead remained low in a multi-node environment
+and during a longer test run. The iBatis PetStore 4.0 application was selected for 
+this test due to the available of an environment to test it as well as the
+availability of its source code (required for the experiment \#2). Based on the 
+finding of the previous test, only two 2 WAIT combinations were tested: First
+the application was executed alone to have a baseline of how it performs by itself; 
+then the automated WAIT approach was introduced to measure its overhead, using the 
+\emph{Sampling Interval} of 480 seconds, which not only the one suggested by
+the performance testing team of our industrial partner but also the best 
+performer from the previous test. All the other parameters involved in the
+setting up of the performance test were identical to the first experiment with 
+two exemptions: The workload was doubled to compensate for the additional
+application node and the selected duration was 24 hours. Finally, each run was performed 
+in an unloaded multi-node environment, where all components were restarted
+before every run.
+
+Even though the results were slightly different than the single-node run,
+they proved the the solution is reliable, as using WAIT with a
+\emph{Sample Interval} of 480 seconds during the 24-hour runs had minimal impact
+(up to 1.4\%) in terms of response time and throughput. Similarly, the
+consumption of resources behaved similarly (up to 2.3\%). The detailed results of 
+these experiments are shown in the \tablename ~\ref{Portal2}. Finally, a
+Paired t-Test was performed and it confirmed that the differences between the
+runs were not statistically significant.
+
+\begin{table}[!h]
+\caption{Multi-node PetStore - results}
+\label{Portal2}
 \centering
 \begin{tabular}{p{0.2\textwidth}|p{0.16\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}|p{0.13\textwidth}|p{0.16\textwidth}}
 \hline
@@ -733,16 +759,17 @@ Automated, 480s 		& 0.5\%		& 0.2\%		& -1.4\% 	& 0.85\% 	& 2.3\%\\
 \end{tabular}
 \end{table}
 
-T-test analysis: p<0.5 significant
-Valid in:
-- PetStore 1: Avg. Response Time: Both 30; Max. Response Time: None; Avg.
-Throughput: Automated WAIT 30.
-- PetStore 2: Also no significant
-- Portal 1: Avg. Response Time: Auto-WAIT 480, Both 30; Max. Response Time: None; Avg.
-Throughput: Automated WAIT 30.
+
+In conclusion, the results of this experiment showed that the overheads
+caused by WAIT can be kept low during the whole performance test
+execution. This answer our research question Q2 positively, only with a side
+note: Due to the impact the \emph{Sampling Interval} and the application
+behavior might have in the overhead, it is important to have it in mind when
+using WAIT. For example, the \emph{Sampling Interval} of 480 seconds proved
+efficient in terms of overhead for the two tested applications.
 
 
-\subsection{Experiment \#3}
+\subsection{Experiment \#2}
 
 The objective of this final experiment was to assess the benefits the approach
 brings to a performance tester. For this experiment the automated approach to
@@ -838,6 +865,18 @@ level estimate … do not forget the time dimension!)
 
 ]]
 
+xxx
+
+In parallel to the execution of all the experiments, the obtained time savings
+were tracked. The total installation time of the automated approach (Eclipse
+plugin and WebAgent) took no more than 15 minutes. After that, its usage require
+practically no additional time over the regular usage of the RPT (barely a
+minute too change its settings -i.e. \emph{Sampling Interval}- or
+enabling/disabling its usage -i.e. to switch back and forth between the manual
+and automated modes-). 
+
+xxx
+
 \subsection{Threads to Validity}
 
 Like any empirical work, there are a number of threats to the validity of these
@@ -916,17 +955,19 @@ This work was supported, in part, by Science Foundation Ireland grant 10/CE/I185
 
 \end{document}
 
-
-
-
  ----------------------
-
  
  Related Work - First Draft / Ideas
 
-Automated Performance Testing (support tools).
-•	Performance Analysis Tools/Techniques (from WAIT papers).
-•	WAIT
+- Automated Performance Testing / Analysis popular: Performance Testing (from
+my excel), Analysis (i.e. RTCE, GC Lite, LeakChaser), runtime vs. static. Some
+similar, but different in the sources they use and the domain?
+ - Industry Tools: Multiple Load Test generators, and also
+tools.
+It is usually required to use multiples + expert judgements + .
+
+To the best of our knowledge, first time it has been tried in idle-time
+analysis.
 
 <<
 (Intro) Related Techniques: In the software development process, performance testing is 
@@ -1035,8 +1076,9 @@ behaviour and resources, rather than to focus on just one or the other.
 [[
 [47] Merson, P. and Hissam, S. “Predictability by construction” Posters of
 OOPSLA 2005, pp 134-135, San Diego, ACM Press, Oct. 2005.
-[60] J.A. Rolia, L. Cherkasova, R. Friedrich, “Performance Engineering for EA
-Systems in Next Generation Data Centres”, Proc. 6th Int. Workshop on Software and Performance, Buenos Aires, Feb. 2007.
+[60] J.A. Rolia, L. Cherkasova, R. Friedrich, 
+“Performance Engineering for EA Systems in Next Generation Data Centres”, Proc.
+6th Int. Workshop on Software and Performance, Buenos Aires, Feb. 2007.
 [66] C.U. Smith, L. G. Williams, Performance Solutions, Addison-Wesley, 2002
 ]]
 
@@ -1113,6 +1155,12 @@ system executes.
 
 Key message/conclusion: The identification of the root causes of performance issues, relies very heavy on the expert knowledge of the user + requires a lot of different tools. There is no possible to indicate an average time per issue identification, but overall is very challenging/time-consuming.
 
+ 
+ Chen, Mike Y., et al. "Pinpoint: Problem determination in large, dynamic
+ internet services." Dependable Systems and Networks, 2002. DSN 2002. Proceedings. International Conference on. IEEE, 2002.
+ 
+ 
+  
  
  ----------------------------
   
