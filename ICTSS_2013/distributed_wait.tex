@@ -270,7 +270,13 @@ classloaders, classes and memory usage). The fact that WAIT uses these data
 sources makes it non-disruptive to the monitored environments, as no special flags, 
 service restart or instrumentations are required to use it. As WAIT also
 requires infrequent samples to perform a diagnosis (at most every 30 seconds,
-even though the sampling rate could be adjusted), it is low-overhead.
+even though the sampling rate could be adjusted), it is low-overhead. This
+characteristic of relying on infrequent samples is especially relevant considering 
+that the JVM has to pause its running applications whenever a javacore is
+generated (very similar in essence to the pauses that the Garbage Collection has in a 
+running JVM). Even though the JVMs can produce a javacore with a fairly low
+perturbation, these pauses might go up to several hundred milliseconds if the 
+application has thousands of concurrent threads and very deep call stacks.
 
 From a usability perspective, WAIT is simple: A user only needs to
 collect as much data as desired (either manually or using gathering scripts
@@ -344,14 +350,14 @@ overcome the possible benefits of using it, especially after adding the high
 possibility of a human error which might compromise the obtained results.
 
 The objective of this paper is to address the usability limitations of WAIT to
-be used effectively in the performance testing domain. In order to do it, the
+be used effectively in the performance testing domain. To achieve this, the
 following research questions have been formulated:
 \\Q1. Can the usage of WAIT be automated to minimize the effort
 required to use it in sync with a performance test?
-\\Q2. Can the overhead be kept low during the whole performance test
+\\Q2. Can the overhead be kept low during the complete performance test
 execution to avoid compromising the results? 
 \\Q3. What benefits in productivity can a tester achieve if the previous
-questions are answered?
+two questions are answered?
 
 The following sections show in details how these questions have been answered by
 our approach as well as their validation through a series of experiments.
@@ -778,7 +784,7 @@ Automated, 480s 		& 0.5\%		& 0.2\%		& -1.4\% 	& 0.85\% 	& 2.3\%\\
 \end{tabular}
 \end{table}
 
-In conclusion, the results of this experiment showed that the overheads
+In conclusion, the results of this first experiment showed that the overheads
 caused by the automated approach can be kept low during the whole performance
 test execution. This answer our research question Q2 positively, only with a side
 note: Due to the impact the \emph{Sampling Interval} and the application
@@ -804,92 +810,163 @@ identical to the multi-node test performed in the previous experiment with
 exception of the test duration which was 1-hour. Finally, only the most relevant
 sections of the GUI for each issue are presented in order to save space.
 
-First run:
-- Surprisingly the first identified issue was none of the injected bugs but a
-method call named ``McastServiceImpl.receive''. After an initial analysis, it
-was determined benigne (it is as method related to the clustering capability of
-Tomcat). Also not all the bugs were present due to an unexpected effect: One of them
-(LockContention) become a major bottleneck that expected that minimized the
-others. That said, the issue was detected and appeared ranked in second place.
-Figure XXX shows this information.
+Surprisingly the first ranked issue was none of the injected bugs but
+a method call named ``McastServiceImpl.receive'' which appeared in practically all
+the threads. It was a unexpected finding which lead to some extra analysis
+to determine it was benigne, as these method invocations are part of the
+clustering functionality of Tomcat. The secondly ranked issue was the lock
+contention. A relevant point to notice is that these two issues were
+detected since the first version of the report (generated at minute 10, right
+after the first data collection phase occurred). Based on the high recurrency of
+the issues (above 96\% of the samples in both cases), this information could
+have let the testers to raise bugs and pass this information to the development
+team so that the diagnosis could start far ahead of the test completion. Talking a
+look to the final version of the report reinforced the presence of these issues
+by offering similar ranks. These additional information could also be documented
+and shared with the development team about the relevance of the issues.
+\figurename ~\ref{fig_run1_bugs12}.a shows the results of the first generated report, 
+while ~\ref{fig_run1_bugs12}.b shows the results of the final report.
 
+\begin{figure}[!h]
+% \centering
+\includegraphics[totalheight=.25\textheight,width=1\textwidth]{run1_issues12_short_long_run}
+\caption{Top detected performance issues in modified JPetStore application}
+\label{fig_run1_bugs12}
+\end{figure}
 
-all bugs/little bugs first: Lock contention + others ...
-remove lock contention, then bugsNoLocks: remove of rest ...
-then "clean" report.
+After identifying a performance issue, one can go one level down to see more
+details about the detected issue, such as the type of problem, involved class, method and method line. 
+\figurename ~\ref{fig_issue2_vs_code} shows the information of our Lock
+Contention bug, which was located in the LockContentionBug class, method
+generateBug, line 20. When comparing it with the actual source code, one can
+see that is precisely the line where the bug was injected (by taking a class
+lock and then doing a very CPU intensive logic - the calculation of Pi using
+BigDecimal classes -).
 
-Two iterations were run: The first was done to catch up as many issues as
-possible. The 2nd one shows the results report after fixing issues (possible an
-intermediate run might be needed, as some issues might mask other ones) After each run, 
-the detected bugs will be “fixed”.
+\begin{figure}[!h]
+% \centering
+\includegraphics[totalheight=.3\textheight,width=1\textwidth]{issue2_vs_code}
+\caption{Comparison of lock contention issue in the WAIT report against the
+actual source code}
+\label{fig_issue2_vs_code}
+\end{figure}
 
-Example of detected bugs!, simple and easy. All three bugs were
-detected indicating their nature plus pinpointing which classes/methods within
-the code were responsible.
+The report showed in 3rd place another symptom of the lock contention issue
+(it was able to relate the issues by comparing their detail information, where
+both issues pinpointed to the same class/method). This additional evidence
+suggested that this was definetely a major issue in the application. Moreover
+the I/O latency bug was also identified by this test run, ranking it in 4th
+place of severity. An interesting finding was that the deadlock issue did not
+present in this run, most likely prevented by the fact that the injected lock
+contention bug had a major impact in the application that originally planned.
+\figurename ~\ref{fig_issues34} shows the details of these two issues.
 
-that the threads are waiting for a lock in the log- ging infrastructure method SystemOutStream.processEvent() line 277. 
-Armed with this information, a programmer could look at the code and try to determine the reason for the deadlock.
+\begin{figure}[!h]
+% \centering
+\includegraphics[totalheight=.3\textheight,width=1\textwidth]{run1_issues34_details}
+\caption{Details of issues ranked 3 and 4 in the first test run}
+\label{fig_issues34}
+\end{figure}
 
-WAIT can help identify these scaling limiters early in the development process.
+Based on the obtained information, the two identified bugs were ``corrected''
+and removed from the source code. Emulating a common test cycle, another run
+was done to see if there was any remaining performance issues in the
+application. Not surprisingly, the deadlock bug did appear in this report and,
+similarly to the previous cases, the report information, complemented
+with its comparison against the source code allowed the issue identification.
+A point worth noticing is that, even though the presence of the issue was
+correctly identified by WAIT, in this particular case it was not able to
+categorize it (leaving it with a blank color). \figurename
+~\ref{fig_dlissue_vs_code} shows the information of our Deadlock bug, which was
+located in the Friend private class within the DeadLockBug class, in the line
+30 of the method bow. When comparing it with the actual source code, one can
+see that is precisely the line where the bug was injected (as the deadlock logic 
+implemented the classing example of the bowing friends, the actual deadlock
+occurred when friends try to bowBack to each other).
 
+\begin{figure}[!h]
+% \centering
+\includegraphics[totalheight=.3\textheight,width=1\textwidth]{deadlock_vs_code}
+\caption{Comparison of deadlock issue in the WAIT report against the
+actual source code}
+\label{fig_dlissue_vs_code}
+\end{figure}
 
-Time saving measured in two dimensions: 
+As the main measurement of success for this experiment was to assess the
+ability of WAIT to identify performance problems, this experiment was
+successful as all three injected bugs were identified, including the
+involved classes and methods. 
 
+In terms of time, two main savings were identified. First, the automated
+approach practically reduced the overhead of collecting data for WAIT (which
+previously was too high and practically made WAIT unusable in a highly
+distributed environment) to zero. In parallel to the execution of all the performed 
+experiments (around 40 performance tests, for an approximated combined test
+duration of 60 hours), the time spent in using of WAIT was tracked. The total 
+installation time of the automated approach (Eclipse plugin and WebAgent) took
+no more than 15 minutes. After that, its usage require practically no additional time over the regular usage of the
+RPT (barely a minute, or less, to change its settings whenever needed -i.e. to
+modify the \emph{Sampling Interval}- or enabling/disabling its usage -i.e. to
+switch back and forth between the manual and automated modes-).
 
-- Time saved while identifying performance issues.
-Reduction Time: Early detection or trends (stress early detection).
-Time: Early detection (avoid wasting resources if serious issues identified).
-Average time of identifying an issue hard to know but even with a conservative
-estimate . . . not bad.
-Increasing the TESTER PRODUCTIVITY:
-Cost to locate defect = Cost of testing / the
-number of defects located
-The measures of success were the ability to identify performance problems that
-affect the applications. Moreover, the tool should allow a wider range of
-testers to perform the expert analysis, offering at the same time significant time savings for the expert users.
-SME expertise required to interpret the reports: Problem with consumability in
-parts of Dev, SVT, Perf and Support (few engineers outside of Watson are thread dump experts)
-Important to rephrase it as estimated tester time benefit? (at least a high
-level estimate … do not forget the time dimension!)
+The second time saving was in terms of reducing the effort invested
+in performance analysis. Even though the amount of injected bugs was
+small, the results would allow to estimate the potential benefits. Previously, 
+a tester would have ended with multiple WAIT reports (assuming he was able to
+collect the required information with the desired upload frequency). For
+example, assuming a distributed environment composed of X nodes, with a desired
+time window of 1-hour and a test duration of Y hours, a tester would end with X*Y 
+different WAIT reports, having to review X reports every hour (which means a
+number of reports directly proportional to the number of monitored nodes). With
+the automated approach, a tester should only have to review a single report,
+regardless of the number of nodes that compose the environment, which get refreshed 
+every hour.
 
+Furthermore, overcoming the usability constraints of WAIT allow a tester
+to enjoy the natural benefits of WAIT and exploit its expert knowledge
+capabilities\footnote{https://wait.ibm.com/waitUserManual.pdf} to expedite the
+identification of performance issues and its root causes. Even though it
+might be hard to define an average time spent identifying performance issues,
+even a conservative estimate (i.e. a couple of hours) could help to
+quantify WAIT's savings. For example in our study case, instead of spending 6
+hours analyzing the issues, it was possible to identifying them and the involved
+source code only with the information provided by the WAIT report. Moreover
+the automated approach would allow a wider range of testers to do performance
+analysis activities. An additional benefit is that less experienced testers
+could use this information to gain a deeper understanding of these type of problems, 
+hence reducing the dependency and overall workload of the most expert users
+within a team.
 
+Finally, as the report is updated on a recurrent basis, a tester does
+not need to wait until the end of the test to assess the results and raise bugs
+if required. As seen in the above experiment, additional time can be saved
+in the test process by reporting any relevant issue in parallel to the
+execution of the test, allowing the development team to start working on it.
+This would be especially valuable in long-term runs which are very common in the 
+performance testing domain, usually lasting several days.
 
+In conclusion, the results of this second experiment answered our research
+question Q3 (What benefits in productivity can a tester achieve if the previous
+two questions are answered?), by showing those productivity gains that a tester
+achieves by using the automated approach of WAIT.
 
-- Time saved vs. manual usage of WAIT.
-+ Logically estimated the benefits: Single report.
-- Previously you would have ended with:
-- X reports, assuming you monitored X nodes and generated all the reports after
-the test execution finished.
-- X*Y reports, assuming you monitored X nodes and generated the reports every
-1/Y time.
-- Now, in both cases you would have ended with a single report.
-In parallel to the execution of all the experiments, the obtained time savings
-in the usage of WAIT were tracked. The total installation time of the automated
-approach (Eclipse plugin and WebAgent) took no more than 15 minutes. After that, its usage require
-practically no additional time over the regular usage of the RPT (barely a
-minute too change its settings -i.e. \emph{Sampling Interval}- or
-enabling/disabling its usage -i.e. to switch back and forth between the manual
-and automated modes-). 
-Benefits: Less Time (setup, monitor, analysis, go/no-go decision) -> Less
-Learning curve / Less Error-Prone, Share knowledge / experience (remain), “Real-time”, Keep as light-weight as possible (minimum add-ons + low overhead)
-Time-consuming/complex data gathering (one data source per monitored process).
-Time-consuming/Complex report analysis (one report per monitored process).
-Plus required synchronization with the performance testing execution.
-
-
-
-In conclusion, the test case showed that the use of the automated approach
-could have several advantages: The time saving from its usage is high.
-In conclusion, the results from using the automated were very encouraging the
-bugs were identified as well as the time saved was quite high. The time saved per 
-application is around 1.6 hours: Split the time savings per type! Another
-important detected advantage was the ability to open precise bugs.
-Testers used the contextual information from the tool to investigate deeper the
-issues and provide detailed description in the bug that they would open.
-Furthermore, less experienced testers could also use this information to gain a
-deeper understanding of these type of problems.
-
-
+To summarize the overall experimental results, they were satisfactory because it
+was possible to achieve the desired goals of automating the execution of WAIT,
+while keeping the overhead low (in the range of 0\% to 3\% using a \emph{Sample
+Interval} of 480 seconds). Furthermore it was possible to assess the time
+savings the automated approach brings to the test process: After a quick
+installation effort (around 5 minutes per node), the time required by a tester
+to use WAIT as part of a performance testing is practically zero. Previously the
+number of WAIT reports that a tester needed to review was equal to the number of
+nodes of the tested environment (which in a highly distributed environment
+might be hundreds or more) multiplied by the number of times the collected
+information was uploaded (in order to have an incremental view); now, only
+a tester only needs to monitor a single report, which is updated on a recurrent
+basis to offer an incremental view of the results. A direct benefit of these
+savings is the reduction of expert knowledge required by tester in order to do
+performance analysis and be able to detect the performance issues and their
+root causes. Ultimately, this improves the tester productivity by reducing the
+cost (in terms of effort) required to locate defects.
 
 
 \subsection{Threads to Validity}
@@ -950,6 +1027,9 @@ additional functional information that can now be obtained from a tested environ
 improve the qualitative and quantitative capabilities of the idle-time
 analysis methodology (over which WAIT is based on) to identify more
 types of performance problems.
+[PENDING: Also to deepen the analysis in the relationship between the nature of
+the application - represented by the javacore size and its contents - and the
+sampling interval]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
@@ -1174,17 +1254,10 @@ Key message/conclusion: The identification of the root causes of performance iss
  Chen, Mike Y., et al. "Pinpoint: Problem determination in large, dynamic
  internet services." Dependable Systems and Networks, 2002. DSN 2002. Proceedings. International Conference on. IEEE, 2002.
  
- 
-  
- 
  ----------------------------
   
   PENDING:
   - Complete the results and related work sections!
-  - Finalize the Pair T-Test analysis. - DONE
-  - Try to merge the results of the WAIT report and tell some history
-  (Environmental issues possible in Stand-By if the real report does not work). 
-  - DONE
   - Re-read the paper to see if it makes sense (i.e. the verbiage of the
   reserch questions should change to make a better fit with the experiments
   and their results).
