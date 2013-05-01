@@ -129,8 +129,10 @@ As one of the eight dimensions of quality
 performance is a critical non-functional characteristic which is concerned
 with the capacity and timeliness of the software. Furthermore it is an accepted
 fact in the industry that performance is a major concern of any software
-project, especially in enterprise-level applications, as performance issues
-might not only affect the users’ experience, but also have a considerable financial impact. 
+project, especially in enterprise-level applications, where performance plays a
+central role in determining the overall quality and usability of the system. Under 
+these industrial scenarios,  any performance issue will not only affect the
+users’ experience, but could also have a considerable financial impact.
 However it is not uncommon that performance issues materialize into serious
 problems (i.e. schedule delays, cost overruns, outages on production
 environments, or even cancellation of projects) in a significant percentage of
@@ -157,9 +159,16 @@ problems, especially in highly distributed environments. For example, in
 enterprise-level Java applications garbage collection logs, thread dumps, 
 thread usage statistics, heap dumps, CPU utilization, JVM memory usage, 
 JDBC pool status and server response time are only some of the resources a
-tester can use to understand how an application is performing. It consequently
-increases the technical skill set required to efficiently use such tools, which
-is usually held by only a small number of experts within an organization.
+tester can use to understand how an application is performing. Moreover each
+type of information could require a different tool to collect and visualize the
+information (For example, jmap
+\footnote{http://docs.oracle.com/javase/6/docs/technotes/tools/share/jmap.html}
+could be used to analyze object memory maps, while jhat
+\footnote{http://docs.oracle.com/javase/6/docs/technotes/tools/share/jhat.html}
+be used to review heap dumps and jconsole
+\footnote{http://docs.oracle.com/javase/1.5.0/docs/guide/management/jconsole.html}
+to check memory and threads usage). This situation consequently increases the
+technical skill set required to efficiently use such tools, which is usually held by only a small number of experts within an organization.
 This situation could potentially lead to create bottlenecks in those specific
 activities that could only be carried out by these limited experts, hence
 impacting the overall productivity of large testing teams where commonly the
@@ -720,14 +729,16 @@ previous observation that it is preferable, in terms of overhead, the
 usage of the \emph{Sample Interval} of 480 seconds. The detailed results of
 this analysis are shown in the \tablename ~\ref{tTest1}.
 
+ [PENDING: Rephrase t-test results using feedback from Philip]
+
 \begin{table}[!h]
 \caption{t-Test - Probability Results}
 \label{tTest1}
 \centering
 \begin{tabular}{p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}}
 \hline
-\bfseries Application \bfseries WAIT Modality & \bfseries Avg Response Time
-(ms)& \bfseries Max Response Time (ms)& \bfseries Avg Throughput (hps)&\\
+\bfseries Application & \bfseries WAIT Modality & \bfseries Avg Response Time
+(ms)& \bfseries Max Response Time (ms)& \bfseries Avg Throughput (hps)\\
 \hline
 PetStore & 	Manual, 480s 			& 0.470 & 0.143	& 0.206\\
 PetStore & 	Automated, 480s 		& 0.342	& 0.297	& 0.472\\
@@ -922,6 +933,12 @@ the automated approach, a tester should only have to review a single report,
 regardless of the number of nodes that compose the environment, which get refreshed 
 every hour.
 
+[PENDING: Modify to include/stress that the assumption of a single node would
+not work, as the workload might be different between nodes. For example, it is
+common that load test use different distributions to emulate different
+customer behaviors, which might involve testing different transactions among
+the application nodes.]
+
 Furthermore, overcoming the usability constraints of WAIT allow a tester
 to enjoy the natural benefits of WAIT and exploit its expert knowledge
 capabilities\footnote{https://wait.ibm.com/waitUserManual.pdf} to expedite the
@@ -1050,216 +1067,78 @@ This work was supported, in part, by Science Foundation Ireland grant 10/CE/I185
 
 \end{document}
 
- ----------------------
- 
- Related Work - First Draft / Ideas
+The idea of applying automation in the performance testing domain is not new.
+However most of the existing performance testing research has focused on
+automating the generation of load test suites \cite{Chen1,Elvira1,Zhang1,Briand1,Avritzer1,Bayan1,Avritzer2,Avritzer3,Garousi1}.
+Similarly, there are in the industry a variety of commercial products and free open-source tools 
+available to support this task. For example, the HP LoadRunner
+\footnote{http://www8.hp.com/us/en/software/
+software-product.html?compURI=tcm:245-935779} and the IBM's Rational Performance
+Tester \footnote{http://www-01.ibm.com/software/awdtools/tester/performance/} are solutions that allow 
+scalability testing by generating a real workload on the application. From the
+open-source community, Apache's JMeter \footnote{http://jmeter.apache.org/} and Grinder
+\footnote{http://grinder.sourceforge.net/} are two popular applications that provide similar functionality.
 
-- Automated Performance Testing / Analysis popular: Performance Testing (from
-my excel), Analysis (i.e. RTCE, GC Lite, LeakChaser), runtime vs. static. Some
-similar, but different in the sources they use and the domain?
- - Industry Tools: Multiple Load Test generators, and also
-tools.
-It is usually required to use multiples + expert judgements + .
+Regarding the performance analysis area, it also remains an active research
+venue. However, a high percentage of those techniques are not suitable to the
+performance testing domain because have an impractical performance overhead.
+For example, the authors of \cite{Yang1} instrument the source code to mine
+the sequences of call graphs and infer, through the usage of heuristics, the relevant 
+error patterns. In addition to the instrumentation, which generates a high
+performance overhead, this approach requires a considerable manual effort.
 
-To the best of our knowledge, first time it has been tried in idle-time
-analysis.
+Similar case of the work presented in \cite{Hangal1,Csallner1} which use
+dynamically inferred invariants to detect programming errors or the work
+proposed by \cite{Barham1,Chen2} which are also performance analysis approaches
+based on instrumentation. In all cases, these techniques cannot be
+effectively applied to load testing due to the impractical performance overhead
+that the instrumentation would bring to the tested environments. The main
+difference between these approaches and ours is that no instrumentation of the
+monitored system is required, eliminating a major source of potential overhead.
 
-<<
-(Intro) Related Techniques: In the software development process, performance testing is 
-commonly conducted to determine an application's performance as experienced by the user.
-In this context, the focus is generally not on a single application session but
-on the application in its entirety, i.e., one does not test a single, isolated re-
-quest of a single user but rather the performance when many users interact with
-the application simultaneously. Software testers commonly use techniques such
-as load testing, stress testing, etc., to perform these kinds of tests [3]. There
-is a variety of commercial products and free open-source tools available for the
-task. For example, IBM's Rational Performance Tester [4] and HPs LoadRunner
-[5] both do scalability testing by generating a real work load on the application.
-Open-source tools such as Apache's JMeter [6] and Grinder [7] provide a similar
-functionality.
-Motivated by the large cost for commercial performance testing tools, Chen
-et al. created Yet Another Performance Testing Framework [8]. It enables users
-to create custom test programs which dene the business operations to be per-
-formed during the test. Chen's framework then executes these tasks concurrently.
-In [9], Zhang et al. present a cloud-based approach to performance testing of web
-services. Their system provides a frontend in which users can specify test cases
-which are then dispatched to Amazon EC2 [10] cloud instances for execution.
-Similar to all the previous tools, their system is testing the performance under
-concurrent user access to the system.
-[[
-3. Molyneaux, I.: The Art of Application Performance Testing. Volume 1. O'Reilly
-Media (2009)
-4. IBM: Rational Performance Tester. http://www-01.ibm.com/software/
-awdtools/tester/performance/
-5. Hewlett Packard: HP LoadRunner. http://www8.hp.com/us/en/software/
-software-product.html?compURI=tcm:245-935779
-6. Apache Software Foundation: Apache JMeter. http://jmeter.apache.org/
-7. Aston, P.: The Grinder, a Java Load Testing Framework. http://grinder.
-sourceforge.net/
-8. Chen, S., Moreland, D., Nepal, S., Zic, J.: Yet Another Performance Testing
-Framework. In: Australian Conference on Software Engineering (ASWEC). (2008)
-170 \{179
-9. Zhang, L., Chen, Y., Tang, F., Ao, X.: Design and Implementation of Cloud-based
-Performance Testing System for Web Services. In: Conference on Communications
-and Networking in China (CHINACOM). (2011) 875 \{880
-10. Amazon Web Services LLC: Amazon Elastic Compute Cloud (Amazon EC2).
-http://aws.amazon.com/ec2/ (2012)
-]]
+One of the closest works to ours is \cite{Jiang2009}. In this paper, the authors
+present a non-intrusive approach which automatically analyzes the execution logs
+of a load test in order to identify performance problems. This approach requires to have
+information from a previous run to use it as baseline, information which might
+not be available in all the cases. As this approach only uses 
+the load testing results (i.e. response time and throughput) in its analysis,
+the deepness of its analysis in terms of root causes is limited, as it cannot offer 
+hints about what is causing the performance issues that identifies. 
 
-Related Work: The idea of replaying a test execution in a simulator is, of course, not new. The
-overall approach is frequently referred to as the capture and replay paradigm,
-and has long been studied in different contexts such as testing of concurrent
-programs [2]. ... To our best knowledge, our approach is the first to combine replay with model-based
-methods for error detection within a test-case generator. Our contribution is not
-a theoretical one, but comes from an industrial perspective.
+[PENDING: To rephrase this part!]
 
-Related Work: Unlike these approaches, our work aims at proposing a generic and platform
-independent test system based on the TTCN-3 standard to execute runtime
-tests. The proposed test system supports different test isolation mechanisms in
-order to support testing different kinds of components: test sensitive, test aware
-or even non testable components. Such test system has an important impact on
-reducing the risk of interference between test behaviors and business behaviors
-as well as avoiding overheads and burdens.
+On the contrary, 
+To the best of our knowledge, our approach is the first to propose the
+applicability, through automation means, of the idle-time analysis in the performance testing domain to exploit its performance analysis capabilities.
 
-SPE, The commonest approach is purely measurement-based; it
-applies testing, diagnosis and tuning late in the development cycle, 
-when the system under development can be run and measured (see, e.g.
-[2][4][8][9]).
+being the first of its type, to the best of our knowledge.
 
-[2] M. Arlitt, D. Krishnamurthy, J. Rolia, “Characterizing
-the Scalability of a Large Web-based Shopping System'',
-ACM Trans. on Internet Technology, v 1, 2001, pp. 44-69.
+[PENDING: Should I bring back the pseudo-motivation of expert -maybe
+automation efforts to reduce the expert knowledge required to do performance
+testing/analysis:  (i.e. RTCE, GC Lite, LeakChaser), runtime vs. static. Some
+similar, but different in the sources they use and the domain?-]
 
-[4] A. Avritzer, J. Kondek, D. Liu, and E. J. Weyuker,
-"Software performance testing based on workload
-characterization," in Proc. WOSP’2002, Rome, , pp. 17-24.
-
-[8] S. Barber, “Creating Effective Load Models for
-Performance Testing with Incomplete Empirical Data”, in
-Proc. 6th IEEE Int. Workshop on Web Site Evolution, 2004,
-pp. 51-59.
-[9] S. Barber, “Beyond performance testing”, parts 1-14,
-IBM DeveloperWorks, Rational Technical Library, 2004,
-www-128.ibm.com/developerworks/rational/library/4169.html
-
-Performance testing on part or all of system, under
-normal loads and stress loads [8]. The use of test data
-to solve problems is the subject of [9]. This activity is
-discussed in Section 3 below.
-
-[8] S. Barber, “Creating Effective Load Models for
-Performance Testing with Incomplete Empirical Data”, in
-Proc. 6th IEEE Int. Workshop on Web Site Evolution, 2004,
-pp. 51-59.
-[9] S. Barber, “Beyond performance testing”, parts 1-14,
-IBM DeveloperWorks, Rational Technical Library, 2004,
-www-128.ibm.com/developerworks/rational/library/4169.html
-
-Technical developments -> Visualization and diagnostics
-Understanding the source of performance limitations is a search process, which
-depends on patterns and relationships in performance data, often revealed by
-visualizations. Promising areas for the future include better visualizations,
-deep catalogues of performance-related patterns of behaviour and structure, and
-algorithms for automated search and diagnosis.
-Present visualization approaches use generic data exploration views such as
-Kiviat graphs (e.g. in Paradyn [47]), traffic intensity patterns overlaid on
-physical structure maps [47], CPU loading overlaid on scenarios, and breakdowns
-of delay [66]. Innovative views are possible. For example, in [60] all kinds of
-resources (not just the CPU) are monitored, with tools to group resources and
-focus the view. The challenge for the future is to visualize the causal interaction of
-behaviour and resources, rather than to focus on just one or the other.
-[[
-[47] Merson, P. and Hissam, S. “Predictability by construction” Posters of
-OOPSLA 2005, pp 134-135, San Diego, ACM Press, Oct. 2005.
-[60] J.A. Rolia, L. Cherkasova, R. Friedrich, 
-“Performance Engineering for EA Systems in Next Generation Data Centres”, Proc.
-6th Int. Workshop on Software and Performance, Buenos Aires, Feb. 2007.
-[66] C.U. Smith, L. G. Williams, Performance Solutions, Addison-Wesley, 2002
-]]
-
-Technical developments -> Bottleneck identification
-
-a search for a saturated resource which limits the system, is a frequent
-operation. In [21], Franks et al describe a search strategy over a model, guided by its structure and
-results, and detects under-provisioned resource pools and over-long holding
-times. It combines properties of resources and behaviour, for a “nested” use of
-resources. It scales to high complexity, is capable of partial automation, and
-could be adapted to interpret measured data. A multistep performance enhancement
-study using these principles is described in [83].
-Another search strategy purely over data ([9], part 7) focuses on reproducing
-and simplifying the conditions in which the problem is observed. The actual diagnosis
-of the cause (e.g. a memory leak) depends on designer expertise.
-A bottleneck search strategy combining the data and the model could detect more
-kinds of problems (e.g. both memory leaks and resource problems) and could
-provide automated search assistance.
-Patterns (or anti-patterns) related to bottlenecks have been described by Smith
-and Williams [66] and others (e.g., excessive dynamic allocation, “one-lane bridge”).
-For the future, more patterns and more kinds of patterns (on measurements, on
-scenarios or traces) will be important. Patterns that combine design, model and
-measurement will be more powerful than those based on a single source.
-[[
-[9] S. Barber, “Beyond performance testing”, parts 1-14, IBM DeveloperWorks,
-Rational Technical Library, 2004, www-128.ibm.com/developerworks/rational/library/4169.html
-
-[21] G. Franks, D.C. Petriu, M. Woodside, J. Xu, P. Tregunno, 
-“Layered Bottlenecks and Their Mitigation”, Proc 3rd Int. Conf. on Quantitative
-Evaluation of Systems, Riverside, CA, Sept. 2006.
-
-[83] J. Xu, M. Woodside, and D.C. Petriu, 
-“Performance Analysis of a Software Design using the UML Profile for
-Schedulability, Performance and Time”, in Proc. 13th Int.
-Conf. Modeling Techniques and Tools for Computer Performance Evaluation, Urbana,
-USA, Sept. 2003 ]]
-
-Scalability analysis and improvement is largely a matter of identifying
-bottlenecks that emerge as scale is increased, and evolving the architecture. Future
-scalability tools will employ advanced bottleneck analysis but will depend more
-heavily on models, since they deal with potential systems.
-
-
-•	Performance Testing Tools? (HP Load Runner, Jmeter, RPT).
-
-[Pending to see where better to fit these points:]
-Benefit: Tools usability, productivity increase (less time identifying issues and their root cause), any benefit in the consolidation (other than reducing from N*M reports to 1), i.e. trends in time and/or nodes (probably good input from performance team):
-* How does the process currently work? (steps and time) i.e. ~2 hours debugging, 2-4 RCA + fixing OO
-* Issues in different nodes sound like environmental ones?
-* Issues in different times (kind of trending) might involve the application?
-They refer to “end to end” testing … the most common issue are deadlocks.
-
-He uses different tools:
-- Heap dumps: WAIT?
-- Thread dumps: WAIT (locks, contentions) … around every 5 - 10 mins / ISA (performance analysis kit based on Eclipse).
-- Overall development expertise (i.e. architecture, layers, frameworks, tools).
-- Code profiling: tprof to profile in real time (recording every 1-2 mins to know the CPU usage per transactions); jprofiling (single transaction costs, such as CPU usage).
-- Database: Tunning of SQL queries (or expert systems that encapsulate the identification of the most common issues).
-- GC: gclite (expert system) or jmap.
-
-Today, the state of industrial performance measurement and testing techniques is
-captured in a series of articles by Scott Barber [8][9] including the problems
-of planning, execution, instrumentation and interpretation.
-
-[8] S. Barber, “Creating Effective Load Models for Performance Testing with
-Incomplete Empirical Data”, in Proc. 6th IEEE Int. Workshop on Web Site Evolution, 2004,
-pp. 51-59.
-[9] S. Barber, “Beyond performance testing”, parts 1-14, IBM DeveloperWorks,
-Rational Technical Library, 2004, www-128.ibm.com/developerworks/rational/library/4169.html
-
-The tools used by performance analysts range from load generators, for supplying
-the workload to a system under test, to monitors, for gathering data as the
-system executes.
-
-Key message/conclusion: The identification of the root causes of performance issues, relies very heavy on the expert knowledge of the user + requires a lot of different tools. There is no possible to indicate an average time per issue identification, but overall is very challenging/time-consuming.
-
- 
- Chen, Mike Y., et al. "Pinpoint: Problem determination in large, dynamic
- internet services." Dependable Systems and Networks, 2002. DSN 2002. Proceedings. International Conference on. IEEE, 2002.
- 
- ----------------------------
+----------------------------
   
   PENDING:
-  - Complete the results and related work sections!
+  - Complete the related work sections!
   - Re-read the paper to see if it makes sense (i.e. the verbiage of the
   reserch questions should change to make a better fit with the experiments
   and their results).
 
+[PENDING: Should I add any mention of the sanity check? (about HD) probably
+only if suggested]
+ 
+ [PENDING:
+ 
+ Probably improve the verbiage related to JPetStore to something like this:
+ 
+ JPetStore [2] is a larger and more complex open source web application relative
+ to DS2. Unlike Sun’s original ver- sion of Pet Store which is more focused on demonstrat- 
+ ing the capability of the J2EE platform, JPetStore is a re- implementation with a more efficient 
+ design [3] and is tar- geted on benchmarking the J2EE platform against other web platforms such as 
+ .Net. Unlike DS2 which embeds all the application logic into the JSP code, JPetStore uses the 
+ “Model-View-Controller” framework andXMLfiles for ob- ject/relational mappings. In this task, 
+ we have deployed the JPetStore application on Apache Tomcat and used MySQL as the database backend. 
+ ]
   
