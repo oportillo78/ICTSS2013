@@ -37,11 +37,12 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Towards an automated approach to apply the idle-time analysis
-efficiently in a performance testing scenario}
+\title{Towards an Automated Approach to Apply the Idle-time Analysis
+in Performance Testing}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{PENDING}
+\titlerunning{Automated Approach to Apply Idle-time Analysis
+in Performance Testing}
 
 % the name(s) of the author(s) follow(s) next
 %
@@ -49,11 +50,11 @@ efficiently in a performance testing scenario}
 % their surnames. This ensures that the names appear correctly in
 % the running heads and the author index.
 %
-\author{Andres-Omar Portillo-Dominguez\inst{1}\and Miao Wang\inst{1}\and Philip
+\author{A. Omar Portillo-Dominguez\inst{1}\and Miao Wang\inst{1}\and Philip
 Perry\inst{1} \and\\
 John Murphy\inst{1} \and Nick Mitchell\inst{2}\and Peter F. Sweeney\inst{2}}
 
-\authorrunning{PENDING}
+\authorrunning{A.O. Portillo-Dominguez et al.}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 \urldef{\mailucdconnect}\path|andres.portillo-dominguez@ucdconnect.ie,|
@@ -96,16 +97,15 @@ limitations that prevent its efficient usage in performance testing. This paper
 presents an light-weight approach to address those limitations and automate the 
 usage of WAIT to make it useful in the performance testing domain.
 
-This work used a 3-phase experiment to validate the approach in terms
+This work used a 2-phase experiment to validate the approach in terms
 of overhead costs, time savings and overall usefulness in the
 analysis of performance issues, work that involved a case-study with two
 real-life applications. The current results have proven the feasibility of the
 proposed approach by achieving a good decrement in the time invested to do performance
 analysis with only a low level of overhead.
 \keywords{Performance testing, automation, performance analysis, idle-time
-analysis}
+analysis, distributed enterprise-level applications}
 \end{abstract}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction
@@ -183,21 +183,21 @@ suitable to be used for performance testing. Similarly, if the techniques and
 tools require a heavy human effort to be used effectively, this situation might limit 
 their applicability by making them too complex to apply or error prone. As
 documented by the authors of \cite{Shahamiri1}, here automation could play a key
-role to encourage the adoption of the technique, as this strategy has been
-successfully applied to decrease the time and costs required to perform
-testing activities.
+role to encourage the adoption of a technique, strategy has been successfully
+applied in the past to decrease the time and costs required to perform testing
+activities.
 
 To ensure that our research work is helpful for solving real-life problems for
 software industries, we have also carried out regular meetings with the IBM
 System Verification Test (SVT) to discuss the challenges that they experience in
-their day-to-day testing activities. The received feedback is similar in terms
-that there is a real need to develop tools that can produce information which is
-consumable by both domain and non-domain experts, hence helping to improvement the 
-performance of the testing teams by allowing a wider number of testers to carry out 
-complex system analysis in less time.
+their day-to-day testing activities. The received feedback is qualitative
+similar in terms that there is a real need to develop tools that can produce information 
+which is consumable by both domain and non-domain experts, hence helping to
+improvement the performance of the testing teams by allowing a wider number of testers to carry out 
+complex analysis tasks in less time.
 
 In summary, the detection of performance related issues and the identification
-of their root causes have become very challenging and time consuming tasks,
+of their root causes are very challenging and time consuming tasks,
 especially in highly distributed environments, usually requiring not only the
 usage of multiple tools to do performance triage but also heavily relying on
 the expertise of the people involved on those tasks.
@@ -221,7 +221,7 @@ if the data needs to be refreshed periodically during the test execution in
 order to have an incremental view of the results. This last scenario is highly
 desirable in long runs (i.e. 5 days or more), where the testers cannot have the
 luxury of waiting until the end of the test to know if any performance issues
-exist. 
+exist.
 
 Even though the above limitations might be manageable in small testing
 environments or test runs (i.e. a few hours duration), they prevent WAIT to be
@@ -243,7 +243,9 @@ phase concentrated in assessing the accuracy of WAIT's results and the productiv
 improvements that it could bring to the performance testing process. 
 
 The results of this work have provided evidence regarding the feasibility of the
-proposed approach [PENDING: low overhead, easy identification of issues].
+proposed approach: It bring a low overhead to the monitored system (in the range
+of 0\% to 3\% using a \emph{Sample Interval} commonly used in the industry) and
+it practically does not require any additional .
 
 The main contribution of this paper is a lightweight approach to automate the data 
 gathering and execution of WAIT in sync with a performance test loader in
@@ -252,12 +254,11 @@ approach has a low overhead and could be easily adaptable to work with other
 performance analysis tools that rely on similar data sources.
 
 The rest of this paper is structured as follows: Section 2 discusses the
-background. Section 3 shows the related work. Section 4 describes the proposed
-approach, including details of design and implementation. Section 5 describes
-the experimental setup and methodology, while Section 6 explores the
-experimental results. Finally Section 7 presents the conclusions and future
-work. [PENDING to adjust to reflect the final structure]
-
+background. Section 3 shows the related work. Section 4 summarizes the
+problem definition. Section 5 describes the proposed approach and
+implementation, while Section 6 explores the experimental evaluation, including
+the experimental results and threads to validity. Finally Section 7 presents the
+conclusions and future work.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Background
@@ -265,16 +266,27 @@ work. [PENDING to adjust to reflect the final structure]
 
 \section{Background}
 
-WAIT is a tool to do performance triage which offers a high-level view of
-the whole system as well as the main performance inhibitors that exist on the
-system. WAIT is based on the idle-time analysis methodology \cite{Altman2010}
-which pursues to infer performance behaviors and problems based on non-intrusive sampling mechanisms
-available by default in at the Operating System level (i.e. the ``ps'' or
-``vmstat'' commands in a Unix/Linux environment) and the Java Virtual Machine
-(in the form of javacores
+Idle-time analysis is a performance analysis methodology that pursues to explain
+the root causes that leads to under-utilized processors. This approach
+proposed by \cite{Altman2010} is based on the observed behavior that in 
+enterprise-level multi-tier applications the performance problems does not
+usually manifest as hot spots, but as idle time indicating a lack of
+forward motion. This undesirable idle time can be caused by multiple
+factors, such as resource constraints, locking problems or excessive
+system-level activities, just for name a few examples of possible causes.
+
+
+
+WAIT\footnote{http://wait.ibm.com} is a tool that implements the idle-time
+analysis methodology and allows to do performance triagem offering a
+high-level view of the whole system as well as the main performance inhibitors
+that exist on it. WAIT pursues to infer performance behaviors and problems based
+on non-intrusive sampling mechanisms available by default at the Operating System 
+level (i.e. commands such as ``ps'' or ``vmstat'' in a Unix/Linux
+environment) and the Java Virtual Machine (in the form of javacores
 \footnote{http://www-01.ibm.com/support/docview.wss?uid=swg27017906\&aid=1}
-, which are a diagnostic feature available in Java to get quick snapshot of the
-JVM status, including information such as threads, locks, monitors,
+, which are a diagnostic feature available in Java to get a quick snapshot of
+the JVM status, including information such as threads, locks, monitors,
 classloaders, classes and memory usage). The fact that WAIT uses these data
 sources makes it non-disruptive to the monitored environments, as no special flags, 
 service restart or instrumentations are required to use it. As WAIT also
@@ -282,9 +294,9 @@ requires infrequent samples to perform a diagnosis (at most every 30 seconds,
 even though the sampling rate could be adjusted), it is low-overhead. This
 characteristic of relying on infrequent samples is especially relevant considering 
 that the JVM has to pause its running applications whenever a javacore is
-generated (very similar in essence to the pauses that the Garbage Collection has in a 
-running JVM). Even though the JVMs can produce a javacore with a fairly low
-perturbation, these pauses might go up to several hundred milliseconds if the 
+generated (very similar in essence to the pauses that the Garbage Collection
+process has in a running JVM). Even though the JVMs can produce a javacore with
+a fairly low perturbation, these pauses might go up to several hundred milliseconds if the 
 application has thousands of concurrent threads and very deep call stacks.
 
 From a usability perspective, WAIT is simple: A user only needs to
@@ -344,7 +356,7 @@ authors of \cite{Yang1} instrumented the source code to mine the sequences of
 call graphs and infer, through the usage of heuristics, the relevant error
 patterns. In particular, this approach requires a considerable manual effort
 that also discourage its usage in performance testing. A similar case occurs
-with the work presented in\cite{Hangal1,Csallner1} which use dynamically
+with the work presented in \cite{Hangal1,Csallner1} which use dynamically
 inferred invariants to detect programming errors or the techniques proposed by
 \cite{Barham1,Chen2} which are also performance analysis approaches based on instrumentation. 
 In all these cases, the techniques cannot be effectively applied to a
@@ -398,6 +410,23 @@ the above scenario, the current costs of using WAIT under the above conditions
 overcome the possible benefits of using it, especially after adding the high
 possibility of a human error which might compromise the obtained results.
 
+An possible assumption that can be considered to use WAIT in its current form
+in a performance test is that the different JVMs that composed a
+distributed environment usually face the similar type of performance
+bottlenecks, so the analysis can focus on a single randomly selected JVM and it
+can be assumed that its results are representative of the whole system. Even
+though this assumption might be applicable in other scenarios, it does not suit
+performance testing because performance testing is responsible of assuring that
+the application will be able to handle the planned workload in production. If a
+single node is assessed, there is a high risk that other potential issues are
+been overlooked. The probability of the risk would be directly related to the
+size of the distributed system  (the bigger the number of nodes, the most
+likely a single node is not representative) and the type of performance tests
+been developed (it is common that different random factors and request
+distributions are used to emulate diversity in the behavior of the users,
+which usually involve that different nodes process different types of
+transactions at different rates).
+
 The objective of this paper is to address the usability limitations of WAIT to
 be used effectively in the performance testing domain. To achieve this, the
 following research questions have been formulated:
@@ -448,8 +477,6 @@ Moreover, if a \emph{Backup} was indicated the data is also copied to the
 backup destination before it is deleted. Then a reference to the updated results
 report is obtained and the \emph{Next Time Threshold} is calculated. Finally,
 the logic awaits the configured \emph{Sampling Interval} and then a new iteration starts.
-
-[PENDING: Describe how a javacore works \ldots probably from WAIT's paper]
 
 Once the performance test finishes, a final upload round (and backup if
 configured) is done to upload any remnant collected data. When completed this
@@ -769,12 +796,10 @@ showed that for the PetStore application the differences were only significant f
 those runs using the \emph{Sample Interval} of 30 seconds in the average
 response time, and only for the automated approach using the \emph{Sample
 Interval} of 30 seconds in the average throughput. In the case of Portal, the
-results were similar. This additional analysis reinforced the
-previous observation that it is preferable, in terms of overhead, the
-usage of the \emph{Sample Interval} of 480 seconds. The detailed results of
-this analysis are shown in the \tablename ~\ref{tTest1}.
-
- [PENDING: Rephrase t-test results using feedback from Philip]
+results were similar. This additional analysis reinforced the previous
+observation that it is preferable, in terms of overhead, the usage of the \emph{Sample Interval} 
+of 480 seconds. The detailed results of this analysis are shown in the
+\tablename ~\ref{tTest1}.
 
 \begin{table}[!h]
 \caption{t-Test - Probability Results}
@@ -978,12 +1003,6 @@ the automated approach, a tester should only have to review a single report,
 regardless of the number of nodes that compose the environment, which get refreshed 
 every hour.
 
-[PENDING: Modify to include/stress that the assumption of a single node would
-not work, as the workload might be different between nodes. For example, it is
-common that load test use different distributions to emulate different
-customer behaviors, which might involve testing different transactions among
-the application nodes.]
-
 Furthermore, overcoming the usability constraints of WAIT allow a tester
 to enjoy the natural benefits of WAIT and exploit its expert knowledge
 capabilities\footnote{https://wait.ibm.com/waitUserManual.pdf} to expedite the
@@ -1077,21 +1096,20 @@ validation, composed of the implementation of a prototype and a study
 case with two real-life applications. The results are encouraging as they have
 proved that the approach addresses effectively the adoption barriers for WAIT in 
 a distributed performance testing environment: The solution has proven being
-light-weight, generating a low overhead ([PENDING]). Moreover, from a tester
-usability perspective, there are also tangible time savings in terms of the
-effort required to detect performance issues.
+light-weight, generating a low overhead (in the range of 0\% to 3\% using a
+\emph{Sample Interval} commonly used in the industry). Moreover, from a tester
+usability perspective, there are also tangible time savings in terms of the effort required to detect performance issues.
 
 Future work will concentrate on assessing the practicability of the
 approach and its benefits in a major scale through broader study cases with our
-industrial partner IBM. It will also be evaluated how best to exploit the
-additional functional information that can now be obtained from a tested environment
-(i.e. test workload, response time, throughput and transactions) in order to
-improve the qualitative and quantitative capabilities of the idle-time
-analysis methodology (over which WAIT is based on) to identify more
-types of performance problems.
-[PENDING: Also to deepen the analysis in the relationship between the nature of
-the application - represented by the javacore size and its contents - and the
-sampling interval]
+industrial partner IBM with a special interest in understanding the trade-off
+between the \emph{Sampling Interval} and the nature of the application
+(represented by the size and contents of its javacores). It will also be
+investigated how best to exploit the additional functional information that can
+now be obtained from a tested environment (i.e. test workload, response time,
+throughput and transactions) in order to improve the qualitative and
+quantitative capabilities of the idle-time analysis methodology (WAIT's
+foundation) to identify more types of performance problems.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
