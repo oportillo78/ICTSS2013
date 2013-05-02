@@ -1,0 +1,48 @@
+\begin{thebibliography}{1}
+
+\bibitem{CapersJones1}
+{Capers Jones}:
+\newblock {Applied Software Measurement: Global Analysis of Productivity and
+  Quality}.
+\newblock McGraw-Hill (2008)
+
+\bibitem{Compuware1}
+{Compuware}:
+\newblock {Applied Performance Management Survey}.
+\newblock (2007)
+
+\bibitem{Woodside2007}
+Woodside, M., Franks, G., Petriu, D.C.:
+\newblock {The Future of Software Performance Engineering}.
+\newblock Future of Software Engineering (FOSE '07) (May 2007)  171--187
+
+\bibitem{trevor1}
+Parsons, T., Murphy, J.:
+\newblock {Detecting Performance Antipatterns in Com- ponent Based Enterprise
+  Systems}.
+\newblock In: 2nd International Middleware Doctoral Symposium. Volume~7. (2008)
+   55--90
+
+\bibitem{Angelopoulos2012}
+Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
+\newblock {GcLite: An Expert Tool for Analyzing Garbage Collection Behavior}.
+\newblock 2012 IEEE 36th Annual Computer Software and Applications Conference
+  Workshops (July 2012)  493--502
+
+\bibitem{Shahamiri1}
+{Shahamiri, S.R.}, {Kadir, W.M.N.W.}, M.:
+\newblock {A Comparative Study on Automated Software Test Oracle Methods}.
+\newblock ICSEA (2009)
+
+\bibitem{Altman2010}
+Altman, E., Arnold, M., Fink, S., Mitchell, N.:
+\newblock {Performance analysis of idle programs}.
+\newblock ACM SIGPLAN Notices \textbf{45}(10) (October 2010)  739
+
+\bibitem{Wu1}
+{Wu, Haishan}, {Asser N. Tantawi}, T.:
+\newblock {A Self-Optimizing Workload Management Solution for Cloud
+  Applications}.
+\newblock (2012)
+
+\end{thebibliography}

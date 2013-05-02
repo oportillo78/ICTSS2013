@@ -324,8 +324,48 @@ database access (based on the categorization of its stack trace).
 
 \section{Related Work}
 
-[PENDING to review/merge my literature review notes]
+The idea of applying automation in the performance testing domain is not new.
+Most of the existing performance testing research has focused on automating the generation of 
+load test suites \cite{Chen1,Elvira1,Zhang1,Briand1,Avritzer1,Bayan1,Avritzer2,Avritzer3,Garousi1}.
+Similarly, in the industry there are a variety of commercial products and
+open-source tools that can support on this task. For example, the HP LoadRunner
+\footnote{http://www8.hp.com/us/en/software/ software-product.html?compURI=tcm:245-935779} and 
+the IBM's Rational Performance Tester
+\footnote{http://www-01.ibm.com/software/awdtools/tester/performance/} are solutions that 
+allow scalability testing by generating a real workload on the application. From the
+open-source side, Apache's JMeter \footnote{http://jmeter.apache.org/} is the
+most popular application that provide a similar functionality.
 
+Regarding the research in performance analysis, a high percentage of
+the proposed techniques require instrumentation. This need of modifying the
+tested environment reduces their suitability to the performance testing domain
+because of the performance overhead they bring to the system. For example, the
+authors of \cite{Yang1} instrumented the source code to mine the sequences of
+call graphs and infer, through the usage of heuristics, the relevant error
+patterns. In particular, this approach requires a considerable manual effort
+that also discourage its usage in performance testing. A similar case occurs
+with the work presented in\cite{Hangal1,Csallner1} which use dynamically
+inferred invariants to detect programming errors or the techniques proposed by
+\cite{Barham1,Chen2} which are also performance analysis approaches based on instrumentation. 
+In all these cases, the techniques cannot be effectively applied to a
+load testing due to the impractical performance overhead that the
+instrumentation would bring to the tested environments. The main difference between 
+these approaches and ours is that no instrumentation of the monitored system is 
+required, eliminating a major source of potential overhead.
+
+One of the closest works to ours is \cite{Jiang2009}. In this paper, the authors
+present a non-intrusive approach which automatically analyzes the execution logs
+of a load test in order to identify performance problems. This approach requires to have
+information from a previous run to use it as baseline, information which might
+not be available in all the cases. Moreover as this approach only uses 
+the load testing results (i.e. response time and throughput) in its analysis,
+the deepness of its analysis in terms of root causes is limited, as it cannot offer 
+hints about what is causing the performance issues that identifies. To the best of 
+our knowledge, our approach is the first to propose the applicability, through
+automation means, of the idle-time analysis in the performance testing domain to exploit 
+its performance analysis capabilities, which does not only includes the
+identification of performance issues but also offers insights about their
+potential root causes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem Definition
@@ -597,15 +637,20 @@ calculates throughput and response time, while the resources' utilization was
 obtained from the Windows Performance Monitor \footnote{http://technet.microsoft.com/en-us/library/cc768048.aspx} of each application node.
 
 Two real-world applications were selected for this case study. The first
-application was iBatis PetStore 4.0
+application was iBatis JPetStore 4.0
 \footnote{http://sourceforge.net/projects/ibatisjpetstore/} which is an 
 upgraded version of the Sun's original J2EE Pet Store, a popular e-commerce
-shopping cart application used to teach J2EE. This application was run over an Apache
+shopping cart application used to teach J2EE. Unlike Sun’s version which was 
+focused on demonstrating the capability of the J2EE platform, JPetStore is a
+reimplementation with a more efficient design \footnote{www.clintonbegin.com/downloads/JPetStore-1-2-0.pdf‎} and is 
+targeted on benchmarking the J2EE platform against other web technologies
+like .NET. This application was run over an Apache
 Tomcat 6.0.35 Application Server \footnote{http://tomcat.apache.org/}. The
 other application was IBM WebSphere Portal Server 8.0.1
 \footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
-application which offers enterprise portal capabilities. This application was
-run over an IBM WebSphere Application Server 8.0.0.5.
+application which offers enterprise portal capabilities and which is, as per
+Gartner Research comparison of software for horizontal portals, a leader solution in that market \cite{Gartner2008}. 
+This application was run over an IBM WebSphere Application Server 8.0.0.5.
 \footnote{http://www-01.ibm.com/software/webservers/appserv/was/}.
 
 This experiment involved two different tests. First, the behaviour of
@@ -1067,78 +1112,17 @@ This work was supported, in part, by Science Foundation Ireland grant 10/CE/I185
 
 \end{document}
 
-The idea of applying automation in the performance testing domain is not new.
-However most of the existing performance testing research has focused on
-automating the generation of load test suites \cite{Chen1,Elvira1,Zhang1,Briand1,Avritzer1,Bayan1,Avritzer2,Avritzer3,Garousi1}.
-Similarly, there are in the industry a variety of commercial products and free open-source tools 
-available to support this task. For example, the HP LoadRunner
-\footnote{http://www8.hp.com/us/en/software/
-software-product.html?compURI=tcm:245-935779} and the IBM's Rational Performance
-Tester \footnote{http://www-01.ibm.com/software/awdtools/tester/performance/} are solutions that allow 
-scalability testing by generating a real workload on the application. From the
-open-source community, Apache's JMeter \footnote{http://jmeter.apache.org/} and Grinder
-\footnote{http://grinder.sourceforge.net/} are two popular applications that provide similar functionality.
-
-Regarding the performance analysis area, it also remains an active research
-venue. However, a high percentage of those techniques are not suitable to the
-performance testing domain because have an impractical performance overhead.
-For example, the authors of \cite{Yang1} instrument the source code to mine
-the sequences of call graphs and infer, through the usage of heuristics, the relevant 
-error patterns. In addition to the instrumentation, which generates a high
-performance overhead, this approach requires a considerable manual effort.
-
-Similar case of the work presented in \cite{Hangal1,Csallner1} which use
-dynamically inferred invariants to detect programming errors or the work
-proposed by \cite{Barham1,Chen2} which are also performance analysis approaches
-based on instrumentation. In all cases, these techniques cannot be
-effectively applied to load testing due to the impractical performance overhead
-that the instrumentation would bring to the tested environments. The main
-difference between these approaches and ours is that no instrumentation of the
-monitored system is required, eliminating a major source of potential overhead.
-
-One of the closest works to ours is \cite{Jiang2009}. In this paper, the authors
-present a non-intrusive approach which automatically analyzes the execution logs
-of a load test in order to identify performance problems. This approach requires to have
-information from a previous run to use it as baseline, information which might
-not be available in all the cases. As this approach only uses 
-the load testing results (i.e. response time and throughput) in its analysis,
-the deepness of its analysis in terms of root causes is limited, as it cannot offer 
-hints about what is causing the performance issues that identifies. 
-
-[PENDING: To rephrase this part!]
-
-On the contrary, 
-To the best of our knowledge, our approach is the first to propose the
-applicability, through automation means, of the idle-time analysis in the performance testing domain to exploit its performance analysis capabilities.
-
-being the first of its type, to the best of our knowledge.
-
-[PENDING: Should I bring back the pseudo-motivation of expert -maybe
-automation efforts to reduce the expert knowledge required to do performance
-testing/analysis:  (i.e. RTCE, GC Lite, LeakChaser), runtime vs. static. Some
-similar, but different in the sources they use and the domain?-]
-
 ----------------------------
   
   PENDING:
-  - Complete the related work sections!
   - Re-read the paper to see if it makes sense (i.e. the verbiage of the
   reserch questions should change to make a better fit with the experiments
   and their results).
 
-[PENDING: Should I add any mention of the sanity check? (about HD) probably
+[STANDBY: Should I add any mention of the sanity check? (about HD) probably
 only if suggested]
- 
- [PENDING:
- 
- Probably improve the verbiage related to JPetStore to something like this:
- 
- JPetStore [2] is a larger and more complex open source web application relative
- to DS2. Unlike Sun’s original ver- sion of Pet Store which is more focused on demonstrat- 
- ing the capability of the J2EE platform, JPetStore is a re- implementation with a more efficient 
- design [3] and is tar- geted on benchmarking the J2EE platform against other web platforms such as 
- .Net. Unlike DS2 which embeds all the application logic into the JSP code, JPetStore uses the 
- “Model-View-Controller” framework andXMLfiles for ob- ject/relational mappings. In this task, 
- we have deployed the JPetStore application on Apache Tomcat and used MySQL as the database backend. 
- ]
-  
+
+[STANDBY: Should I bring back the pseudo-motivation of expert -maybe
+automation efforts to reduce the expert knowledge required to do performance
+testing/analysis:  (i.e. RTCE, GC Lite, LeakChaser), runtime vs. static. Some
+similar, but different in the sources they use and the domain?-]
