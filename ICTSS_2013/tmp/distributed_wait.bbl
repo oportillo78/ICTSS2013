@@ -18,7 +18,7 @@ Woodside, M., Franks, G., Petriu, D.C.:
 
 \bibitem{trevor1}
 Parsons, T., Murphy, J.:
-\newblock {Detecting Performance Antipatterns in Com- ponent Based Enterprise
+\newblock {Detecting Performance Antipatterns in Component Based Enterprise
   Systems}.
 \newblock In: 2nd International Middleware Doctoral Symposium. Volume~7. (2008)
    55--90
@@ -64,14 +64,8 @@ Altman, E., Arnold, M., Fink, S., Mitchell, N.:
 \bibitem{Briand1}
 {L. C. Briand}, {Y. Labiche}, M.:
 \newblock {Using genetic algorithms for early schedulability analysis and
-  stress testing in real-time systems}.
-\newblock Genetic Programming and Evolvable Machines (July 2006)
-
-\bibitem{Avritzer1}
-{A. Avritzer}, B.:
-\newblock {Load testing software using deterministic state testing}.
-\newblock ACM SIGSOFT international symposium on Software testing and analysis
-  (1993)
+  stress testing in RT systems}.
+\newblock Genetic Programming and Evolvable Machines (2006)
 
 \bibitem{Bayan1}
 {M. S. Bayan}, J.:
@@ -95,40 +89,39 @@ Altman, E., Arnold, M., Fink, S., Mitchell, N.:
 {V. Garousi}, {L. C. Briand}, Y.:
 \newblock {Traffic-aware stress testing of distributed systems based on uml
   models}.
-\newblock 28th international conference on Software engineering (2006)
+\newblock International conference on Software engineering (2006)
 
 \bibitem{Yang1}
 {J. Yang}, {D. Evans}, D.T.M.:
 \newblock {Perracotta: mining temporal api rules from imperfect traces}.
-\newblock 28th international conference on Software engineering (2008)
+\newblock International conference on Software engineering (2008)
 
 \bibitem{Hangal1}
 {S. Hangal}, M.:
 \newblock {Tracking down software bugs using automatic anomaly detection}.
-\newblock 24th International Conference on Software Engineering (2002)
+\newblock International Conference on Software Engineering (2002)
 
 \bibitem{Csallner1}
 {C. Csallner}, Y.:
 \newblock {Dsd-crasher: a hybrid analysis tool for bug finding}.
 \newblock International symposium on Software testing and analysis (2006)
 
-\bibitem{Barham1}
-{P. Barham}, {A. Donnelly}, R.R.:
-\newblock {Using magpie for request extraction and workload modelling}.
-\newblock OSDI’04: Proceedings of the 6th conference on Symposium on Opearting
-  Systems Design and Implementation (2004)
-
 \bibitem{Chen2}
 {M. Y. Chen}, {A. Accardi}, E.J.A.E.:
 \newblock {Path-based failure and evolution management}.
-\newblock In the 1st conference on Symposium on Networked Systems Design and
-  Implementation (2004)
+\newblock Symposium on Networked Systems Design and Implementation (2004)
 
 \bibitem{Jiang2009}
 Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Automated performance analysis of load tests}.
 \newblock In: IEEE International Conference on Software Maintenance, Ieee
   (September 2009)  125--134
+
+\bibitem{Malik1}
+{Haroon Malik}, {Bram Adams}, A.:
+\newblock {Pinpointing the subsys responsible for the performance deviations in
+  a load test}.
+\newblock Software Reliability Engineering (ISSRE) (2010)
 
 \bibitem{Gartner2008}
 {Gootzit, David}, {Gene Phifer}, R.:
