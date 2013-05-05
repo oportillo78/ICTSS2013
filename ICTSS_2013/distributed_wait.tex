@@ -28,6 +28,18 @@
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
 
+%Commands needed to define the max size a float can have without been presented
+% ALONE in a page.
+\renewcommand\topfraction{0.85}
+\renewcommand\bottomfraction{0.85}
+\renewcommand\textfraction{0.1}
+\renewcommand\floatpagefraction{0.85}
+
+%Commands to redice the space before and after floats (like table,fig or alg)
+\setlength\floatsep{1.25\baselineskip plus 3pt minus 2pt}
+\setlength\textfloatsep{1.25\baselineskip plus 3pt minus 2pt}
+\setlength\intextsep{1.25\baselineskip plus 3pt minus 2 pt}
+
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,7 +95,7 @@ Yorktown Heights, New York, USA\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-10pt}
 \begin{abstract}
 Performance testing in highly distributed environments is a very challenging
 task. Specifically, the identification of performance issues and
@@ -104,13 +116,14 @@ overhead in the tested system.
 \keywords{Performance testing, automation, performance analysis, idle-time
 analysis, distributed environments, multi-tier applications}
 \end{abstract}
-
+\vspace{-22pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
 
+\vspace{-5pt}
 Quality plays a major role in the successful adoption of any software.
 Moreover it has a direct impact in the total cost of ownership. For
 example, a 2008 Quality Assurance study \cite{CapersJones1} documented that achieving high
@@ -217,9 +230,9 @@ conclusions and future work.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Background
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section{Background}
-
+\vspace{-5pt}
 \emph{Idle-time analysis} is an analysis methodology that pursues to
 explain the root causes that lead to under-utilized resources. This approach,
 proposed by \cite{Altman2010}, is based on the observed behavior that in
@@ -256,7 +269,7 @@ been identified, ranking them by frequency and impact. For example, in
 \figurename ~\ref{fig_WAITReport} the top issue appeared in 53\% of the samples
 and affected 7.6 threads on average. Moreover the affected resource was the
 network and was caused by database readings.
-
+\vspace{-5pt}
 \begin{figure}[!h]
 % \centering
 \includegraphics[totalheight=.35\textheight,width=1\textwidth]{1exampleReport}
@@ -267,9 +280,9 @@ network and was caused by database readings.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Related Work
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-2pt}
 \section{Related Work}
-
+\vspace{-5pt}
 The idea of applying automation in the performance testing domain is not new.
 However, most of the research has focused on automating the generation of load
 test suites
@@ -300,9 +313,9 @@ the idle-time analysis in the performance testing domain to exploit its performa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem Definition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section{Problem Definition}
-
+\vspace{-5pt}
 While doing performance testing in highly distributed environments, the
 identification of performance problems and the diagnosis of their root causes
 are very complex and time-consuming activities, which tend to rely on the
@@ -340,9 +353,9 @@ and validated through a series of experiments.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section{Proposed Approach and Implementation}
-
+\vspace{-5pt}
 %This section presents the details of the proposed approach, its architecture
 %and the prototype that has been developed to validate it.
 
@@ -401,7 +414,6 @@ share $rundId$ \hspace{2 mm} with all nodes\;
 		deleted remnant locally collected data\;
   }
   Retrieve final performance results\;
-
 \end{algorithm}
 
 The process starts by getting a new \emph{RunId}, value which uniquely
@@ -439,14 +451,14 @@ overall process. It is also responsible of getting the runId and propagate it to
 all the nodes. The second component is the \emph{WAIT Node Agent}, which will be
 in each application node. It will be responsible of the collection, upload,
 backup and cleanup steps.
-
+\vspace{-5pt}
 \begin{figure}[!h]
 \centering
 \includegraphics[totalheight=.3\textheight,width=0.9\textwidth]{architecture_dwait}
 \caption{High-level Architecture of the solution}
 \label{fig_Arch}
 \end{figure}
-
+\vspace{-5pt}
 Two key assumptions were considered when defining the above design. As the scope
 of this work is the performance testing domain, it is assumed that a Load
 Testing tool will always be present. Moreover this work has also focused on Web
@@ -474,7 +486,7 @@ once the first upload is received and then updated after every data
 upload) is also accessible within RPT, so that the tester does not need to
 leave RPT during the whole duration of the performance test. This is shown
 in \figurename ~\ref{fig_report}.
-
+\vspace{-5pt}
 \begin{figure*}
 \centering
 \begin{minipage}[b]{.45\textwidth}
@@ -494,20 +506,22 @@ in \figurename ~\ref{fig_report}.
 
 \end{minipage}
 \end{figure*}
+\vspace{-5pt}
 
+\vspace{-5pt}
 \begin{figure}[!h]
 \centering
 \includegraphics[totalheight=.35\textheight,width=0.9\textwidth]{WAIT-report}
 \caption{WAIT Report accessible in RPT}
 \label{fig_report}
 \end{figure}
-
+\vspace{-5pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experimental Setup / Experiments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section{Experimental Evaluation and Results}
-
+\vspace{-5pt}
 %In this section the experimental setup is presented along with the experiments
 % themselves.
 %After each experiment, its results are also discussed.
@@ -525,14 +539,14 @@ one application node and one WAIT Server node; the other was composed of one RPT
 node, one load balance node, two application nodes and one WAIT Server node. All
 nodes connected by a 10-GBit LAN. These set-ups are shown in \figurename
 ~\ref{fig_env}.
-
+\vspace{-5pt}
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.25\textheight,width=0.8\textwidth]{Environments}
+\includegraphics[totalheight=.20\textheight,width=0.8\textwidth]{Environments}
 \caption{Environment Set-ups used in the Experiments}
 \label{fig_env}
 \end{figure}
-
+\vspace{-5pt}
 The RPT node was a machine running Windows XP with an Intel Xeon processor at
 2.67 Ghz and 3GB of RAM using RPT 8.2.1.3. The WAIT Server was a machine running
 Red Hat Enterprise Linux Server 5.9, with an Intel Xeon processor at 2.66 GHz
@@ -541,9 +555,9 @@ Windows Server 2008, with an Intel Xeon E7-8860 (4 cores) at 2.26 GHz and 4GB of
 RAM running Java 1.6.0 IBM J9 VM (build 2.6). Finally, the load balance node had
 the same characteristics of the WAIT Server node and used mod\_jk and a round
 robin strategy for load balance.
-
+\vspace{-5pt}
 \subsection{Experiment \#1}
-
+\vspace{-5pt}
 Its objective was to validate that the proposed approach had a low overhead.
 It involved the assessment of four metrics: Throughput and response time
 (classic metrics in performance testing) as well as CPU and memory utilization
@@ -728,8 +742,9 @@ question Q2 positively, but with a side note: Due to the impact that the
 overhead, it is important to consider this when using WAIT. In our case, the
 \emph{Sampling Interval} of 480 seconds proved efficient in terms of overhead for the two tested applications.
 
+\vspace{-5pt}
 \subsection{Experiment \#2}
-
+\vspace{-5pt}
 Here the objective was to assess the benefits the approach brings to a
 performance tester. For this experiment the automated approach was used to
 monitor a modified version of the iBatis PetStore 4.0 application. The source
@@ -758,13 +773,14 @@ reinforced the presence of these issues by offering similar ranks. These
 additional information could also be shared with the development team.
 \figurename ~\ref{fig_run1_bugs12}.a shows the results of the early report,
 while ~\ref{fig_run1_bugs12}.b shows the results of the final report.
-
+\vspace{-5pt}
 \begin{figure}[!h]
 % \centering
 \includegraphics[totalheight=.23\textheight,width=1\textwidth]{run1_issues12_short_long_run}
 \caption{Top detected performance issues in modified JPetStore application}
 \label{fig_run1_bugs12}
 \end{figure}
+\vspace{-5pt}
 
 After identifying an issue, a tester can see more details, including the type of
 problem, involved class, method and method line. \figurename
@@ -773,28 +789,27 @@ which was located in the LockContentionBug class, the method generateBug and
 the line 20. When comparing this information with the actual code, one can see
 that is precisely the line where the bug was injected (taking a class lock
 before doing a very CPU intensive logic).
-
+\vspace{-5pt}
 \begin{figure}[!h]
 % \centering
 \includegraphics[totalheight=.23\textheight,width=1\textwidth]{issue2_vs_code}
-\caption{Comparison of lock contention issue in the WAIT report against the
-actual source code}
+\caption{Lock contention issue in the WAIT report and the actual source code}
 \label{fig_issue2_vs_code}
 \end{figure}
-
+\vspace{-5pt}
 The report showed in 3rd place a symptom of the lock contention issue
 (it was possible to relate the issues by comparing their detail information,
 where both issues pinpointed to the same class/method), suggesting this was a
 major issue. Moreover the I/O latency bug was identified in 4th place.
 \figurename ~\ref{fig_issues34} shows the details of these two issues.
-
+\vspace{-5pt}
 \begin{figure}[!h]
 % \centering
 \includegraphics[totalheight=.23\textheight,width=1\textwidth]{run1_issues34_details}
 \caption{Details of issues ranked 3 and 4 in the first test run}
 \label{fig_issues34}
 \end{figure}
-
+\vspace{-5pt}
 The deadlock issue did not appear in the run, somehow prevented by the lock
 contention bug which had a major impact that planned. As per the results of
 the run, the two identified bugs were ``fixed'' from the code. As in any common
@@ -804,15 +819,15 @@ appeared. \figurename ~\ref{fig_dlissue_vs_code} shows the information of our
 Deadlock bug, which was located in the line 30 of the DeadLockBug class. This is
 precisely the line where the bug was injected (as the deadlock occurs when
 the friends try to bow back to each other).
-
+\vspace{-5pt}
 \begin{figure}[!h]
 % \centering
 \includegraphics[totalheight=.23\textheight,width=1\textwidth]{deadlock_vs_code}
-\caption{Comparison of deadlock issue in the WAIT report against the
+\caption{Deadlock issue in the WAIT report and the
 actual source code}
 \label{fig_dlissue_vs_code}
 \end{figure}
-
+\vspace{-5pt}
 As the measurement of success for this experiment was to the ability of WAIT to
 identify performance problems, this experiment was considered successful as all
 injected bugs were identified, including the involved classes and methods.
@@ -865,9 +880,9 @@ results. A direct benefit of these savings is the reduction of expert knowledge
 required by tester to do performance analysis and detect performance
 issues along with their root causes. Ultimately, this improves a tester
 productivity by reducing the effort required to locate defects.
-
+\vspace{-5pt}
 \subsection{Threads to Validity}
-
+\vspace{-5pt}
 Like any empirical work, there are some threats to the validity of these
 experiments. First the possible environmental noise that could affect the test
 environments because they are not isolated. To mitigate this, multiple runs were
@@ -886,9 +901,9 @@ is no reason to believe that the approach is not applicable to other environment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section{Conclusions and Future Work}
-
+\vspace{-5pt}
 The identification of performance problems and the diagnosis of their root
 causes in highly distributed environments are complex and time-consuming tasks,
 which tend to rely on the expertise of the involved engineers. The objective of
@@ -916,9 +931,9 @@ analysis to identify more types of performance problems.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vspace{-5pt}
 \section*{Acknowledgments}
-
+\vspace{-5pt}
 We would like to thanks Amarendra Darisa, from SVT IBM, as his experience in
 performance testing helped us through the scope definition and validation. This
 work was supported, in part, by Science Foundation Ireland grant 10/CE/I1855 to Lero - the Irish Software Engineering Research Centre (www.lero.ie).
