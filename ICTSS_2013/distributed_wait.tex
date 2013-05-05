@@ -657,8 +657,7 @@ Automated, 30s 			& 16.8\%	& 9.1\%		& -5.6\% 	& 2.23\% 	& 6.0\%\\
 Due to the small differences among the runs and the variations (presumable
 environmental) that were experienced during the experiments, a Paired t-Test
 \footnote{http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/},
-using a significant level of p<0.1, was done to evaluate if the differences in
-response time and throughput were statistically significant. For JPetStore, the
+using a significant level of p<0.1, was done to evaluate if the differences in response time and throughput were statistically significant. For JPetStore, the
 results showed that the differences were only significant in the average
 response time using the \emph{Sample Interval} of 30 seconds, and in the
 average throughput using the \emph{Sample Interval} if 30 seconds with the
@@ -848,59 +847,41 @@ parallel to the execution of the test. This will be especially valuable in
 long-term runs, very common in performance testing, and usually lasting several
 days.
 
-XXXX
-
 In conclusion, the results of this second experiment answered our research
 question Q3 (What benefits in productivity can a tester achieve if the previous
 two questions are answered?), showing the productivity gains that a tester
 achieves by using the automated approach of WAIT.
 
-To summarize the overall experimental results, they were satisfactory because it
-was possible to achieve the desired goals of automating the execution of WAIT,
+To summarize the experimental results, they were satisfactory because it
+was possible to achieve the goal of automating the execution of WAIT,
 while keeping the overhead low (in the range of 0\% to 3\% using a \emph{Sample
-Interval} of 480 seconds). It was also possible to assess the time
-savings the automated approach brings to the test process: After a quick
-installation effort (around 5 minutes per node), the time required by a tester
-to use WAIT as part of a performance testing is practically zero. Previously the
-number of WAIT reports that a tester needed to review was equal to the number of
-nodes of the tested environment (which in a highly distributed environment
-might be hundreds or more) multiplied by the number of times the collected
-information was uploaded (in order to have an incremental view); now, only
-a tester only needs to monitor a single report, which is updated on a recurrent
-basis to offer an incremental view of the results. A direct benefit of these
-savings is the reduction of expert knowledge required by tester in order to do
-performance analysis and be able to detect the performance issues and their
-root causes. Ultimately, this improves the tester productivity by reducing the
-cost (in terms of effort) required to locate defects.
-
+Interval} of 480 seconds). Besides the automated approach brought several time
+savings to a tester: After a quick installation (around 5 minutes per node), the
+time required to use an automated WAIT was practically zero. Previously the
+number of WAIT reports a tester needed to review was equal to the number of
+nodes multiplied by the times the collected data was uploaded; now, a tester
+only needs to monitor a single report, which offers an incremental view of the
+results. A direct benefit of these savings is the reduction of expert knowledge
+required by tester to do performance analysis and detect performance
+issues along with their root causes. Ultimately, this improves a tester
+productivity by reducing the effort required to locate defects.
 
 \subsection{Threads to Validity}
 
-Like any empirical work, there are a number of threats to the validity of these
-experiments. The first one is the potential environmental noise could affect in
-the testing environments considering that the environments are not isolated. To
-mitigate the potential effect the noise might have in the obtained results, multiple runs 
-were executed for each identified combination. Additionally, in order to know if
-the differences between the obtained results were statistically significant (specially in cases 
-were the differences were minimal, for example between the runs of the
-applications alone against those runs using WAIT with a very low sample rate), the statistic Paired t-Test
-\footnote{http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/}
-was performed to determine if the null hypothesis (the changes in the
-environment, practically the addition of WAIT in different forms, have no
-impact in the environment) was rejected or not with 95\% of certainty.
+Like any empirical work, there are some threats to the validity of these
+experiments. First the possible environmental noise that could affect the test
+environments because they are not isolated. To mitigate this, multiple runs were
+executed for each identified combination. Also to determine if the differences
+in the results were statistically significant (with 90\% of certainty), a Paired
+t-Test was applied.
 
-Another thread is the selection of the performance testing parameters (i.e.
-workload and duration of the test). This was addressed with the expert judgement 
-of the SVT, which couched on the selection of those parameters that are
-commonly used in the industry. Finally, the validity of these results are
-threatened by the selection of the tested applications. Despite the fact that
-they are real world applications and different in terms of functionality, their
-limited number implies that not all types of applications have been tested and
-one application with characteristics that are completely different might
-generate different results. Wider experiments need to be executed to get more
-general conclusions. However, in principle, there is no reason to believe that
-the approach is not applicable to other environments.
-
+Another thread was the selection of the test parameters (i.e. workload and
+duration). This was addressed with the expert judgement of the SVT, which guided
+on their selection. Finally, the validity of the results are threatened by the
+selection of the tested applications. Despite being real-world applications,
+their limited number implies that not all types of applications have been tested
+and wider experiments are needed to get more general conclusions. However, there
+is no reason to believe that the approach is not applicable to other environments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
@@ -909,31 +890,28 @@ the approach is not applicable to other environments.
 \section{Conclusions and Future Work}
 
 The identification of performance problems and the diagnosis of their root
-causes are very complex and time-consuming activities in highly distributed
-environments, which also tend to rely on the expertise of the involved
-engineers. The objective of this work was to address the limitations that
-prevent the usage of WAIT in the performance testing domain, so that WAIT can be
-effective used to reduce the expertise and overall effort required to do
-good performance analysis and to identify the root causes of those issues.
-To achieve this goal the paper presented a novel automation approach and its
-validation, composed of the implementation of a prototype and a study
-case with two real-life applications. The results are encouraging as they have
-proved that the approach addresses effectively the adoption barriers for WAIT in 
-a distributed performance testing environment: The solution has proven being
-light-weight, generating a low overhead (in the range of 0\% to 3\% using a
-\emph{Sample Interval} commonly used in the industry). Moreover, from a tester
-usability perspective, there are also tangible time savings in terms of the effort required to detect performance issues.
+causes in highly distributed environments are complex and time-consuming tasks,
+which tend to rely on the expertise of the involved engineers. The objective of
+this work was to address the limitations that prevented the usage of WAIT in
+performance testing, so that it can be effective used to reduce the expertise
+and effort required to identify performance issues and their root causes. To
+achieve this goal the paper presented a novel automation approach and its
+validation, composed of a prototype and study cases with two real-life
+applications. The results are encouraging as they have proved that the approach
+addresses effectively the adoption barriers of WAIT in performance testing: The
+solution has proven light-weight, generating low overhead (in the range of 0\%
+to 3\% using a \emph{Sample Interval} commonly used in the industry). Moreover,
+there are also tangible time savings in terms of the effort required to detect
+performance issues.
 
-Future work will concentrate on assessing the practicability of the
-approach and its benefits in a major scale through broader study cases with our
-industrial partner IBM with a special interest in understanding the trade-off
-between the \emph{Sampling Interval} and the nature of the application
-(represented by the size and contents of its javacores). It will also be
-investigated how best to exploit the additional functional information that can
-now be obtained from a tested environment (i.e. test workload, response time,
-throughput and transactions) in order to improve the qualitative and
-quantitative capabilities of the idle-time analysis methodology (WAIT's
-foundation) to identify more types of performance problems.
+Future work will concentrate on assessing the approach and its benefits through
+broader study cases with our industrial partner IBM with a special interest in
+understanding the trade-off between the \emph{Sampling Interval} and the nature
+of the applications (represented by their \emph{Javacores}). It will also be
+investigated how best to exploit the functional information that can now be
+obtained from a tested environment (i.e. workload, throughput or transactions)
+to improve the qualitative and quantitative capabilities of the idle-time
+analysis to identify more types of performance problems.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
