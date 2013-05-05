@@ -530,89 +530,85 @@ Two experiments were performed. The first one pursed to answer the
 research question Q2 (Can the overhead be kept low during a performance test
 execution to avoid compromising the results?), while the second one pursued to
 answer the research question Q3 (What benefits in productivity can a tester achieve if the previous
-two questions are answered?). Finally, the combined outcome of the experiments
-pursued to answer the research question Q1 (How can the usage of WAIT be
-automated to minimize the effort required to use it in sync with a performance test?).
+two questions are answered?). The combined outcome of the experiments pursued to
+answer the research question Q1 (How can the usage of WAIT be automated to
+minimize the effort required to use it in sync with a performance test?).
 
 Moreover two environments were used: One was composed of one RPT node,
 one application node and one WAIT Server node; the other was composed of one RPT
 node, one load balance node, two application nodes and one WAIT Server node. All
-nodes connected by a 10-GBit LAN. These set-ups are shown in \figurename
+nodes were connected by a 10-GBit LAN. These set-ups are shown in \figurename
 ~\ref{fig_env}.
 \vspace{-5pt}
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.20\textheight,width=0.8\textwidth]{Environments}
-\caption{Environment Set-ups used in the Experiments}
+\includegraphics[totalheight=.18\textheight,width=0.8\textwidth]{Environments}
+\caption{Environment Set-ups}
 \label{fig_env}
 \end{figure}
-\vspace{-5pt}
-The RPT node was a machine running Windows XP with an Intel Xeon processor at
-2.67 Ghz and 3GB of RAM using RPT 8.2.1.3. The WAIT Server was a machine running
-Red Hat Enterprise Linux Server 5.9, with an Intel Xeon processor at 2.66 GHz
-and 2GB of RAM using Apache Web Server 2.2.3. Each application node was a 64-bit
-Windows Server 2008, with an Intel Xeon E7-8860 (4 cores) at 2.26 GHz and 4GB of
-RAM running Java 1.6.0 IBM J9 VM (build 2.6). Finally, the load balance node had
-the same characteristics of the WAIT Server node and used mod\_jk and a round
-robin strategy for load balance.
+
+The RPT node ran over Windows XP with an Intel Xeon CPU at
+2.67 Ghz and 3GB of RAM using RPT 8.2.1.3. The WAIT Server was ran over Red Hat
+Enterprise Linux Server 5.9, with an Intel Xeon CPU at 2.66 GHz and 2GB of
+RAM using Apache Web Server 2.2.3. Each application node was a 64-bit Windows
+Server 2008, with an Intel Xeon E7-8860 CPU at 2.26 GHz and 4GB of RAM
+running Java 1.6.0 IBM J9 VM (build 2.6). Finally, the load balance node had the
+same characteristics of the WAIT Server node using mod\_jk plugin for load
+balance.
 \vspace{-5pt}
 \subsection{Experiment \#1}
-\vspace{-5pt}
-Its objective was to validate that the proposed approach had a low overhead.
-It involved the assessment of four metrics: Throughput and response time
-(classic metrics in performance testing) as well as CPU and memory utilization
-(to assess how much additional resources the automation required). All metrics
-were collected through RPT. Also two real-world applications were used in this
-case study: One was iBatis JPetStore 4.0
+\vspace{-2pt}
+Its objective was to validate that the proposed approach had low overhead and
+involved the assessment of four metrics: Throughput and response time (classic
+metrics in performance testing) as well as CPU and memory utilization. All
+metrics were collected through RPT. Furthermore 2 real-world applications
+were used: iBatis JPetStore 4.0
 \footnote{http://sourceforge.net/projects/ibatisjpetstore/} which is an upgraded
-version of Sun's original J2EE Pet Store, an e-commerce shopping cart
-application used to teach J2EE. Unlike Sun’s, JPetStore is a reimplementation
-with a more efficient design
+version of Sun's Pet Store, an e-commerce shopping cart application. Unlike
+Sun’s, JPetStore is a reimplementation with a more efficient design
 \footnote{www.clintonbegin.com/downloads/JPetStore-1-2-0.pdf‎}. This application
-was run over an Apache Tomcat 6.0.35 Application Server.
+ran over an Apache Tomcat 6.0.35 Application Server.
 %\footnote{http://tomcat.apache.org/}
 The other application was IBM WebSphere Portal Server 8.0.1 \footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
 %application which offers enterprise portal capabilities and which is, as per
 %Gartner Research comparison of software for horizontal portals, 
-a leader solution in the enterprise portal market \cite{Gartner2008}. This
-application was run over an IBM WebSphere Application Server 8.0.0.5.
+a leader solution in the enterprise portal market \cite{Gartner2008}. It ran
+over an IBM WebSphere Application Server 8.0.0.5.
 %\footnote{http://www-01.ibm.com/software/webservers/appserv/was/}.
 
-The experiment involved two tests. First, the behaviour of
-the approach was tested in a single-node environment to assess how much
-overhead it brought under those conditions. For each application, 3 combinations
+The experiment involved two tests. First, the overhead of the approach was
+tested in a single-node environment. For each application, 3 combinations
 of WAIT were run: First the application was executed without WAIT to get a
 baseline; then a manual WAIT execution (data collection without upload) was
-introduced to measure how much overhead WAIT added. Finally, the automated
-approach was introduced to measure how much overhead it added. For each
-combination in which WAIT was present, two \emph{Sampling Interval} were tested:
-One value (480 seconds), suggested by our industrial partner and commonly
-used in the industry. The other selected value (30 seconds) is the minimum
-recommended \emph{Sampling Interval} for WAIT. The remaining parameters involved
-in the performance test were suggested by our industrial partner: A workload of
-2,000 concurrent users; a duration of 1 hour; a \emph{Hard Disk Threshold} of
-100MB; and a \emph{Time Threshold} of 10 minutes. Finally, for each of the 5
-combinations per application, 3 runs were performed.
+introduced to measure its overhead. Finally, the automated approach was
+introduced to measure its overhead. For each combination which used WAIT, 2
+\emph{Sampling Interval} were tested: One value (480 seconds) was suggested by
+our industrial partner, while the other (30 seconds) was chosen for been the
+minimum recommended \emph{Sampling Interval} for WAIT. All additional
+configuration for the tests was suggested by our industrial partner: A workload
+of 2,000 concurrent users; a duration of 1 hour; a \emph{Hard Disk Threshold} of
+100MB; and a \emph{Time Threshold} of 10 minutes. Each of the combinations (5
+per application) was run 3 times.
 
 For JPetStore, each test run produced around 500,000 transactions. The
 results showed that using WAIT with a \emph{Sample Interval} of 480 seconds had
 practically no impact in terms of response time and throughput. Furthermore the
 difference in resource consumption between the manual and automated approaches
-was around 1\%. As the uploaded data was very small in this case (around 200KB
-every 10 minutes), the difference in resource consumption was related to the
-presence of the WebAgent. When WAIT used a \emph{Sample Interval} of 30 seconds,
-the impacts in response time and throughput appeared. As the impact in
-throughput was similar between approaches, this should had been caused by the
-\emph{Javacore} generation (step shared between approaches). In average, the
+was around 1\%.  This difference was mostly related to the presence of the
+WebAgent because the uploaded data was very small in this case (around 200KB
+every 10 minutes). When WAIT used a \emph{Sample Interval} of 30 seconds, the
+impacts in response time and throughput appeared. Considering the throughput was
+similar between approaches, the impact should had been caused by the
+\emph{Javacore} generation (step shared between the approaches). In average, the
 generation of a \emph{Javacore} took around 1 second. Even though this cost was
 neglectable in the higher \emph{Sample Interval}, with 30 seconds the impact was
 visible. On the contrary, the difference in response times (2.8\%, around 53
 milliseconds) was caused by the upload and backup processes (around 4MB of
 data), as the cost of the WebAgent had been previously measured. In terms of
-resource consumption, the differences between approaches were similar to the
-\emph{Sample Interval} of 480 seconds. These results are shown in the \tablename
-~\ref{PetStore1} where the first row shows the baseline and the rest the
-percentage differences of each tested combination.
+resource consumption, the differences between approaches remained within 1\%.
+These results are shown in the \tablename ~\ref{PetStore1} where the first row
+shows the baseline and the others the percentage differences of each
+tested combination.
 
 \begin{table}[!h]
 \caption{PetStore - Results}
@@ -635,19 +631,19 @@ Automated, 30s 			& 4.4\%		& 0.5\%		& -3.1\% 	& 2.53\% 	& 4.4\%\\
 \end{tabular}
 \end{table}
 
-For Portal, each test run produced around 400,000 transactions. Even
-though the results showed similar trends in terms of achieving lower overheads using the \emph{Sampling Interval}
-of 480 seconds, a few key differences were identified: First, the impact in
-response time and throughput was visible since the \emph{Sampling Interval} of
-480 seconds. Besides, the differences between \emph{Sampling Intervals} were
-bigger. As the experiment conditions were the same, it was initially assumed
-that these differences were related to the difference in functionality between
-the tested applications. This was confirmed after analyzing the \emph{Javacores}
-generated by the Portal, which allowed to quantify the difference in behavior of
-Portal: The average size of a \emph{Javacore} was 5.5MB (450\% bigger than JPetStore's), its average
-generation time was 2s (100\% bigger than JPetStore's), with a maximum
-generation time of 3s (also 100\% bigger than JPetStore's). The results are
-shown in the \tablename ~\ref{Portal1}.
+For Portal, each test run produced around 400,000 transactions. Even though the
+results showed similar trends in terms of having lower overheads using the
+\emph{Sampling Interval} of 480 seconds, a few key differences were identified:
+First, the impacts in response time and throughput were visible since the
+\emph{Sampling Interval} of 480 seconds. Besides, the differences between
+\emph{Sampling Intervals} were bigger. As the experiment conditions were the
+same, it was assumed that these differences were related to the dissimilar
+functionality of the tested applications. This was confirmed after analyzing the
+\emph{Javacores} generated by the Portal, which allowed to quantify the
+differences in behavior of Portal: The average size of a \emph{Javacore} was
+5.5MB (450\% bigger than JPetStore's), its average generation time was 2 sec
+(100\% bigger than JPetStore's), with a maximum generation time of 3 sec (100\%
+bigger than JPetStore's). The results are shown in the \tablename ~\ref{Portal1}.
 
 \begin{table}[!h]
 \caption{Portal - Results}
@@ -671,14 +667,15 @@ Automated, 30s 			& 16.8\%	& 9.1\%		& -5.6\% 	& 2.23\% 	& 6.0\%\\
 Due to the small differences among the runs and the variations (presumable
 environmental) that were experienced during the experiments, a Paired t-Test
 \footnote{http://www.aspfree.com/c/a/braindump/comparing-data-sets-using-statistical-analysis-in-excel/},
-using a significant level of p<0.1, was done to evaluate if the differences in response time and throughput were statistically significant. For JPetStore, the
+using a significant level of p<0.1, was done to evaluate if the differences in
+response time and throughput were statistically significant. For JPetStore, the
 results showed that the differences were only significant in the average
-response time using the \emph{Sample Interval} of 30 seconds, and in the
-average throughput using the \emph{Sample Interval} if 30 seconds with the
-automated approach. Moreover the results of Portal were similar. This analysis
-reinforced the conclusion that the overhead was low as well as the observation
-that the usage of the \emph{Sample Interval} of 480 seconds was preferable in
-terms of overhead. These results are shown in the \tablename ~\ref{tTest1}.
+response time using the \emph{Sample Interval} of 30 seconds, and in the average
+throughput using the \emph{Sample Interval} if 30 seconds with the automated
+approach. Similar results were obtained from Portal. This analysis reinforced
+the conclusion that the overhead was low as well as the observation that the
+\emph{Sample Interval} of 480 seconds was preferable in terms of overhead. These
+results are shown in the \tablename ~\ref{tTest1}.
 
 \begin{table}[!h]
 \caption{Paired t-Test Results}
@@ -703,7 +700,7 @@ Portal 	& 	Automated, 30s 			& 0.013	& 0.105	& 0.072\\
 \end{table}
 
 A second test was done to validate that the overhead of the proposed approach
-remained low when used in a multi-node environment and a longer test run.
+remained low when used in a multi-node environment over a longer test run.
 JPetStore was used for this test. First it was executed alone to have a
 baseline; then the automated WAIT approach was introduced using a \emph{Sampling
 Interval} of 480 seconds. The rest of the set-up was identical to the previous
@@ -739,12 +736,12 @@ In conclusion, the results of this first experiment showed that the overhead
 caused by the automated approach remained low. This answered our research
 question Q2 positively, but with a side note: Due to the impact that the
 \emph{Sampling Interval} and the application behavior could have in the
-overhead, it is important to consider this when using WAIT. In our case, the
+overhead, it is important to consider this when using WAIT. In our case, a
 \emph{Sampling Interval} of 480 seconds proved efficient in terms of overhead for the two tested applications.
 
 \vspace{-5pt}
 \subsection{Experiment \#2}
-\vspace{-5pt}
+\vspace{-2pt}
 Here the objective was to assess the benefits the approach brings to a
 performance tester. For this experiment the automated approach was used to
 monitor a modified version of the iBatis PetStore 4.0 application. The source
@@ -756,27 +753,26 @@ of code; a I/O latency bug, composed by a very expensive file reading method;
 and a deadlock bug, an implementation of the classic ``friends bowing'' deadlock example
 \footnote{http://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html}.
 All other set-up parameters were identical to the multi-node test
-previously performed with exception of the duration which was 1-hour. To save
-space, only the most relevant sections of the GUI are presented.
+previously performed with exception of the duration which was reduced to 1-hour.
+To save space, only the most relevant sections of the GUI are presented.
 
 Surprisingly the first ranked issue was none of the injected bugs but a method
 named ``McastServiceImpl.receive''. Even though further analysis determined
 this method call was benigne (is used by the clustering functionality of
 Tomcat), its presence in the results was appropriate. As it appeared in
-practically all the samples, it was worth an investigation. The secondly ranked
-issue was the lock contention. A relevant point to highlight is that these two
-issues were detected since the early versions of the report. Based on their high
-frequency (above 96\% of the samples), this information could have lead a 
-tester to raise bugs and pass this information to the development team so that
-the diagnosis could start far ahead of the test completion. The final report
-reinforced the presence of these issues by offering similar ranks. These
-additional information could also be shared with the development team.
-\figurename ~\ref{fig_run1_bugs12}.a shows the results of the early report,
-while ~\ref{fig_run1_bugs12}.b shows the results of the final report.
+practically all the samples, it was worth an investigation. The second ranked
+issue was the lock contention. A relevant point to highlight is that both issues
+were detected since the early versions of the report. Based on their high
+frequency (above 96\% of the samples), this information could have led a tester
+to pass this information to the development team so that the diagnosis could
+start far ahead of the test completion. The final report reinforced the presence
+of these issues by offering similar ranks. \figurename ~\ref{fig_run1_bugs12}.a
+shows the results of the early report, while ~\ref{fig_run1_bugs12}.b shows the
+results of the final report.
 \vspace{-5pt}
 \begin{figure}[!h]
 % \centering
-\includegraphics[totalheight=.23\textheight,width=1\textwidth]{run1_issues12_short_long_run}
+\includegraphics[totalheight=.22\textheight,width=1\textwidth]{run1_issues12_short_long_run}
 \caption{Top detected performance issues in modified JPetStore application}
 \label{fig_run1_bugs12}
 \end{figure}
@@ -785,23 +781,23 @@ while ~\ref{fig_run1_bugs12}.b shows the results of the final report.
 After identifying an issue, a tester can see more details, including the type of
 problem, involved class, method and method line. \figurename
 ~\ref{fig_issue2_vs_code} shows the information of our Lock Contention bug,
-which was located in the LockContentionBug class, the method generateBug and
-the line 20. When comparing this information with the actual code, one can see
-that is precisely the line where the bug was injected (taking a class lock
-before doing a very CPU intensive logic).
+which was located in the LockContentionBug class, the method generateBug and the
+line 20. When comparing this information with the actual code, one can see that
+is precisely the line where the bug was injected (taking a class lock before
+doing a very CPU intensive logic).
 \vspace{-5pt}
 \begin{figure}[!h]
 % \centering
-\includegraphics[totalheight=.23\textheight,width=1\textwidth]{issue2_vs_code}
+\includegraphics[totalheight=.22\textheight,width=1\textwidth]{issue2_vs_code}
 \caption{Lock contention issue in the WAIT report and the actual source code}
 \label{fig_issue2_vs_code}
 \end{figure}
 \vspace{-5pt}
-The report showed in 3rd place a symptom of the lock contention issue
-(it was possible to relate the issues by comparing their detail information,
-where both issues pinpointed to the same class/method), suggesting this was a
-major issue. Moreover the I/O latency bug was identified in 4th place.
-\figurename ~\ref{fig_issues34} shows the details of these two issues.
+In 3rd place the report showed a symptom of the lock contention issue
+(the issues were correlated by comparing their detail information, which
+pinpointed to the same class/method), suggesting this was a major issue. The I/O
+latency bug was identified in 4th place. \figurename ~\ref{fig_issues34} shows
+the details of these issues.
 \vspace{-5pt}
 \begin{figure}[!h]
 % \centering
@@ -810,15 +806,14 @@ major issue. Moreover the I/O latency bug was identified in 4th place.
 \label{fig_issues34}
 \end{figure}
 \vspace{-5pt}
-The deadlock issue did not appear in the run, somehow prevented by the lock
-contention bug which had a major impact that planned. As per the results of
-the run, the two identified bugs were ``fixed'' from the code. As in any common
-test phase, an additional run was done to review if any remaining
-performance issues existed. Not surprisingly, the deadlock bug
+The deadlock issue did not appear in this first run, somehow prevented by the
+lock contention bug which had a major impact that planned. As in any common
+test phase, the identified bugs were ``fixed'' and a new run was done to review
+if any remaining performance issues existed. Not surprisingly, the deadlock bug
 appeared. \figurename ~\ref{fig_dlissue_vs_code} shows the information of our
 Deadlock bug, which was located in the line 30 of the DeadLockBug class. This is
-precisely the line where the bug was injected (as the deadlock occurs when
-the friends try to bow back to each other).
+precisely the line where the bug was injected (as the deadlock occurs when the
+friends try to bow back to each other).
 \vspace{-5pt}
 \begin{figure}[!h]
 % \centering
@@ -828,39 +823,27 @@ actual source code}
 \label{fig_dlissue_vs_code}
 \end{figure}
 \vspace{-5pt}
-As the measurement of success for this experiment was to the ability of WAIT to
-identify performance problems, this experiment was considered successful as all
-injected bugs were identified, including the involved classes and methods.
+This experiment was considered successful as all injected bugs were identified,
+including the involved classes and methods. In terms of time, 2 main savings
+were documented. First, the automated approach practically reduced the effort of
+collecting data for WAIT to zero. After a one-time installation which took no
+more than 15 minutes for all nodes, no time was spent using the automate
+approach, only requiring a few seconds to modify its  configuration (i.e. to
+change the \emph{Sampling Interval}). The second time saving was in the analysis
+of the WAIT reports. Previously, a tester would have ended with multiple
+reports. Now a tester only needs to review a single report which gets refreshed
+periodically.
 
-In terms of time, two main savings were identified. First, the automated
-approach practically reduced the overhead of collecting data for WAIT to zero.
-In parallel to the execution of both experiments (around 40 performance tests),
-the time spent in the automated approach was tracked. The initial installation
-took no more than 15 minutes; then its usage require no additional time over the
-regular usage of the RPT (barely a few seconds to change its settings whenever
-needed -i.e. to modify the \emph{Sampling Interval}-). 
-
-The second time saving was in the analysis of the WAIT reports. Previously, a
-tester would have ended with multiple ones. Assuming an environment composed of
-X nodes, with a desired time window of 1-hour and a test duration of Y hours, a
-tester would have ended with X*Y different WAIT reports, having to review X
-reports per hour. With the automated approach, a tester only needs to review a
-single report which gets refreshed every hour.
-
-Furthermore, overcoming the usability constraints of WAIT allow a tester
-to enjoy the benefits of WAIT and exploit its expert knowledge
-capabilities
-%\footnote{https://wait.ibm.com/waitUserManual.pdf}
-to identify performance issues.  Even though it might be hard to define an
+Besides overcoming the usability constraints of WAIT allow a tester to exploit
+WAIT's expert knowledge capabilities. Even though it might be hard to define an
 average time spent identifying performance issues, a conservative estimate (i.e.
-2 hours) could quantify WAIT's savings. In our study case, instead of spending 6
-hours analyzing the issues, it was possible to identify them and their root
-causes with the information provided by the WAIT report. Moreover a tester does
-not need to wait until the end of the test to raise bugs if required. As seen in
-the experiment, additional time can be saved by reporting relevant issues in
-parallel to the execution of the test. This will be especially valuable in
-long-term runs, very common in performance testing, and usually lasting several
-days.
+2 hours) could help to quantify WAIT's savings. In our study case, instead of
+spending an estimate of 6 hours analyzing the issues, it was possible to
+identify them and their root causes with the information provided by the WAIT
+report. As seen in the experiment, additional time can also be saved by
+reporting relevant issues in parallel to the execution of the test. This is 
+especially valuable in long-term runs, common in performance testing, and
+which usually last several days.
 
 In conclusion, the results of this second experiment answered our research
 question Q3 (What benefits in productivity can a tester achieve if the previous
@@ -872,31 +855,23 @@ was possible to achieve the goal of automating the execution of WAIT,
 while keeping the overhead low (in the range of 0\% to 3\% using a \emph{Sample
 Interval} of 480 seconds). Besides the automated approach brought several time
 savings to a tester: After a quick installation (around 5 minutes per node), the
-time required to use an automated WAIT was practically zero. Previously the
-number of WAIT reports a tester needed to review was equal to the number of
-nodes multiplied by the times the collected data was uploaded; now, a tester
-only needs to monitor a single report, which offers an incremental view of the
-results. A direct benefit of these savings is the reduction of expert knowledge
-required by tester to do performance analysis and detect performance
-issues along with their root causes. Ultimately, this improves a tester
-productivity by reducing the effort required to locate defects.
+time required to use an automated WAIT was practically zero. Also a tester
+now only needs to monitor a single WAIT report, which offers an incremental view
+of the results. A direct result of these savings is the reduction in effort and
+expert knowledge required by tester to identify performance issues, hence
+improving his productivity.
+
 \vspace{-5pt}
 \subsection{Threads to Validity}
 \vspace{-5pt}
 Like any empirical work, there are some threats to the validity of these
 experiments. First the possible environmental noise that could affect the test
 environments because they are not isolated. To mitigate this, multiple runs were
-executed for each identified combination. Also to determine if the differences
-in the results were statistically significant (with 90\% of certainty), a Paired
-t-Test was applied.
-
-Another thread was the selection of the test parameters (i.e. workload and
-duration). This was addressed with the expert judgement of the SVT, which guided
-on their selection. Finally, the validity of the results are threatened by the
-selection of the tested applications. Despite being real-world applications,
-their limited number implies that not all types of applications have been tested
-and wider experiments are needed to get more general conclusions. However, there
-is no reason to believe that the approach is not applicable to other environments.
+executed for each identified combination. Another thread was the selection of
+the tested applications. Despite being real-world applications, their limited
+number implies that not all types of applications have been tested and wider
+experiments are needed to get more general conclusions. However, there is no
+reason to believe that the approach is not applicable to other environments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
@@ -1070,3 +1045,28 @@ The automated approach would allow a wider range of testers to do performance
 analysis. An additional benefit is that less experienced testers could use this
 information to gain a deeper understanding of these type of problems, hence
 reducing the dependency and overall workload of the most expert users within a team.
+
+%\footnote{https://wait.ibm.com/waitUserManual.pdf}
+
+As the measurement of success for this experiment was to the ability of WAIT to
+identify performance problems, 
+
+Assuming an environment composed of X nodes, with a desired time window of
+1-hour and a test duration of Y hours, a tester would have ended with X*Y different WAIT reports, 
+having to review X reports per hour. 
+
+In summary \ldots
+Previously the number of WAIT reports a tester needed to review was equal to the
+number of nodes multiplied by the times the collected data was uploaded; 
+
+
+Threads to Validity:
+
+Also to determine if the differences in the results were statistically
+significant (with 90\% of certainty), Paired t-Tests were applied.
+
+
+Another thread was the selection of the test parameters (i.e. workload and
+duration). This was addressed with the expert judgement of the SVT, which guided
+on their selection. Finally, the validity of the results are threatened by the
+selection of the tested applications. 
