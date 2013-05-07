@@ -247,14 +247,15 @@ rules that perform the analysis. \figurename ~\ref{fig_WAITReport} shows an
 example of a WAIT Report. The top area summarizes the usage of resources (i.e.
 CPU, thread pools and Java Heap) and the number and type of threads per sample. 
 The bottom section shows all the performance inhibitors that have been identified, ranked
-by frequency and impact. For example, in \figurename ~\ref{fig_WAITReport} the
-top issue appeared in 53\% of the samples and affected 7.6 threads on average.
-The affected resource was the network and was caused by database readings.
+by frequency and impact. Moreover each category of problem is indicated with a
+different color.For example, in \figurename ~\ref{fig_WAITReport} the top issue
+appeared in 53\% of the samples and affected 7.6 threads on average. The
+affected resource was the network (highlighted in yellow) and was caused by
+database readings.
 
-\vspace{-5pt}
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.25\textheight,width=0.9\textwidth]{1exampleReport}
+\includegraphics[totalheight=.3\textheight,width=1.0\textwidth]{1exampleReport}
 \caption{Example of WAIT Report}
 \label{fig_WAITReport}
 \end{figure}
@@ -451,7 +452,7 @@ shown in \figurename ~\ref{fig_report}.
 \vspace{-5pt}
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.3\textheight,width=0.9\textwidth]{architecture_dwait}
+\includegraphics[totalheight=.22\textheight,width=0.8\textwidth]{architecture_dwait}
 \caption{High-level Architecture of automated WAIT}
 \label{fig_Arch}
 \end{figure}
@@ -460,19 +461,19 @@ shown in \figurename ~\ref{fig_report}.
 \vspace{-5pt}
 \begin{figure*}
 \centering
-\begin{minipage}[b]{.45\textwidth}
+\begin{minipage}[b]{.50\textwidth}
 
 \centering
-\includegraphics[totalheight=.3\textheight,width=1.0\textwidth]{Smaller_RPT_config}
+\includegraphics[totalheight=.27\textheight,width=1.0\textwidth]{WAIT-config}
 \caption{WAIT configuration in RPT}
 \label{fig_config}
 
 \end{minipage}\qquad
-\begin{minipage}[b]{.45\textwidth}
+\begin{minipage}[b]{.44\textwidth}
 
 \centering
-\includegraphics[totalheight=.3\textheight,width=1.0\textwidth]{Smaller_RPT_monitoring}
-\caption{WAIT monitoring in RPT}
+\includegraphics[totalheight=.27\textheight,width=1.0\textwidth]{WAIT-monitoring}
+\caption{WAIT monitored in RPT}
 \label{fig_mon}
 
 \end{minipage}
@@ -481,7 +482,7 @@ shown in \figurename ~\ref{fig_report}.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.35\textheight,width=0.9\textwidth]{WAIT-report}
+\includegraphics[totalheight=.35\textheight,width=1.0\textwidth]{WAIT-report}
 \caption{WAIT Report accessible in RPT}
 \label{fig_report}
 \end{figure}
@@ -514,7 +515,7 @@ Server} node. All connected by a 10-GBit LAN. These set-ups are shown in
 %\vspace{-5pt}
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.18\textheight,width=0.8\textwidth]{Environments}
+\includegraphics[totalheight=.15\textheight,width=0.85\textwidth]{Environments}
 \caption{Environment Configurations}
 \label{fig_env}
 \end{figure}
@@ -714,7 +715,7 @@ results of the early report, while ~\ref{fig_run1_bugs12}.b shows the results of
 
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.22\textheight,width=1\textwidth]{run1_issues12_short_long_run}
+\includegraphics[totalheight=.20\textheight,width=1\textwidth]{run1_issues12_short_long_run}
 \caption{Top detected performance issues in modified JPetStore application}
 \label{fig_run1_bugs12}
 \end{figure}
@@ -729,7 +730,7 @@ doing a very CPU intensive logic).
 
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.22\textheight,width=1\textwidth]{issue2_vs_code}
+\includegraphics[totalheight=.25\textheight,width=1\textwidth]{issue2_vs_code}
 \caption{Lock contention issue in the WAIT report and the actual source code}
 \label{fig_issue2_vs_code}
 \end{figure}
@@ -742,7 +743,7 @@ the details of these issues.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.23\textheight,width=1\textwidth]{run1_issues34_details}
+\includegraphics[totalheight=.25\textheight,width=1\textwidth]{run1_issues34_details}
 \caption{Details of issues ranked 3rd and 4th}
 \label{fig_issues34}
 \end{figure}
