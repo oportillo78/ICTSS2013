@@ -821,6 +821,7 @@ reason to believe that the approach is not applicable to other environments.
 \vspace{-5pt}
 \section{Conclusions and Future Work}
 \vspace{-5pt}
+<<
 The identification of performance problems and the diagnosis of their root
 causes in highly distributed environments are complex and time-consuming tasks,
 which tend to rely on the expertise of the involved engineers. The objective of
@@ -835,6 +836,56 @@ solution has proven lightweight, generating low overhead (in the range of 0\%
 to 3\% using a \emph{Sampling Interval} commonly used in the industry). Moreover,
 there are also tangible time savings in terms of the effort required to detect
 performance issues.
+>>
+
+<<
+The identification of performance problems and the diagnosis of their root
+causes in highly distributed environments are complex and time-consuming tasks,
+which tend to rely on the expertise of the engineers involved. The objective of
+this work was to reduce the expert knowledge and effort required to identify
+performance issues and their root causes.
+To achieve this goal a novel automation approach was proposed that automatically
+gathered information about resource idle time across a distributed computing
+infrastructure. This technique was implemented in a prototype tool and the
+tool’s overhead impact was assessed against the performance of a non-monitored
+system. 
+
+The results showed that for a \emph{Sampling Interval} of 480 seconds, the
+fully automated system caused a negligible degradation to the system response
+time and throughput for the JPetstore application. For the Portal application it
+caused a 3.4\% increase in the average response time and a 2.8\% reduction in
+throughput.
+
+*************************************************************************************
+
+The current results have also showed evidence of the time savings that can be achieved in
+performance testing activities by applying the proposed approach to existing
+expert tools. 
+
+In our study case, the effort required to use WAIT used
+to depend on the number of nodes that composed the application environment and the frequency with which
+result updates were required. These dependencies made WAIT usage very
+time-consuming and error-prone in highly distributed environments, discouraging
+its usage in performance testing. By applying the proposed automation approach,
+the effort required to use WAIT during a performance testing was drastically
+reduced to a matter of seconds regardless the number of nodes or the
+desired frequency of result updates.
+
+Similarly, the effort required to identify the three defects injected to the
+JPetStore application was minimized. A diagnosis analysis that could have taken
+approximately 6 hours if performed manually (assuming a conservative estimate of
+2 hours per bug), was completed in a matter of minutes. This was achieved
+because the automation approach allowed the generation of a single WAIT report
+of results.
+
+*************************************************************************************
+ 
+Thus, the approach was shown to have a low overhead in these test cases and was
+shown to provide an easily accessible summary of the system performance
+presented in a single report. This tool therefore has the possibility of
+reducing the time required to analyse performance test data and thereby reduce
+the effort and costs associated with software system performance testing.
+>>
 
 Future work will concentrate on assessing the approach and its benefits through
 broader study cases with our industrial partner IBM with a special interest in
@@ -1087,3 +1138,11 @@ Another thread was the selection of the test parameters (i.e. workload and
 duration). This was addressed with the expert judgement of the SVT, which guided
 on their selection. Finally, the validity of the results are threatened by the
 selection of the tested applications.
+
+
+Conclusions:
+
+
+Finally, additional time was saved in the bug identification process because
+it was possible to detect bugs in parallel to the test execution, instead of
+waiting until it finishes.
