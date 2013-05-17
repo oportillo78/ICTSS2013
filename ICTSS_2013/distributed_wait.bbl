@@ -23,21 +23,57 @@ Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
 \newblock 2012 IEEE 36th Annual Computer Software and Applications Conference
   Workshops (July 2012)  493--502
 
-\bibitem{Shahamiri1}
-{Shahamiri, S.R.}, {Kadir, W.M.N.W.}, M.:
-\newblock {A Comparative Study on Automated Software Test Oracle Methods}.
-\newblock ICSEA (2009)
-
 \bibitem{Altman2010}
 Altman, E., Arnold, M., Fink, S., Mitchell, N.:
 \newblock {Performance analysis of idle programs}.
 \newblock ACM SIGPLAN Notices \textbf{45}(10) (October 2010)  739
+
+\bibitem{pat7}
+Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
+\newblock {Finding and Removing Performance Bottlenecks in Large Systems}.
+\newblock In: ECOOP 2004 â€“ Object-Oriented Programming. (2004)
+
+\bibitem{Angelopoulos2012a}
+Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
+\newblock {GcLite: An Expert Tool for Analyzing Garbage Collection Behavior}.
+\newblock IEEE Annual Computer Software and Applications Conference Workshops
+  (July 2012)  493--502
+
+\bibitem{Yang1}
+{J. Yang}, {D. Evans}, D.T.M.:
+\newblock {Perracotta: mining temporal api rules from imperfect traces}.
+\newblock International conference on Software engineering (2008)
+
+\bibitem{Hangal1}
+{S. Hangal}, M.:
+\newblock {Tracking down software bugs using automatic anomaly detection}.
+\newblock International Conference on Software Engineering (2002)
+
+\bibitem{Csallner1}
+{C. Csallner}, Y.:
+\newblock {Dsd-crasher: a hybrid analysis tool for bug finding}.
+\newblock International symposium on Software testing and analysis (2006)
+
+\bibitem{Chen2}
+{M. Y. Chen}, {A. Accardi}, E.J.A.E.:
+\newblock {Path-based failure and evolution management}.
+\newblock Symposium on Networked Systems Design and Implementation (2004)
+
+\bibitem{Shahamiri1}
+{Shahamiri, S.R.}, {Kadir, W.M.N.W.}, M.:
+\newblock {A Comparative Study on Automated Software Test Oracle Methods}.
+\newblock ICSEA (2009)
 
 \bibitem{Wu1}
 {Wu, Haishan}, {Asser N. Tantawi}, T.:
 \newblock {A Self-Optimizing Workload Management Solution for Cloud
   Applications}.
 \newblock (2012)
+
+\bibitem{Gartner2008}
+{Gootzit, David}, {Gene Phifer}, R.:
+\newblock {Magic Quadrant for Horizontal Portal Products}.
+\newblock Technical report, Gartner Inc. (2008)
 
 \bibitem{Chen1}
 {Chen, S.}, {Moreland, D.}, N.Z.:
@@ -85,26 +121,6 @@ Altman, E., Arnold, M., Fink, S., Mitchell, N.:
   models}.
 \newblock International conference on Software engineering (2006)
 
-\bibitem{Yang1}
-{J. Yang}, {D. Evans}, D.T.M.:
-\newblock {Perracotta: mining temporal api rules from imperfect traces}.
-\newblock International conference on Software engineering (2008)
-
-\bibitem{Hangal1}
-{S. Hangal}, M.:
-\newblock {Tracking down software bugs using automatic anomaly detection}.
-\newblock International Conference on Software Engineering (2002)
-
-\bibitem{Csallner1}
-{C. Csallner}, Y.:
-\newblock {Dsd-crasher: a hybrid analysis tool for bug finding}.
-\newblock International symposium on Software testing and analysis (2006)
-
-\bibitem{Chen2}
-{M. Y. Chen}, {A. Accardi}, E.J.A.E.:
-\newblock {Path-based failure and evolution management}.
-\newblock Symposium on Networked Systems Design and Implementation (2004)
-
 \bibitem{Jiang2009}
 Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Automated performance analysis of load tests}.
@@ -116,10 +132,5 @@ Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Pinpointing the subsys responsible for the performance deviations in
   a load test}.
 \newblock Software Reliability Engineering (ISSRE) (2010)
-
-\bibitem{Gartner2008}
-{Gootzit, David}, {Gene Phifer}, R.:
-\newblock {Magic Quadrant for Horizontal Portal Products}.
-\newblock Technical report, Gartner Inc. (2008)
 
 \end{thebibliography}
