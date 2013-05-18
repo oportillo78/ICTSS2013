@@ -52,11 +52,11 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{Towards an Automated Approach to Apply Idle-time Analysis
+\title{Towards an Automated Approach to Use Expert Systems
 in Performance Testing}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Automated Approach to Apply Idle-time Analysis
+\titlerunning{Automated Approach to Use Expert Systems
 in Performance Testing}
 
 % the name(s) of the author(s) follow(s) next
@@ -107,16 +107,16 @@ expertise of the engineers. In order to simplify the above tasks, hence
 increasing the productivity and reducing the dependency on expert knowledge,
 many researchers have been developing tools with built-in expertise knowledge
 for non-expert users to use. However, variant usability limitations exist in
-these tools that prevent their efficient usage in performance testing. To addresses these
-limitations, this paper presents a lightweight approach to automate the usage of
-expert tools in performance testing. In this work, we use a tool named
+these tools that prevent their efficient usage in performance testing. To addresses 
+these limitations, this paper presents a lightweight approach to automate the
+usage of expert tools in performance testing. In this work, we use a tool named
 Whole-system Idle Time analysis to demonstrate how our research work solves
 this problem. Our validation involved two case studies using real-life
-applications, assessing the proposed automation approach in terms of overhead
-costs and time savings it brings to the analysis of performance issues. The
-current results have proven the benefits of the approach by achieving a good
-decrement in the time invested in performance analysis while generating a
-low overhead in the tested system.
+applications, assessing the proposed automation approach in terms of the
+overhead costs and the time savings it brings to the analysis of performance
+issues. The current results have proven the benefits of the approach by
+achieving a good decrement in the time invested in performance analysis 
+while generating a low overhead in the tested system.
 
 \vspace{-2pt}
 \keywords{Performance testing, automation, performance analysis, idle-time
@@ -133,11 +133,11 @@ It is an accepted fact in the industry that performance is a critical dimension
 of quality and should be a major concern of any software project. This is
 especially true at enterprise-level, where performance plays a central role in
 usability. However it is not uncommon that performance issues occur and
-materialize into serious problems (i.e. outages on production environments or
-even cancellation of projects) in a significant percentage of projects. For
+materialize into serious problems in a significant percentage of projects (i.e.
+outages on production environments or even cancellation of projects). For
 example, a 2007 survey applied to information technology executives
-\cite{Compuware1} reported that 50\% of them had faced performance problems in
-at least 20\% of their deployed applications.
+\cite{Compuware1} reported that 50\% of them had faced performance problems in at 
+least 20\% of their deployed applications.
 
 This situation is partially explained by the pervasive nature of
 performance, which makes it hard to assess because performance is practically
@@ -162,45 +162,42 @@ experts, hence impacting the productivity of large testing teams.
 To simplify the performance analysis and diagnosis tasks, hence increasing the
 productivity and reducing the dependency on expert knowledge, many researchers
 have been developing tools with built-in expertise knowledge for non-expert
-users \cite{Altman2010,pat7,Angelopoulos2012a}. However, various limitations exist in these 
-tools that prevent their efficient usage in performance testing. The data collection process 
-usually needs to be controlled manually, which in a highly distributed
-environment (composed of multiple nodes to monitor and coordinate simultaneously) is very 
-time-consuming and error-prone, specially if the data needs to be processed periodically 
-during the test execution to have an incremental view of the results. The same
-situation occurs with the outputs, where a tester commonly needs to review multiple
-reports, one for each monitored node per data processing cycle. 
+users \cite{Altman2010,pat7,Angelopoulos2012a}. However, various limitations
+exist in these tools that prevent their efficient usage in performance testing.
+The data collection process usually needs to be controlled manually, which in a
+highly distributed environment (composed of multiple nodes to monitor and
+coordinate simultaneously) is very time-consuming and error-prone, specially if
+the data needs to be processed periodically during the test execution to have an
+incremental view of the results. The same situation occurs with the outputs,
+where a tester commonly needs to review multiple reports, one for each monitored
+node per data processing cycle.
 
 Even though these limitations might be manageable in small testing environments,
-they prevent an effective usage of an expert system in bigger testing environments. For
-example, consider an application composed of 10 nodes, a 24-hour test run and
-an interval of 1 hour to get incremental results. After starting the involved
-processes, a tester would need to manually coordinate to stop the data
-collections, generate the outputs of the expert system and then start the data
-collections again. These steps conducted for the 10 nodes in cycles of 1 hour,
-which throws a total of 240 cycles. Additionally, these steps would need to be
-carried out as fast as possible to minimize the time gaps between the end of a
-cycle and the start of the next. Lastly, the tester would have to review the 10
-different reports she would get every hour and compare them with the previous
-ones to evaluate if there are any performance issues. As it can be inferred
-from this example, the costs of using an expert system in a highly distributed
-environment would outweigh the benefits, as the time and effort required to
-synchronize its execution and the analysis of its outputs would be very
-effort-intensive and error-prone. As an alternative, testers may chose to focus
-the analysis on a single selected node, assuming it is representative of the
-whole system. However this assumption is usually not true and this workaround
-generates the risk of overlooking other potential issues in the tested
-environment.
+they prevent an effective usage of an expert system in bigger testing
+environments. For example, consider an application composed of 10 nodes, a
+24-hour test run and an interval of 1 hour to get incremental results. A tester
+would need to manually coordinate to stop the data collections, generate the
+outputs of the expert system and then start the data collections again. These
+steps conducted for the 10 nodes in cycles of 1 hour, which throws a total of
+240 cycles. Additionally, these steps would need to be carried out as fast as
+possible to minimize the time gaps between the end of a cycle and the start of
+the next. Lastly, the tester would have to review the 10 different reports she
+would get every hour and compare them with the previous ones to evaluate if
+there are any performance issues. As it can be inferred from this example, the
+costs of using an expert system in a highly distributed environment would
+outweigh its benefits. As an alternative, testers may chose to focus the analysis on a single node, assuming it is representative of the whole system. However this
+assumption generates the risk of overlooking other potential issues in the
+tested application.
 
 In addition to the previous challenges, the overhead generated by any technique
 should be low to minimize the impacts it has in the tested environment (i.e.
-inaccurate results, abnormal behaviours), otherwise the technique would not be
+inaccurate results or abnormal behaviours), otherwise the technique would not be
 suitable for performance testing. For example,
 instrumentation\footnote{http://msdn.microsoft.com/en-us/library/aa983649(VS.71).aspx}
 is currently a common approach used in performance analysis to gather input data
 \cite{Yang1,Hangal1,Csallner1,Chen2}. However, it has the downsize of obscuring
 the performance of the instrumented applications, hence compromising the results of 
-the performance testing. Similarly, if a tool requires heavy human effort to be
+performance testing. Similarly, if a tool requires heavy human effort to be
 used, this might limit the applicability of that tool. On the contrary, automation 
 could play a key role to encourage the adoption of a technique. As documented by
 the authors in \cite{Shahamiri1}, this strategy has proven successful in
@@ -217,19 +214,18 @@ This paper proposes a lightweight automation approach that addresses the common
 usage limitations of an expert system in performance testing. Furthermore,
 during our research development work we have successfully applied our approach to 
 the IBM Whole-system Analysis of Idle Time tool
-(WAIT)\footnote{http://wait.ibm.com}. This freely available tool is a
+(WAIT)\footnote{http://wait.ibm.com}. This publicly available tool is a
 lightweight expert system that helps to identify the main performance inhibitors
-that exist on Java-based systems. Our work was validated through two case studies 
+that exist on Java systems. Our work was validated through two case studies 
 using real-world applications. The first case study concentrated in
-evaluating that the overhead introduced by our approach was low. The second
-assessed the productivity benefits that the proposed approach brings to the
+evaluating the overhead introduced by our approach. The second
+assessed the productivity gains that the approach brings to the
 performance testing process. The current results have provided evidence about
-the benefits of this approach: Using the automated approach drastically reduced
-the effort required by a tester to use and analyze the outputs of the selected
-expert system (WAIT). This usage simplification translated into a quicker identification
-of performance issues, including the pinpointing of the responsible classes and
-method calls. Moreover the overhead in the monitored system was low (between 0\%
-to 3\% when using a common industry \emph{Sampling Interval}).
+the benefits of this approach: It drastically reduced the effort required by a
+tester to use and analyze the outputs of the selected expert tool (WAIT). This
+usage simplification translated into a quicker identification of performance issues, including the pinpointing of the
+responsible classes and methods. Also the introduced overhead was low
+(between 0\% to 3\% when using a common industry \emph{Sampling Interval}).
 
 The main contributions of this paper are: 
 %\\\\
@@ -240,8 +236,7 @@ performance testing.
 2. A practical validation of the approach consisting of an implementation
 around the WAIT tool and two case studies using real-life applications.
 
-3. An analysis of the overhead this approach has in the monitored environment to
-demonstrate it has a low impact.
+3. Analysis of the overhead the approach has in the monitored environment.
 \\\\
 The rest of this paper is structured as follows: Section \ref{Background}
 discusses the background. Section \ref{ProposedApproach} explains the proposed approach, while Section
@@ -262,20 +257,21 @@ causes that lead to under-utilized resources. This approach, proposed in
 \cite{Altman2010}, is based on the observed behavior that performance problems in multi-tier
 applications usually manifest as idle time indicating a lack of motion.
 WAIT is an expert system that implements the idle-time analysis and identifies
-the main performance inhibitors that exist on a system. It has proven
+the main performance inhibitors that exist on a system. Also it has proven
 successful in simplifying the detection of performance issues and their root causes in Java
 environments \cite{Altman2010,Wu1}.
-Moreover WAIT is based on non-intrusive sampling mechanisms available at
-Operating System level (i.e. ``ps'' and ``vmstat'' commands in a Unix/Linux
-environment) and the Java Virtual Machine (JVM), in the form of \emph{Javacores}
+
+WAIT is based on non-intrusive sampling mechanisms available at
+Operating System level (i.e. ``ps'' command in a Unix environment) and the Java
+Virtual Machine (JVM), in the form of \emph{Javacores}
 \footnote{http://www-01.ibm.com/support/docview.wss?uid=swg27017906\&aid=1}
-(diagnostic feature of Java to get a quick snapshot of the JVM state, offering
+(diagnostic feature to get a quick snapshot of the JVM state, offering
 information such as threads, locks and memory). The fact that WAIT uses standard
 data sources makes it non-disruptive, as no special flags or instrumentation are
 required to use it. Furthermore WAIT requires infrequent samples to perform its
 diagnosis, so it also has low overhead.
 
-From a usability perspective, WAIT only requires a few steps: A user needs to
+From a usability perspective, WAIT is simple: A user only needs to
 collect as much data as desired, upload it to a public web page and obtain a
 report with the findings. This process can be repeated multiple times to monitor a
 system through time. Internally, WAIT uses an engine built on top of a set of 
@@ -302,9 +298,8 @@ some usability limitations that exemplify the current challenges to effectively
 use an expert system in the performance testing domain: The effort required to
 do manual data collection to feed WAIT and the number of WAIT reports a tester
 would need to review are practically lineal with respect of the number of nodes
-in the application and the frequency with which the data is refreshed. These costs 
-make the usage of WAIT very effort-intensive and error-prone in a highly
-distributed environment, making it a candidate to apply our proposed approach.
+in the application and the frequency with which the data is refreshed. This
+makes WAIT a good candidate to apply our proposed approach.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
@@ -318,21 +313,21 @@ distributed environment, making it a candidate to apply our proposed approach.
 %it.
 
 \subsection{Proposed Approach}
-
+\vspace{-5pt}
 The objective of this work was to address the common usability limitations of
 expert systems (ES) to be applied effectively in performance testing. To achieve
 this goal, our approach proposes the automation of the manual processes involved
-in the usage of an expert system. It will execute jointly to a performance test,
-periodically collecting the required samples, then getting them incrementally
-processed in order to get a consolidated output.
+in the usage of the expert system. This approach will execute jointly to the
+performance test, periodically collecting the required samples, then getting
+them incrementally processed by the expert system to get a consolidated output.
 
-Moreover the detailed approach is depicted in the \figurename
-~\ref{fig_ApproachDiagram}. In order to start, the following inputs are
+The detailed approach is depicted in the \figurename
+~\ref{fig_ApproachDiagram}. In order to start, some inputs are
 required: The list of nodes to be monitored; a \emph{Sampling Interval} to
 control how often the samples will be collected; a \emph{Time Threshold} to
-define the maximum time between uploads; a \emph{Hard Disk Threshold} to define
-the maximum storage quota for collected data (to prevent its uncontrolled
-growth); and a \emph{Backup} flag that indicates if the collected data should be
+define the maximum time between data uploads; a \emph{Hard Disk Threshold} to
+define the maximum storage quota for collected data (to prevent its uncontrolled
+growth); and a \emph{Backup} flag to indicate if the collected data should be
 backed up before any cleaning occurs.
 
 \begin{figure}[!h]
@@ -354,31 +349,27 @@ been reached). If any of these conditions has occurred, a new upload round
 occurs where the data is send to the expert system (labeling the data with the
 \emph{RunId} so that information from different nodes can be identified as part
 of the same test run). If a \emph{Backup} was enabled, the data is copied to the
-backup destination before it is deleted to free Hard Disk space. Then updated
-outputs of the expert system are retrieved and the \emph{Next Time Threshold} is
-calculated. Finally, the logic awaits the configured \emph{Sampling Interval}
-before a new iteration starts.
+backup destination before it is deleted in order to free space and
+keep Hard Disk usage below the threshold. Then updated outputs from the expert
+system are retrieved and the \emph{Next Time Threshold} is calculated. Finally,
+the logic awaits the configured \emph{Sampling Interval} before a new iteration
+starts.
 
-Once the performance test finishes, any remnant collected data is send (and
-backup if configured) so that this information is also considered by the expert
-system. Then this data is also cleared and the final consolidated outputs of the
-expert system are obtained.
+Once the performance test finishes, any remnant collected data is sent (and
+backed up if configured) so that this information is also processed by the
+expert system. Lastly this data is also cleared and the final consolidated
+outputs of the expert system are obtained.
 
+\vspace{-5pt}
 \subsection{Architecture}
-
-The previously described approach was complemented with the architecture
+\vspace{-5pt}
+The approach is complemented with the architecture
 presented in \figurename ~\ref{fig_Arch}. It is composed of two main components:
 The \emph{Control Agent} is responsible of interacting with the Load
 Testing tool to know when the performance test starts and ends. It is also
 responsible of getting the runId and propagate it to all the nodes. The second
 component is the \emph{Node Agent} which is responsible of the collection,
-upload, backup and cleanup steps in each application node. Moreover the
-communication between these components is based on commands, following the
-\emph{Command} Design
-Pattern\footnote{http://www.oodesign.com/command-pattern.html}. The
-\emph{Control Agent} invokes the start and stop commands based on the status of
-the Load Testing tool, while the \emph{Node Agent} implements the logic in
-charge of responding to each concrete command.
+upload, backup and cleanup steps in each application node. 
 
 %\vspace{-5pt}
 \begin{figure}[!h]
@@ -389,10 +380,17 @@ charge of responding to each concrete command.
 \end{figure}
 %\vspace{-5pt}
 
+These components communicate through commands, following the \emph{Command}
+Design Pattern\footnote{http://www.oodesign.com/command-pattern.html}. The
+\emph{Control Agent} invokes the start and stop commands based on the
+changes of status in the Load Testing tool, while the \emph{Node Agent}
+implements the logic in charge of responding to each concrete command. This
+response includes sending back the result of the operation.
+
 An example of the diverse interactions that occur between these
-components is depicted in \figurename ~\ref{fig_SeqDiagram}. Once the tester has started a
-test (step 1), the \emph{Control Agent} propagates the action to each of the nodes
-(steps 2 to 4). There, each \emph{Node Agent} performs its periodic data 
+components is depicted in \figurename ~\ref{fig_SeqDiagram}. Once the tester has
+started a test (step 1), the \emph{Control Agent} propagates the action to each
+of the nodes (steps 2 to 4). Then each \emph{Node Agent} performs its periodic data 
 collections (steps 5 to 9) until any of the thresholds is satisfied and the data
 is sent to the ES (steps 10 and 11). These processes continue until the test
 ends. At that moment, the \emph{Control Agent} propagates the stop action to all
@@ -416,13 +414,14 @@ expert system (steps 12 to 14) until receiving the final results (steps 25 to
 \vspace{5pt}
 \section{Experimental Evaluation}
 \label{ExperimentalEvaluation}
+%\vspace{-5pt}
+
+%In this section the developed prototype and the experimental setup are
+%presented. Then the experiments are described and their results discussed.
+
 \vspace{-5pt}
-
-In this section the developed prototype and the experimental setup are
-presented. Then the experiments are described and their results discussed.
-
 \subsection{Prototype}
-
+\vspace{-5pt}
 Based on the proposed approach, a prototype has been developed in
 conjunction with our industrial partner IBM. The \emph{Control Agent} was
 implemented as an Eclipse Plugin for the Rational Performance Tester (RPT)
@@ -432,16 +431,15 @@ implemented as a Java Web Application, and WAIT was the selected expert system
 due to its analysis capabilities to diagnose performance issues and their root
 causes.
 
-Once the agents are installed, WAIT can now be configured as any other resource
-in RPT as shown in \figurename ~\ref{fig_config}. Similarly, during a
+Once the agents are installed in the environment, WAIT can be configured as
+any other resource in RPT as shown in \figurename ~\ref{fig_config}. Similarly, during a
 performance test WAIT can be monitored as any other resource in the
 \emph{Performance Report} of RPT under the \emph{Resource View} depicted in
 \figurename ~\ref{fig_mon}. Finally, the consolidated WAIT report is also
 accessible within RPT, so a tester does not need to leave RPT during the whole
-duration of the performance test. This is shown in \figurename ~\ref{fig_report}.
+performance test. This is shown in \figurename ~\ref{fig_report}.
 
 %--------------------------------------------------
-
 \vspace{-5pt}
 \begin{figure*}
 \centering
@@ -473,24 +471,24 @@ duration of the performance test. This is shown in \figurename ~\ref{fig_report}
 \label{fig_report}
 \end{figure}
 
-
+\vspace{-5pt}
 \subsection{Experimental Set-up}
-
+\vspace{-5pt}
 Two experiments were performed. The first one aimed to evaluate if the overhead
-introduced by the proposed approach was low to prevent compromise the results
-of a performance test execution. Meanwhile, the second experiment pursued to
+introduced by the proposed approach was low to prevent compromising the results
+of a performance test. Meanwhile, the second experiment pursued to
 assess the productivity benefits that a tester can gain by using the proposed
 approach.
 
-Moreover two environment configurations were used. They are shown in \figurename
-~\ref{fig_env}. One was composed of one RPT node, one application node and one
+Additionally two environment configurations were used. They are shown in
+\figurename ~\ref{fig_env}. One was composed of one RPT node, one application node and one
 \emph{WAIT Server} node; the other was composed of one RPT node, one load
 balancer node, two application nodes and one \emph{WAIT Server} node. All
 machines connected by a 10-GBit LAN.
 
 \begin{figure}[!h]
 \centering
-\includegraphics[totalheight=.15\textheight,width=0.85\textwidth]{Environments}
+\includegraphics[totalheight=.15\textheight,width=0.9\textwidth]{Environments}
 \caption{Environment Configurations}
 \label{fig_env}
 \end{figure}
@@ -1179,3 +1177,10 @@ share $runId$ with all nodes\;
 
 -------------
 
+
+, as it would be very effort-intensive to synchronize its
+execution and analyze its outputs would be very effort-intensive and
+error-prone
+
+These costs make WAIT effort-intensive and error-prone in a highly distributed
+environment, making it a good candidate to apply our proposed approach.
