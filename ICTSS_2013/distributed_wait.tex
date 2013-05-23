@@ -107,15 +107,14 @@ To simplify the above tasks, hence increasing the productivity and reducing the
 dependency on expert knowledge, many researchers have been developing tools with 
 built-in expertise knowledge for non-expert users. However, variant usability
 limitations exist in these tools that prevent their efficient usage in performance 
-testing. To addresses these limitations, this paper presents a lightweight approach 
-to automate the usage of expert tools in performance testing. In this work, we
-use a tool named Whole-system Analysis Idle Time to demonstrate how our
-research work solves this problem. Our validation involved two case studies using real-life
-applications, assessing the proposed approach in terms of the
-overhead cost and the time savings it brings to the analysis of performance
-issues. The results have proven the benefits of the approach by
-achieving a good decrement in the time invested in performance analysis 
-while generating a low overhead in the tested system.
+testing. To address these limitations, this paper presents a lightweight approach 
+to automate the usage of expert tools in performance testing. In this paper, we
+use a tool named Whole-system Analysis of Idle Time to demonstrate how our research work 
+solves this problem. The validation involved two case studies, using real-life
+applications, which assessed the overhead and time savings that the proposed 
+approach can bring to the analysis of performance issues. The results proved the
+benefits of the approach by achieving a good decrement in the time invested in 
+performance analysis while introducing a low overhead in the tested system.
 
 \vspace{-2pt}
 \keywords{Performance testing, automation, performance analysis, idle-time
@@ -130,20 +129,22 @@ analysis, distributed environments, multi-tier applications}
 \vspace{-5pt}
 It is an accepted fact in the industry that performance is a critical dimension
 of quality and should be a major concern of any software project. This is
-especially true at enterprise-level, where performance plays a central role in
-usability. However it is not uncommon that performance issues occur and
-materialize into serious problems in a significant percentage of projects (i.e.
-outages on production environments or even cancellation of projects). For
-example, a 2007 survey applied to information technology executives
-\cite{Compuware1} reported that 50\% of them had faced performance problems in at 
+especially true at enterprise-level, where system performance plays a central
+role in usability. However it is not uncommon that performance issues occur and
+materialize into serious problems in a significant percentage of applications
+(i.e. outages on production environments or even cancellation of
+software projects). For example, a 2007 survey applied to information technology
+executives \cite{Compuware1} reported that 50\% of them had faced performance problems in at 
 least 20\% of their deployed applications.
 
 This situation is partially explained by the pervasive nature of
 performance, which makes it hard to assess because performance is practically
 influenced by every aspect of the design, code, and execution environment
 of an application. Latest trends in the information technology world (such as
-Service Oriented Architecture and Cloud Computing) have also augmented the
-complexity of applications further complicating activities related to
+Service Oriented
+Architecture\footnote{http://msdn.microsoft.com/en-us/library/aa480021.aspx} and 
+Cloud Computing\footnote{http://csrc.nist.gov/publications/nistpubs/800-145/SP800-145.pdf}) 
+have also augmented the complexity of applications further complicating activities related to
 performance. Under these conditions, it is not surprising that doing performance
 testing is complex and time-consuming. A special challenge, documented by
 multiple authors \cite{Woodside2007,trevor1,Angelopoulos2012}, is that current
@@ -151,12 +152,13 @@ performance tools heavily rely on expert knowledge to understand their output.
 It is also common that multiple sources are required to diagnose
 performance problems, especially in highly distributed environments. For
 instance in Java: thread dumps, garbage collection logs, heap dumps, CPU
-utilization and JVM memory usage, are a few examples of the information that a
-tester could need to understand the performance of an application. This
-situation increases the expertise required to do performance analysis, which is
-usually held by only a small number of testers within an organization. It
-could potentially lead to bottlenecks where some activities can only be done by
-experts, impacting the productivity of large testing teams.
+utilization and memory usage, are a few examples of the information that a
+tester could need to understand the performance of an application.
+This problem increases the expertise required to do performance analysis,
+which is usually held by only a small number of experts inside an
+organization\cite{Wyatt1}. Therefore it could potentially lead to
+create bottlenecks where certain activities can only be done by these experts,
+impacting the productivity of the testing teams\cite{Angelopoulos2012}.
 
 To simplify the performance analysis and diagnosis tasks, hence increasing the
 productivity and reducing the dependency on expert knowledge, many researchers
@@ -172,21 +174,19 @@ where a tester commonly needs to review multiple reports, one for each monitored
 node per data processing cycle.
 
 Even though these limitations might be manageable in small testing environments,
-they prevent an effective usage of an expert system in bigger testing
-environments. For example, consider an application composed of 10 nodes, a
-24-hour test run and an interval of 1 hour to get incremental results. A tester
-would need to manually coordinate to stop the data collections, generate the
-outputs of the expert system and then start the data collections again. These
-steps conducted for the 10 nodes in cycles of 1 hour, which throws a total of
-240 cycles. Additionally, these steps would need to be carried out as fast as
-possible to minimize the time gaps between the end of a cycle and the start of
-the next. Lastly, the tester would have to review the 10 different reports she
-would get every hour and compare them with the previous ones to evaluate if
-there are any performance issues. As it can be inferred from this example, the
-costs of using an expert system in a highly distributed environment would
-outweigh its benefits. As an alternative, testers may chose to focus the analysis on a single node, assuming it is representative of the whole system. However this
-assumption generates the risk of potential overlooking other issues in the
-tested application.
+they prevent an effective usage of these tools in bigger environments. To
+exemplify this problem, let's use the Eclipse Memory Analyzer
+Tool\footnote{http://www.eclipse.org/mat/} (MAT), which is a popular open source
+tool to identify memory consumption issues. If a tester wants to use MAT to monitor 
+a test environment composed of 100 application nodes during a 24-hour test run and 
+get incremental results every hour, she would need to manually coordinate the
+data gathering and generation of the tool's outputs. These steps conducted periodically 
+for the 100 nodes in cycles of 1 hour, which throws a total of 2400 cycles.
+Additionally the tester would have to review the different reports she would get every 
+hour to evaluate if any performance issues exist. As an alternative, testers may
+chose to focus the analysis on a single node, assuming it is representative of the 
+whole system. However this assumption generates the risk of potentially
+overlooking issues in the tested application.
 
 In addition to the previous challenges, the overhead generated by any technique
 should be low to minimize the impacts it has in the tested environment (i.e.
@@ -211,15 +211,14 @@ tools so that testers can carry out analysis tasks in less time.
 
 This paper proposes a lightweight automation approach that addresses the common
 usage limitations of an expert system in performance testing. Furthermore,
-during our research development work we have successfully applied our approach to 
-the IBM Whole-system Analysis of Idle Time tool
-(WAIT)\footnote{http://wait.ibm.com}. This publicly available tool is a
-lightweight expert system that helps to identify the main performance inhibitors
-that exist on Java systems. Our work was validated through two case studies 
-using real-world applications. The first case study concentrated in
-evaluating the overhead introduced by our approach. The second
-assessed the productivity gains that the approach brings to the
-performance testing process. The current results have provided evidence about
+during our research development work we have successfully applied our approach
+to the IBM Whole-system Analysis of Idle Time tool (WAIT)\footnote{http://wait.ibm.com}. 
+This publicly available tool is a lightweight expert system that helps to
+identify the main performance inhibitors that exist on Java systems. Our work was 
+validated through two case studies using real-world applications. The first case study 
+concentrated in evaluating the overhead introduced by our approach. The second
+assessed the productivity gains that the approach can bring to the
+performance testing process. The results provided evidence about
 the benefits of this approach: It drastically reduced the effort required by a
 tester to use and analyze the outputs of the selected expert tool (WAIT). This
 usage simplification translated into a quicker identification of performance issues, including the pinpointing of the
