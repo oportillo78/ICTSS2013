@@ -8,20 +8,29 @@
 \bibitem{Woodside2007}
 Woodside, M., Franks, G., Petriu, D.C.:
 \newblock {The Future of Software Performance Engineering}.
-\newblock Future of Software Engineering (FOSE '07) (May 2007)  171--187
+\newblock Future of Software Engineering (May 2007)
 
 \bibitem{trevor1}
 Parsons, T., Murphy, J.:
 \newblock {Detecting Performance Antipatterns in Component Based Enterprise
   Systems}.
-\newblock In: 2nd International Middleware Doctoral Symposium. Volume~7. (2008)
-   55--90
+\newblock In: International Middleware Doctoral Symposium. (2008)
 
 \bibitem{Angelopoulos2012}
 Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
 \newblock {GcLite: An Expert Tool for Analyzing Garbage Collection Behavior}.
-\newblock 2012 IEEE 36th Annual Computer Software and Applications Conference
-  Workshops (July 2012)  493--502
+\newblock Annual Computer Software and Applications Conference Workshops (July
+  2012)
+
+\bibitem{Altman2010}
+Altman, E., Arnold, M., Fink, S., Mitchell, N.:
+\newblock {Performance analysis of idle programs}.
+\newblock ACM SIGPLAN Notices (October 2010)
+
+\bibitem{pat7}
+Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
+\newblock {Finding and Removing Performance Bottlenecks in Large Systems}.
+\newblock In: ECOOP. (2004)
 
 \bibitem{Yang1}
 {J. Yang}, {D. Evans}, D.T.M.:
@@ -48,37 +57,16 @@ Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
 \newblock {A Comparative Study on Automated Software Test Oracle Methods}.
 \newblock ICSEA (2009)
 
-\bibitem{Altman2010}
-Altman, E., Arnold, M., Fink, S., Mitchell, N.:
-\newblock {Performance analysis of idle programs}.
-\newblock ACM SIGPLAN Notices \textbf{45}(10) (October 2010)  739
-
-\bibitem{pat7}
-Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
-\newblock {Finding and Removing Performance Bottlenecks in Large Systems}.
-\newblock In: ECOOP 2004 â€“ Object-Oriented Programming. (2004)
-
-\bibitem{Angelopoulos2012a}
-Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
-\newblock {GcLite: An Expert Tool for Analyzing Garbage Collection Behavior}.
-\newblock IEEE Annual Computer Software and Applications Conference Workshops
-  (July 2012)  493--502
-
 \bibitem{Wu1}
 {Wu, Haishan}, {Asser N. Tantawi}, T.:
 \newblock {A Self-Optimizing Workload Management Solution for Cloud
   Applications}.
 \newblock (2012)
 
-\bibitem{Gartner2008}
-{Gootzit, David}, {Gene Phifer}, R.:
-\newblock {Magic Quadrant for Horizontal Portal Products}.
-\newblock Technical report, Gartner Inc. (2008)
-
 \bibitem{Chen1}
 {Chen, S.}, {Moreland, D.}, N.Z.:
 \newblock {Yet Another Performance Testing Framework}.
-\newblock Australian Conference on Software Engineering (ASWEC) (2008)
+\newblock Australian Conference on Software Engineering (2008)
 
 \bibitem{Elvira1}
 {Albert, Elvira}, {Miguel G�mez-Zamalloa}, J.:
@@ -93,9 +81,9 @@ Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
 
 \bibitem{Briand1}
 {L. C. Briand}, {Y. Labiche}, M.:
-\newblock {Using genetic algorithms for early schedulability analysis and
-  stress testing in RT systems}.
-\newblock Genetic Programming and Evolvable Machines (2006)
+\newblock {Using genetic algorithms for early schedulability analysis and ST in
+  RT systems}.
+\newblock Genetic Prog. and Evolvable Machines (2006)
 
 \bibitem{Bayan1}
 {M. S. Bayan}, J.:
@@ -124,13 +112,12 @@ Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
 \bibitem{Jiang2009}
 Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Automated performance analysis of load tests}.
-\newblock In: IEEE International Conference on Software Maintenance, Ieee
-  (September 2009)  125--134
+\newblock In: International Conference on Software Maintenance. (2009)
 
 \bibitem{Malik1}
 {Haroon Malik}, {Bram Adams}, A.:
 \newblock {Pinpointing the subsys responsible for the performance deviations in
   a load test}.
-\newblock Software Reliability Engineering (ISSRE) (2010)
+\newblock Software Reliability Engineering (2010)
 
 \end{thebibliography}
