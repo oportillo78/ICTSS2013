@@ -67,14 +67,15 @@ in Performance Testing}
 %
 \author{A. Omar Portillo-Dominguez\inst{1}\and Miao Wang\inst{1}\and Philip
 Perry\inst{1} \and\\
-John Murphy\inst{1} \and Nick Mitchell\inst{2}\and Peter F. Sweeney\inst{2}}
+John Murphy\inst{1} \and Nick Mitchell\inst{2}\and Peter F. Sweeney\inst{2}\and
+Erik Altman\inst{2}}
 
 \authorrunning{A.O. Portillo-Dominguez et al.}
 % (feature abused for this document to repeat the title also on left hand pages)
 
 \urldef{\mailucdconnect}\path|andres.portillo-dominguez@ucdconnect.ie,|
 \urldef{\mailucd}\path|{philip.perry,miao.wang,j.murphy}@ucd.ie,|
-\urldef{\mailibm}\path|{nickm,pfs}@us.ibm.com|
+\urldef{\mailibm}\path|{nickm,pfs,ealtman}@us.ibm.com|
 
 % the affiliations are given next; don't give your e-mail address
 % unless you accept that it will be published
@@ -116,7 +117,7 @@ approach can bring to the analysis of performance issues. The results proved the
 benefits of the approach by achieving a good decrement in the time invested in 
 performance analysis while introducing a low overhead in the tested system.
 
-\vspace{-2pt}
+\vspace{-3pt}
 \keywords{Performance testing, automation, performance analysis, idle-time
 analysis, distributed environments, multi-tier applications}
 \end{abstract}
@@ -124,9 +125,9 @@ analysis, distributed environments, multi-tier applications}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-2pt}
+\vspace{-4pt}
 \section{Introduction}
-\vspace{-5pt}
+\vspace{-7pt}
 It is an accepted fact in the industry that performance is a critical dimension
 of quality and should be a major concern of any software project. This is
 especially true at enterprise-level, where system performance plays a central
@@ -142,21 +143,21 @@ performance, which makes it hard to assess because performance is practically
 influenced by every aspect of the design, code, and execution environment
 of an application. Latest trends in the information technology world (such as
 Service Oriented
-Architecture\footnote{http://msdn.microsoft.com/en-us/library/aa480021.aspx} and 
-Cloud Computing\footnote{http://csrc.nist.gov/publications/nistpubs/800-145/SP800-145.pdf}) 
+Architecture\footnote{http://msdn.microsoft.com/en-us/library/aa480021.aspx} and Cloud Computing\footnote{http://csrc.nist.gov/publications/nistpubs/800-145/SP800-145.pdf}) 
 have also augmented the complexity of applications further complicating activities related to
-performance. Under these conditions, it is not surprising that doing performance
+performance. 
+
+Under these conditions, it is not surprising that doing performance
 testing is complex and time-consuming. A special challenge, documented by
 multiple authors \cite{Woodside2007,trevor1,Angelopoulos2012}, is that current
 performance tools heavily rely on expert knowledge to understand their output.
-It is also common that multiple sources are required to diagnose
-performance problems, especially in highly distributed environments. For
-instance in Java: thread dumps, garbage collection logs, heap dumps, CPU
-utilization and memory usage, are a few examples of the information that a
-tester could need to understand the performance of an application.
-This problem increases the expertise required to do performance analysis,
-which is usually held by only a small number of experts inside an
-organization\cite{Wyatt1}. Therefore it could potentially lead to
+Also multiple sources are commonly required to diagnose performance problems,
+especially in highly distributed environments. For instance in Java: thread dumps, 
+garbage collection logs, heap dumps, CPU utilization and memory usage, are a few
+examples of the information that a tester could need to understand the performance 
+of an application. This problem increases the expertise required to do
+performance analysis, which is usually held by only a small number of experts inside an
+organization\cite{Spear2009}. Therefore it could potentially lead to
 create bottlenecks where certain activities can only be done by these experts,
 impacting the productivity of the testing teams\cite{Angelopoulos2012}.
 
@@ -165,10 +166,10 @@ productivity and reducing the dependency on expert knowledge, many researchers
 have been developing tools with built-in expertise knowledge for non-expert
 users \cite{Altman2010,pat7,Angelopoulos2012}. However, various limitations
 exist in these tools that prevent their efficient usage in performance testing.
-The data collection process usually needs to be controlled manually, which in a
-highly distributed environment (composed of multiple nodes to monitor and
+The data collection usually needs to be controlled manually, which in
+a highly distributed environment (composed of multiple nodes to monitor and
 coordinate simultaneously) is very time-consuming and error-prone, specially if
-the data needs to be processed periodically during the test execution to have an
+the data needs to be processed periodically during the test execution to get an
 incremental view of the results. The same situation occurs with the outputs,
 where a tester commonly needs to review multiple reports, one for each monitored
 node per data processing cycle.
@@ -177,16 +178,16 @@ Even though these limitations might be manageable in small testing environments,
 they prevent an effective usage of these tools in bigger environments. To
 exemplify this problem, let's use the Eclipse Memory Analyzer
 Tool\footnote{http://www.eclipse.org/mat/} (MAT), which is a popular open source
-tool to identify memory consumption issues. If a tester wants to use MAT to monitor 
-a test environment composed of 100 application nodes during a 24-hour test run and 
+tool to identify memory consumption issues in Java. If a tester wants to use MAT
+to monitor an environment composed of 100 nodes during a 24-hour test run and 
 get incremental results every hour, she would need to manually coordinate the
-data gathering and generation of the tool's outputs. These steps conducted periodically 
-for the 100 nodes in cycles of 1 hour, which throws a total of 2400 cycles.
-Additionally the tester would have to review the different reports she would get every 
-hour to evaluate if any performance issues exist. As an alternative, testers may
-chose to focus the analysis on a single node, assuming it is representative of the 
-whole system. However this assumption generates the risk of potentially
-overlooking issues in the tested application.
+data gathering of memory snapshots and the generation of the tool's reports.
+These steps conducted periodically for all the nodes in cycles of 1 hour, which
+throws a total of 2400 cycles. Moreover the tester would have to review the
+multiple reports she would get every hour to evaluate if any performance issues
+exist. As an alternative, she may focus the analysis on a single node, assuming
+it is representative of the whole system. However it generates the risk of
+potentially overlooking issues in the tested application.
 
 In addition to the previous challenges, the overhead generated by any technique
 should be low to minimize the impacts it has in the tested environment (i.e.
@@ -214,16 +215,17 @@ usage limitations of an expert system in performance testing. Furthermore,
 during our research development work we have successfully applied our approach
 to the IBM Whole-system Analysis of Idle Time tool (WAIT)\footnote{http://wait.ibm.com}. 
 This publicly available tool is a lightweight expert system that helps to
-identify the main performance inhibitors that exist on Java systems. Our work was 
+identify the main performance inhibitors that exist in Java systems. Our work was 
 validated through two case studies using real-world applications. The first case study 
 concentrated in evaluating the overhead introduced by our approach. The second
 assessed the productivity gains that the approach can bring to the
 performance testing process. The results provided evidence about
 the benefits of this approach: It drastically reduced the effort required by a
 tester to use and analyze the outputs of the selected expert tool (WAIT). This
-usage simplification translated into a quicker identification of performance issues, including the pinpointing of the
-responsible classes and methods. Also the introduced overhead was low
-(between 0\% to 3\% when using a common industry \emph{Sampling Interval}).
+usage simplification translated into a quicker identification of performance issues, 
+including the pinpointing of the responsible classes and methods. Also the
+introduced overhead was low (between 0\% to 3\% when using a common industry
+\emph{Sampling Interval}).
 
 The main contributions of this paper are: 
 %\\\\
@@ -237,19 +239,19 @@ around the WAIT tool and two case studies using real-life applications.
 3. Analysis of the overhead the approach has in the monitored environment.
 \\\\
 The rest of this paper is structured as follows: Section \ref{Background}
-discusses the background. Section \ref{ProposedApproach} explains the proposed approach, while Section
-\ref{ExperimentalEvaluation} explores the experimental evaluation and results.
-Section \ref{RelatedWork} shows the related work. Finally Section
-\ref{Conclusions} presents the conclusions and future work.
+discusses the background. Section \ref{ProposedApproach} explains the proposed
+approach, while Section \ref{ExperimentalEvaluation} explores the experimental 
+evaluation and results. Section \ref{RelatedWork} shows the related work.
+Finally Section \ref{Conclusions} presents the conclusions and future work.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Background
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-5pt}
+\vspace{-7pt}
 \section{Background}
 \label{Background}
-\vspace{-5pt}
+\vspace{-7pt}
 \emph{Idle-time analysis} is a methodology that pursues to explain the root
 causes that lead to under-utilized resources. This approach, proposed in
 \cite{Altman2010}, is based on the observed behavior that performance problems in multi-tier
@@ -274,13 +276,12 @@ report with the findings. This process can be repeated multiple times to monitor
 system through time. Internally, WAIT uses an engine built on top of a set of 
 expert rules that perform the analysis. \figurename ~\ref{fig_WAITReport} shows an
 example of a WAIT Report. The top area summarizes the usage of resources (i.e.
-CPU, thread pools and Java Heap) and the number and type of threads per sample. 
-The bottom section shows all the performance inhibitors that have been identified, ranked
-by frequency and impact. Moreover each category of problem is indicated with a
-different color. For example, in \figurename ~\ref{fig_WAITReport} the top issue
-appeared in 53\% of the samples and affected 7.6 threads on average. The
-affected resource was the network (highlighted in yellow) and was caused by
-database readings.
+CPU or memory) and the number and type of threads. The bottom section shows all
+the performance inhibitors that have been identified, ranked by frequency and impact. 
+Also each color indicates a different category of problem. For example, in
+\figurename ~\ref{fig_WAITReport} the top issue appeared in 53\% of the samples
+and affected 7.6 threads on average. Moreover the affected resource was the
+network (yellow color) and was caused by database readings.
 
 \begin{figure}[!h]
 \centering
@@ -292,29 +293,29 @@ database readings.
 Given its strengths, WAIT is a promising candidate to reduce the expert
 knowledge and time required to do performance analysis. However, it has
 some usability limitations that exemplify the current challenges to effectively
-use an expert system in the performance testing domain: The effort required to
+use an expert system in performance testing: The effort required to
 do manual data collection to feed WAIT and the number of WAIT reports a tester
-would need to review are practically lineal with respect of the number of
-application nodes and the frequency with which the data is
-refreshed. This makes WAIT a good candidate to apply our proposed approach.
+gets are practically lineal with respect of the number of nodes and
+the update frequency of the results. This makes WAIT a good candidate to apply
+our proposed approach.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Proposed Approach
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-5pt}
+\vspace{-7pt}
 \section{Proposed Approach and Architecture}
 \label{ProposedApproach}
-\vspace{-5pt}
+\vspace{-7pt}
 
 %This section presents the proposed approach and the architecture that supports
 %it.
 
 \subsection{Proposed Approach}
-\vspace{-5pt}
+\vspace{-7pt}
 The objective of this work was to address the common usability limitations of
 expert systems (ES) to be applied effectively in performance testing. To achieve
 this goal, our approach proposes the automation of the manual processes involved
-in the usage of an expert system. This approach will execute jointly to the
+in the usage of an expert system. This logic will execute jointly to the
 performance test, periodically collecting the required samples, then getting
 them incrementally processed by the expert system to get a consolidated output.
 
@@ -357,9 +358,9 @@ backed up if configured) so that this information is also processed by the
 expert system. Lastly this data is also cleared and the final consolidated
 outputs of the expert system are obtained.
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Architecture}
-\vspace{-5pt}
+\vspace{-7pt}
 The approach is complemented with the architecture
 presented in \figurename ~\ref{fig_Arch}. It is composed of two main components:
 The \emph{Control Agent} is responsible of interacting with the Load
@@ -386,7 +387,7 @@ includes sending back the result of the performed operation to the \emph{Control
 Agent}.
 
 An example of the distinct interactions that occur between these
-components is depicted in \figurename ~\ref{fig_SeqDiagram}. Once a tester has
+components are depicted in \figurename ~\ref{fig_SeqDiagram}. Once a tester has
 started a performance test (step 1), the \emph{Control Agent} propagates the
 action to each of the nodes (steps 2 to 4). Then each \emph{Node Agent} performs
 its periodic data collections (steps 5 to 9) until any of the thresholds is
@@ -398,19 +399,19 @@ the intermediate results obtained from the expert system (steps 12 to 14) until
 getting the final results (steps 25 to 27). Moreover, the tester only needs to
 interact with the Load Testing tool during the whole test execution.
 
-\vspace{-5pt}
+%\vspace{-5pt}
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1.0\textwidth]{SequenceDiagram}
 \caption{Sequence diagram of the automated approach}
 \label{fig_SeqDiagram}
 \end{figure}
-\vspace{-5pt}
+%\vspace{-5pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experimental Setup / Experiments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{5pt}
+\vspace{-7pt}
 \section{Experimental Evaluation}
 \label{ExperimentalEvaluation}
 %\vspace{-5pt}
@@ -418,25 +419,30 @@ interact with the Load Testing tool during the whole test execution.
 %In this section the developed prototype and the experimental setup are
 %presented. Then the experiments are described and their results discussed.
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Prototype}
-\vspace{-5pt}
+\vspace{-7pt}
 Based on the proposed approach, a prototype has been developed
 in conjunction with our industrial partner IBM. The \emph{Control Agent} was
 implemented as an Eclipse Plugin for the Rational Performance Tester (RPT)
 \footnote{http://www-03.ibm.com/software/products/us/en/performance}, which is a
 load testing tool commonly used in the industry; the \emph{Node Agent} was
 implemented as a Java Web Application, and WAIT was the selected expert system
-due to its analysis capabilities to diagnose performance issues and their root
-causes.
+due to its analysis capabilities previously discussed in
+Section \ref{Background}.
 
-Once the agents are installed in the environment, WAIT can be configured as
-any other resource in RPT as shown in \figurename ~\ref{fig_config}. Similarly, during a
-performance test WAIT can be monitored as any other resource in the
+Once the agents are installed in an environment, WAIT can be configured as
+any other resource in RPT as shown in \figurename ~\ref{fig_config}. Similarly,
+during a performance test WAIT can be monitored as any other resource in the
 \emph{Performance Report} of RPT under the \emph{Resource View} as depicted in
-\figurename ~\ref{fig_mon}. Finally, the consolidated WAIT report is also
-accessible within RPT, so a tester does not need to leave RPT during the whole
-performance test. This is shown in \figurename ~\ref{fig_report}.
+\figurename ~\ref{fig_mon}, which shows some of the metrics that a tester can
+check: The number of monitored processes, the number of WAIT data collections
+that have been triggered and the collections that have occurred. Finally, the
+consolidated WAIT report is also accessible within RPT, so a tester does not
+need to leave RPT during the whole performance test. This is shown in
+\figurename ~\ref{fig_report}. 
+%The benefits of this report will be explained in Section
+% \ref{Experiment_2_Results} as part of the experimental results.
 
 %--------------------------------------------------
 \vspace{-5pt}
@@ -470,9 +476,9 @@ performance test. This is shown in \figurename ~\ref{fig_report}.
 \label{fig_report}
 \end{figure}
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Experimental Set-up}
-\vspace{-5pt}
+\vspace{-7pt}
 Two experiments were performed. The first one aimed to evaluate if the overhead
 introduced by the proposed approach was low so that it does not compromise the
 results of a performance test. Meanwhile, the second one pursued to
@@ -500,9 +506,9 @@ Server 2008, with an Intel Xeon E7-8860 CPU at 2.26 GHz and 4GB of RAM
 running Java 1.6.0 IBM J9 VM (build 2.6). Finally, the load balancer node had
 the same characteristics of the \emph{WAIT Server} node. 
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Experiment \#1: Overhead Evaluation}
-\vspace{-2pt}
+\vspace{-7pt}
 
 Its objective was to validate that the proposed approach had low overhead and
 involved the assessment of four metrics: Throughput (hits per second), response
@@ -516,7 +522,7 @@ The other application was IBM WebSphere Portal
 %Server 
 8.0.1 \footnote{http://www-03.ibm.com/software/products/us/en/portalserver},
 a leader solution in the enterprise portal market.  
-%\cite{Gartner2008}
+\cite{Gartner2008}
 It ran over an IBM WebSphere Application Server 8.0.0.5.
 
 Firstly, the overhead was measured in a single-node environment using three
@@ -548,6 +554,7 @@ as the cost of the \emph{Node Agent} presence had been previously measured. In
 terms of resource consumption, the differences between the WAIT modalities
 remained within 1\%.
 
+\vspace{-2pt}
 \begin{table}[!h]
 \caption{JPetStore - Overhead Results}
 \label{PetStore1}
@@ -568,6 +575,7 @@ Automated, 30s 			& 4.4\%		& 0.5\%		& -3.1\% 	& 2.53\% 	& 4.4\%\\
 \hline
 \end{tabular}
 \end{table}
+\vspace{-2pt}
 
 For Portal, each test run produced around 400,000 transactions. Even though the
 results presented in \tablename ~\ref{Portal1} showed similar trends in terms of
@@ -583,6 +591,7 @@ quantify the differences in behavior of Portal: The average size of a \emph{Java
 (100\% bigger than JPetStore's), with a maximum generation time of 3 sec (100\%
 bigger than JPetStore's).
 
+\vspace{-2pt}
 \begin{table}[!h]
 \caption{Portal - Overhead Results}
 \label{Portal1}
@@ -601,6 +610,7 @@ Automated, 30s 			& 16.8\%	& 9.1\%		& -5.6\% 	& 2.23\% 	& 6.0\%\\
 \hline
 \end{tabular}
 \end{table}
+\vspace{-2pt}
 
 Due to the small differences among the runs and the variations (presumable
 environmental) that were experienced during the experiments, a Paired t-Test
@@ -662,9 +672,10 @@ Interval} and the application behavior could have in the overhead, it is importa
 consider these factors in the configuration. In our case, a \emph{Sampling
 Interval} of 480 seconds proved efficient in terms of overhead for the two tested applications using WAIT.
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Experiment \#2: Assessment of productivity benefits}
-\vspace{-2pt}
+\label{Experiment_2_Results}
+\vspace{-7pt}
 
 Here the objective was to assess the benefits our approach brings to a
 performance tester. First, the source code of JPetStore was modified and three
@@ -690,7 +701,8 @@ since the early versions of the report. Their high frequency (above
 information to the development team so that the diagnosis could start far ahead
 of the test completion. The final report reinforced the presence of these issues 
 by offering similar rankings. \figurename ~\ref{fig_run1_bugs12}.a shows the
-results of the early report, while ~\ref{fig_run1_bugs12}.b shows the results of the final report.
+results of the early report, while ~\ref{fig_run1_bugs12}.b shows the results of 
+the final report.
 
 \begin{figure}[!h]
 \centering
@@ -733,14 +745,14 @@ appeared. \figurename ~\ref{fig_dlissue_vs_code} shows the information of our
 Deadlock bug, which was located in the line 30 of the DeadLockBug class. This is
 precisely the line where the bug was injected (as the deadlock occurs when the
 friends bow back to each other).
-\vspace{-5pt}
+%\vspace{-5pt}
 \begin{figure}[!h]
 \centering
 \includegraphics[totalheight=.23\textheight,width=1\textwidth]{deadlockIssue_DetailsVsEclipse_Highlight}
 \caption{Deadlock issue in the WAIT report and the actual source code}
 \label{fig_dlissue_vs_code}
 \end{figure}
-\vspace{-5pt}
+%\vspace{-5pt}
 
 As all injected bugs were identified, including the involved classes and
 methods, this experiment was considered successful. In terms of time, two main
@@ -748,8 +760,9 @@ savings were documented. First, the automated approach practically reduced the
 effort of using WAIT to zero. After a one-time installation which took no more
 than 15 minutes for all nodes, the only additional effort required to use the
 automate approach were a few seconds spent configuring it (i.e. to change the
-\emph{Sampling Interval}). The second time saving occurred in the analysis of the WAIT reports. Previously, a tester would have ended with multiple reports. Now a tester only needs to monitor a single report which is 
-refreshed periodically.
+\emph{Sampling Interval}). The second time saving occurred in the analysis of the 
+WAIT reports. Previously, a tester would have ended with multiple reports. Now a 
+tester only needs to monitor a single report which is refreshed periodically.
 
 Overcoming the usability constraints of WAIT also allowed to exploit
 WAIT's expert knowledge capabilities. Even though it might be hard to define an
@@ -771,9 +784,9 @@ offers a consolidated view of the results. A direct consequence of these
 time savings is the reduction in expert knowledge and effort required by a
 tester to identify performance issues, hence improving the productivity.
 
-\vspace{-5pt}
+\vspace{-7pt}
 \subsection{Threats to Validity}
-\vspace{-5pt}
+\vspace{-7pt}
 Like any empirical work, there are some threats to the validity of these
 experiments. First the possible environmental noise that could affect the test
 environments because they are not isolated. To mitigate this, multiple runs were
@@ -781,19 +794,27 @@ executed for each identified combination. Another threat was the selection of
 the tested applications. Despite being real-world applications, their limited
 number implies that not all types of applications have been tested and wider
 experiments are needed to get more general conclusions. However, there is no
-reason to believe that the approach is not applicable to other environments.
+reason to believe that the presented approach is not applicable to other
+environments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Related Work
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-10pt}
+\vspace{-7pt}
 \section{Related Work}
 \label{RelatedWork}
-\vspace{-5pt}
+\vspace{-7pt}
+
 The idea of applying automation in the performance testing domain is not new.
 However, most of the research has focused on automating the generation of load
-test suites
-\cite{Chen1,Elvira1,Zhang1,Briand1,Bayan1,Avritzer2,Avritzer3,Garousi1}.
+test
+suites\cite{Elvira1,Bayan1,Zhang1,Briand1,Avritzer2,Avritzer3,Chen1,Garousi1}.
+For example \cite{Bayan1} proposes an approach to automate the generation of test 
+cases, hence simplifying this time-consuming task, based on specified levels of
+load and combinations of resources. Similarly, \cite{Chen1} presents an
+automation framework that separates the application logic from the performance
+testing scripts.
+
 Regarding performance analysis, a high percentage of the proposed
 techniques require instrumentation. For example, the authors in \cite{Yang1}
 instrument the source code to mine the sequences of call graphs to infer any
@@ -821,53 +842,52 @@ baseline to do their analysis, information which might not always be available.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 7: Conclusions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-5pt}
+\vspace{-7pt}
 \section{Conclusions and Future Work}
 \label{Conclusions}
-\vspace{-5pt}
+\vspace{-7pt}
 
 The identification of performance problems and their root causes in highly
 distributed environments are complex and time-consuming tasks. Even though
 researchers have been developing expert systems to simplify these tasks, variant
-limitations exist that prevent the effective usage o those tools in performance
-testing. To address these limitations, this work proposed a novel approach to
-automate the usage of an expert system in a distributed test environment. A
-prototype was developed around the WAIT tool and then its benefits and overhead
-were assessed. The results showed that for a \emph{Sampling Interval} of 480 seconds, 
-the automation caused a negligible performance degradation of the JPetstore
-application. For the Portal, it caused a 3.4\% increase in average response time
-and a 2.8\% reduction in throughput. The results also showed the time savings
-gained by applying the approach to an expert tool: The effort required to utilize WAIT,
-which used to depend on the number of nodes and the frequency to get results,
-has been reduced to seconds regardless of these configurations. A direct benefit
-of this was the simplification of the analysis of performance issues. In our
-study case, all defects injected in JPetStore were detected in a matter of
-minutes using WAIT's consolidated outputs. In contrast, a manual analysis might
-have taken several hours. Thus, the approach was shown to have a low overhead
-and to provide an easily accessible summary of the system performance in a
-single report. It therefore has the possibility of reducing the time required to 
-analyze performance issues, thereby reducing the effort and costs associated
-with performance testing.
+limitations exist that prevent their effective usage in performance testing. To
+address these limitations, this work proposed a novel approach to automate the usage of 
+an expert system in a distributed test environment. A prototype was developed
+around the WAIT expert tool and then its benefits and overhead were assessed.
+The results showed that for a \emph{Sampling Interval} of 480 seconds, the automation
+caused a negligible performance degradation of the JPetstore application. For the Portal,
+it caused a 3.4\% increase in average response time and a 2.8\% reduction in
+throughput. The results also showed the time savings gained by applying the
+approach to an expert tool. In our case, the effort to utilize WAIT, which used
+to depend on the number of nodes and the frequency to get results, was
+reduced to seconds regardless of the configuration. This optimization also
+simplified the identification of performance issues. In our study case, all
+defects injected in JPetStore were detected in a matter of minutes using WAIT's consolidated 
+outputs. In contrast, a manual analysis might have taken hours.
+Thus, the approach was shown to have a low overhead and to provide an easily
+accessible summary of the system performance in a single report. It therefore
+has the possibility of reducing the time required to analyze performance issues,
+thereby reducing the effort and costs associated with performance testing.
 
 Future work will concentrate on assessing the approach and its benefits through
 broader case studies with our industrial partner IBM with a special interest in 
-the trade-off between the \emph{Sampling
-Interval} and the nature of the applications.  It will also be investigated how
-best to exploit the information that can be obtained from a tested environment
-to improve the capabilities of the idle-time analysis.
+the trade-off between the \emph{Sampling Interval} and the nature of the
+applications.  It will also be investigated how best to exploit the information
+that can be obtained from a test environment to improve the idle-time analysis.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 8: Acknowledgements
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-5pt}
+\vspace{-8pt}
 \section*{Acknowledgments}
-\vspace{-5pt}
-We would like to thanks Amarendra Darisa, from IBM SVT, as his experience in
-performance testing helped us through the scope definition and validation. This
-work was supported, in part, by Science Foundation Ireland grant 10/CE/I1855 to
-Lero - the Irish Software Engineering Research Centre (www.lero.ie).
+\vspace{-7pt}
+We would like to thanks Amarendra Darisa and Patrick O'Sullivan, from IBM SVT,
+as their experience in performance testing helped us through the scope
+definition and validation. This work was supported, in part, by Science
+Foundation Ireland grant 10/CE/I1855 to Lero - the Irish Software Engineering
+Research Centre (www.lero.ie).
 
-\vspace{-5pt}
+\vspace{-8pt}
 % Between 12 - 24 \ldots 18 sounds like a good number!
 \bibliographystyle{splncs}
 \bibliography{dwait_manual,dwait}

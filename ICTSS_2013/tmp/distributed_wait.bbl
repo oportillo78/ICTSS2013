@@ -18,16 +18,15 @@ Parsons, T., Murphy, J.:
 
 \bibitem{Angelopoulos2012}
 Angelopoulos, V., Parsons, T., Murphy, J., O'Sullivan, P.:
-\newblock {GcLite: An Expert Tool for Analyzing Garbage Collection Behavior}.
-\newblock Annual Computer Software and Applications Conference Workshops (July
-  2012)
+\newblock {GcLite: An Expert Tool for Analyzing GC Behavior}.
+\newblock COMPSACW (July 2012)
 
-\bibitem{Wyatt1}
-{Wyatt Spear}, e.:
-\newblock {Making Performance Analysis and Tuning Part of the Software
-  Development Cycle}.
-\newblock High Performance Computing Modernization Program Users Group
-  Conference (2009)
+\bibitem{Spear2009}
+Spear, W., Shende, S., Malony, A., Portillo, R., Teller, P.J., Cronk, D.,
+  Moore, S., Terpstra, D.:
+\newblock {Making Perf. Analysis and Tuning Part of Software Development
+  Cycle}.
+\newblock High Perf. Computing Modernization Program Users Group (June 2009)
 
 \bibitem{Altman2010}
 Altman, E., Arnold, M., Fink, S., Mitchell, N.:
@@ -70,15 +69,21 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
   Applications}.
 \newblock (2012)
 
-\bibitem{Chen1}
-{Chen, S.}, {Moreland, D.}, N.Z.:
-\newblock {Yet Another Performance Testing Framework}.
-\newblock Australian Conference on Software Engineering (2008)
+\bibitem{Gartner2008}
+{Gootzit, David}, {Gene Phifer}, R.:
+\newblock {Magic Quadrant for Horizontal Portal Products}.
+\newblock Technical report, Gartner Inc. (2008)
 
 \bibitem{Elvira1}
 {Albert, Elvira}, {Miguel Gómez-Zamalloa}, J.:
 \newblock {Resource-Driven CLP-Based test case generation}.
 \newblock Logic-Based Program Synthesis and Transformation (2012)
+
+\bibitem{Bayan1}
+{M. S. Bayan}, J.:
+\newblock {Automatic stress and load testing for embedded systems}.
+\newblock 30th Annual International Computer Software and Applications
+  Conference (2006)
 
 \bibitem{Zhang1}
 {J. Zhang}, S.:
@@ -92,12 +97,6 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
   RT systems}.
 \newblock Genetic Prog. and Evolvable Machines (2006)
 
-\bibitem{Bayan1}
-{M. S. Bayan}, J.:
-\newblock {Automatic stress and load testing for embedded systems}.
-\newblock 30th Annual International Computer Software and Applications
-  Conference (2006)
-
 \bibitem{Avritzer2}
 {A. Avritzer}, E.:
 \newblock {Generating test suites for software load testing}.
@@ -109,6 +108,11 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
 \newblock {The automatic generation of load test suites and the assessment of
   the resulting software}.
 \newblock IEEE Trans. Softw. Eng. (1995)
+
+\bibitem{Chen1}
+{Chen, S.}, {Moreland, D.}, N.Z.:
+\newblock {Yet Another Performance Testing Framework}.
+\newblock Australian Conference on Software Engineering (2008)
 
 \bibitem{Garousi1}
 {V. Garousi}, {L. C. Briand}, Y.:
