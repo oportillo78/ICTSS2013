@@ -69,11 +69,6 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
   Applications}.
 \newblock (2012)
 
-\bibitem{Gartner2008}
-{Gootzit, David}, {Gene Phifer}, R.:
-\newblock {Magic Quadrant for Horizontal Portal Products}.
-\newblock Technical report, Gartner Inc. (2008)
-
 \bibitem{Elvira1}
 {Albert, Elvira}, {Miguel Gómez-Zamalloa}, J.:
 \newblock {Resource-Driven CLP-Based test case generation}.
@@ -130,5 +125,11 @@ Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Pinpointing the subsys responsible for the performance deviations in
   a load test}.
 \newblock Software Reliability Engineering (2010)
+
+\bibitem{mon3}
+Hoorn, V., Rohr, M., Hasselbring, W., Waller, J., Ehlers, J., Kieselhorst, D.:
+\newblock {Continuous Monitoring of Software Services: Design and Application
+  of the Kieker Framework}.
+\newblock (2009)
 
 \end{thebibliography}
