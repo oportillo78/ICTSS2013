@@ -39,7 +39,7 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
 \newblock In: ECOOP. (2004)
 
 \bibitem{Yang1}
-{J. Yang}, {D. Evans}, D.T.M.:
+Yang, J., Evans, D., Bhardwaj, D., Bhat, T., Das, M.:
 \newblock {Perracotta: mining temporal api rules from imperfect traces}.
 \newblock International conference on Software engineering (2008)
 
@@ -54,14 +54,15 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
 \newblock International symposium on Software testing and analysis (2006)
 
 \bibitem{Chen2}
-{M. Y. Chen}, {A. Accardi}, E.J.A.E.:
+Chen, M.Y., Accardi, A., Kiciman, E., Lloyd, J., Patterson, D., Fox, A.,
+  Brewer, E.:
 \newblock {Path-based failure and evolution management}.
 \newblock Symposium on Networked Systems Design and Implementation (2004)
 
 \bibitem{Shahamiri1}
-{Shahamiri, S.R.}, {Kadir, W.M.N.W.}, M.:
-\newblock {A Comparative Study on Automated Software Test Oracle Methods}.
-\newblock ICSEA (2009)
+Shahamiri, S., Kadir, W., Mohd-Hashim, S.:
+\newblock {A Comparative Study on Automated Software Test Oracle Methods},
+  ICSEA (2009)
 
 \bibitem{Wu1}
 {Wu, Haishan}, {Asser N. Tantawi}, T.:
@@ -92,20 +93,8 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
   RT systems}.
 \newblock Genetic Prog. and Evolvable Machines (2006)
 
-\bibitem{Avritzer2}
-{A. Avritzer}, E.:
-\newblock {Generating test suites for software load testing}.
-\newblock ACM SIGSOFT international symposium on Software testing and analysis
-  (1994)
-
-\bibitem{Avritzer3}
-{A. Avritzer}, E.:
-\newblock {The automatic generation of load test suites and the assessment of
-  the resulting software}.
-\newblock IEEE Trans. Softw. Eng. (1995)
-
 \bibitem{Chen1}
-{Chen, S.}, {Moreland, D.}, N.Z.:
+Chen, S., Moreland, D., Nepal, S., Zic, J.:
 \newblock {Yet Another Performance Testing Framework}.
 \newblock Australian Conference on Software Engineering (2008)
 
@@ -114,6 +103,11 @@ Ammons, G., Choi, J.d., Gupta, M., Swamy, N.:
 \newblock {Traffic-aware stress testing of distributed systems based on uml
   models}.
 \newblock International conference on Software engineering (2006)
+
+\bibitem{Xingen1}
+{Xingen Wang}, {Bo Zhou}, W.:
+\newblock {Model-based load testing of web applications}.
+\newblock (2013)
 
 \bibitem{Jiang2009}
 Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
@@ -125,5 +119,17 @@ Jiang, Z.M., Hassan, A.E., Hamann, G., Flora, P.:
 \newblock {Pinpointing the subsys responsible for the performance deviations in
   a load test}.
 \newblock Software Reliability Engineering (2010)
+
+\bibitem{mon3}
+van Hoorn, A., Rohr, M., Hasselbring, W., Waller, J., Ehlers, J., Frey, S.,
+  Kieselhorst, D.:
+\newblock {Continuous Monitoring of Software Services: Design and Application
+  of the Kieker Framework}.
+\newblock (2009)
+
+\bibitem{Barham1}
+Barham, P., Donnelly, A., Isaacs, R., Mortier, R.:
+\newblock {Using magpie for request extraction and workload modelling}.
+\newblock (2004)
 
 \end{thebibliography}
