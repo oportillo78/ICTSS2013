@@ -208,7 +208,7 @@ successful in performance testing.
 
 Finally, to ensure that our research is helpful to solve real-life
 problems in the software industry, we have been working with our industrial
-partner, IBM System Verification Test (SVT), to understand the challenges
+partner, IBM System Verification Test team (SVT), to understand the challenges
 in their day-to-day testing activities. Their feedback confirms that there is a 
 real need to simplify the usage of expert tools so that testers can do
 analysis tasks in less time and get more meaningful results that can be
@@ -400,7 +400,7 @@ obtained.
 \vspace{\myspaceM{}}
 \subsection{Architecture}
 \vspace{\myspaceM{}}
-The approach is implemented with the architecture
+The proposed approach is implemented with the architecture
 presented in \figurename ~\ref{fig_components}. It is composed of two main components:
 The \emph{Control Agent} is responsible of interacting with the 
 load testing tool (LTT) to know when the test starts and ends. It is also
@@ -656,18 +656,6 @@ Automated, 30s 			& 16.8\%	& 9.1\%		& -5.7\% 	& 2.97\% 	& 6.0\%\\
 \end{tabular}
 \end{table}
 
-A second test was done to validate that the overhead remained low in a
-multi-node environment over a longer test run. This test used JPetStore and the
-automated WAIT tool with a \emph{Sampling Interval} of 480 seconds. The rest of
-the set-up was identical to the previous tests except the workload which was doubled
-to compensate for the additional application node and the test duration which
-was increased to 24 hours. Even though the results were slightly different than the
-single-node run, they proved that the solution was reliable, as using the
-automated approach had minimal impact in terms of response time (0.5\% 
-average and 0.2\% max) and throughput (1.4\%). Moreover the consumption
-of resources behaved similarly to the single-node test (an increment of 0.85\%
-in CPU and 2.3\% in Memory). 
-
 To explore the small differences between the runs and the potential
 environmental variations that were experienced during the experiments, a Paired
 t-Test
@@ -678,6 +666,20 @@ This analysis indicated that these differences were only significant when
 using a \emph{Sampling Interval} of 30 seconds. This analysis reinforced 
 the conclusion that the overhead was low and the observation that the
 \emph{Sampling Interval} of 480 seconds was preferable.
+
+A second test was done to validate that the overhead remained low in a
+multi-node environment over a longer test run. This test used JPetStore and the
+automated WAIT tool with a \emph{Sampling Interval} of 480 seconds. The rest of
+the set-up was identical to the previous tests except the workload which was doubled
+to compensate for the additional application node and the test duration which
+was increased to 24 hours. Even though the results were slightly different than the
+single-node run, they proved that the solution was reliable, as using the
+automated approach had minimal impact in terms of response time (0.5\% 
+average and 0.2\% max) and throughput (1.4\%). Moreover the consumption
+of resources behaved similarly to the single-node test (an increment of 0.85\%
+in CPU and 2.3\% in Memory). A paired t-Test also indicated that the
+differences in response time and throughput, compared with the baseline, were
+not significant.
 
 In conclusion, the results of this experiment proved that the
 overhead caused by the automated approach was low, therefore the results of a
